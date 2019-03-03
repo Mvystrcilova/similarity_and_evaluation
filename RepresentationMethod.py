@@ -51,9 +51,9 @@ class TF_idf(TextMethod):
 
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_train_matrix = (tfidf_vectorizer.fit_transform(lyrics))
-
         for i, s in enumerate(songs):
-            s.tf_idf_representation = tfidf_train_matrix[i]
+            s.tf_idf_representation = tfidf_train_matrix[i].toarray()
+            # numpy.set_printoptions(threshold=numpy.nan)
 
 
 class Word2Vec(TextMethod):
@@ -107,7 +107,7 @@ class SOM_TF_idf(TextMethod):
 
         for s in songs:
             s.som_tf_idf_representation = som.winner(s.tf_idf_representation)
-        with open(self.model_name, 'rb') as outfile:
+        with open(self.model_name, 'wb') as outfile:
             pickle.dump(som, outfile)
 
     def represent_song(self, song):
@@ -135,15 +135,16 @@ class SOM_W2V(TextMethod):
 
         scaler = preprocessing.MinMaxScaler()
         train_data = scaler.fit_transform(train_data)
-
-        grid_size = int(5 * (math.sqrt(len(songs))))
-        som = MiniSom(grid_size, grid_size, len(train_data.iloc[0]))
+        # train_data = pandas.DataFrame(train_data)
+        grid_size = int(3 * (math.sqrt(len(songs))))
+        som = MiniSom(grid_size, grid_size, 300)
         som.random_weights_init(train_data)
-        som.train_random(train_data, num_iteration=(len(songs) * 10))
+        som.train_random(train_data, num_iteration=(len(songs) * 3))
+        with open(self.model_name, 'wb') as outfile:
+            pickle.dump(som, outfile)
         for s in songs:
             s.som_w2v_representation = som.winner(s.W2V_representation)
-        with open(self.model_name, 'rb') as outfile:
-            pickle.dump(som, outfile)
+
 
     # song representations are defined during training
     def represent_song(self, song):

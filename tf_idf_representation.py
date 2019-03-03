@@ -1,11 +1,10 @@
 from gensim.models.keyedvectors import KeyedVectors
 from RepresentationMethod import TF_idf, Word2Vec, SOM_W2V, SOM_TF_idf
 from Dataset import Dataset
-import pandas
-import numpy
+import pandas, numpy
 from Song import Song
 
-def main():
+def store_tf_idf_w2v():
     users_filename = '~/Documents/matfyz/rocnikac/data/songs_with_lyrics'
     # songs_test_filename = '~/Documents/matfyz/rocnikac/'
     w2v_model = KeyedVectors.load('/Users/m_vys/Documents/matfyz/rocnikac/djangoApp/rocnikac/w2v_subset', mmap='r')
@@ -30,17 +29,4 @@ def main():
     numpy.set_printoptions(threshold=numpy.nan)
     song_repr_frame.to_csv('TF_idf_W2V', sep=';')
 
-    som_w2v.train(songs)
-
-    song_repr_frame = pandas.DataFrame()
-
-    for s in songs:
-        temp_song_frame = pandas.DataFrame(data=[[s.song_id, s.title, s.artist, s.som_w2v_representation]])
-        song_repr_frame = song_repr_frame.append(temp_song_frame)
-
-    song_repr_frame.to_csv('SOM_W2V', sep=';')
-
-
-
-
-main()
+store_tf_idf_w2v()
