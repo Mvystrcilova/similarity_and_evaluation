@@ -1,5 +1,5 @@
 import pandas, numpy
-from Evaluation import User, Statistics
+from Evaluation_legacy import User, TF_idfStatistics
 from scipy import spatial
 from Song import Song
 from Dataset import get_song
@@ -18,19 +18,18 @@ playlists_lentght_forandmore = playlists_lentght_forandmore[playlists_lentght_fo
 users_to_use = playlists_lentght_forandmore.userID.tolist()
 
 data = data[data['userID'].isin(users_to_use)]
-# vectors = pandas.read_csv('TF_idf_W2V', sep=';', names=['somethingWeird', 'songId', 'title', 'artist', 'tf_idf_representation', 'W2V_representation'])
+vectors = pandas.read_csv('../TF_idf_W2V', sep=';', names=['somethingWeird', 'songId', 'title', 'artist', 'tf_idf_representation', 'W2V_representation'])
 # split data into 80% train and 20% test data
 train_data = pandas.DataFrame()
 test_data = pandas.DataFrame()
-vectors = []
 
 for user in users_to_use:
     user_data = data.loc[data['userID'] == user]
     msk = numpy.random.rand(len(user_data)) < 0.8
     user_train_data = user_data[msk]
     user_test_data = user_data[~msk]
-    train_data.append(user_train_data)
-    test_data.append(user_test_data)
+    train_data = train_data.append(user_train_data)
+    test_data = test_data.append(user_test_data)
 
 
 print(train_data.shape)
@@ -46,9 +45,9 @@ w2v_distances = [[0 for x in range(len(songs))] for y in range(len(songs))]
 song_instances = []
 for i, song_1 in songs.iterrows():
     s = Song(song_1['title'], song_1['artist'], song_1['lyrics'], i)
-    s.tf_idf_representation = song_1['tf_idf_representation']
-    s.W2V_representation = song_1['W2V_representation']
-    song_1.index = i
+    s.tf_idf_representation = numpy.fromstring(song_1['tf_idf_representation'].rstrip('/n')[1:-1], sep=' ').astype(float)
+    s.W2V_representation = numpy.fromstring(song_1['W2V_representation'][1:-1], sep=' ').astype(float)
+    s.index = i
     song_instances.append(s)
 
 for song_1 in song_instances:
@@ -79,10 +78,10 @@ for user in users_to_use:
         user_instances.append(user_instance)
 
 tf_idf = TF_idf()
-tf_idf_stats = Statistics()
+tf_idf_stats = TF_idfStatistics()
 
-w2v = Word2Vec()
-w2v_stats = Statistics()
+# w2v = Word2Vec()
+# w2v_stats = TF_idfStatistics()
 
 for usr in user_instance:
     similarities = pandas.DataFrame(columns=['song', 'tf_idf_similarity', 'w2v_similarity'])
@@ -102,7 +101,8 @@ for usr in user_instance:
     usr.top_100_w2v = similarities.sort_values(by=['w2v_similarity']).head(100)
 
 
-
+    print(usr.top_100_tfidf.shape)
+    print(usr.top_100_w2v.shape)
 
 
 

@@ -45,7 +45,7 @@ class Dataset:
                         users_with_songs[user['userID']].add(user_frame['title'], user_frame['artist'])
 
 
-def get_song(self, songs, title, artist):
+def get_song(songs, title, artist):
     for s in songs:
         if s.title == title and s.artist == artist:
             return s

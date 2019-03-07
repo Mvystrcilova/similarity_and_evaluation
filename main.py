@@ -11,35 +11,36 @@ def main():
     w2v_model = KeyedVectors.load('/Users/m_vys/Documents/matfyz/rocnikac/djangoApp/rocnikac/w2v_subset', mmap='r')
     tf_idf = TF_idf()
     word2vec = Word2Vec(w2v_model, [])
-    som_tfidf = SOM_TF_idf(1,0.5)
-    som_w2v = SOM_W2V(1,0.5)
-    dataset = Dataset([tf_idf, word2vec, som_tfidf, som_w2v],['cosine'])
+    # som_tfidf = SOM_TF_idf(1,0.5)
+    som_w2v_2 = SOM_W2V(1, 0.5, grid_size_multiple=2, iterations=10, model_name='som_w2v_4g.p')
+    som_w2v_4 = SOM_W2V(1, 0.5, 4, 10, 'som_w2v_2g.p')
+    som_w2v_5 = SOM_W2V(1, 0.5, 5, 10, 'som_w2v_5g.p')
+    dataset = Dataset([tf_idf, word2vec, som_w2v_4, som_w2v_2],['cosine'])
     song_repr_frame = pandas.DataFrame()
     songs = dataset.load_songs(users_filename)
     print(len(songs))
 
-    tf_idf.train(songs)
+    # tf_idf.train(songs)
     for s in songs:
         word2vec.represent_song(s)
 
-    for s in songs:
-        temp_song_frame = pandas.DataFrame(data=[[s.song_id, s.title, s.artist, s.tf_idf_representation,
-                                s.W2V_representation]])
-        song_repr_frame = song_repr_frame.append(temp_song_frame)
+    # for s in songs:
+    #     temp_song_frame = pandas.DataFrame(data=[[s.song_id, s.title, s.artist, s.tf_idf_representation,
+    #                             s.W2V_representation]])
+    #     song_repr_frame = song_repr_frame.append(temp_song_frame)
+    #
+    # numpy.set_printoptions(threshold=numpy.nan)
+    # song_repr_frame.to_csv('TF_idf_W2V', sep=';')
 
-    numpy.set_printoptions(threshold=numpy.nan)
-    song_repr_frame.to_csv('TF_idf_W2V', sep=';')
+    som_w2v_2.train(songs)
 
-    som_w2v.train(songs)
+    # song_repr_frame = pandas.DataFrame()
 
-    song_repr_frame = pandas.DataFrame()
-
-    for s in songs:
-        temp_song_frame = pandas.DataFrame(data=[[s.song_id, s.title, s.artist, s.som_w2v_representation]])
-        song_repr_frame = song_repr_frame.append(temp_song_frame)
-
-    song_repr_frame.to_csv('SOM_W2V', sep=';')
-
+    # for s in songs:
+    #     temp_song_frame = pandas.DataFrame(data=[[s.song_id, s.title, s.artist, s.som_w2v_representation]])
+    #     song_repr_frame = song_repr_frame.append(temp_song_frame)
+    #
+    # song_repr_frame.to_csv('SOM_W2V', sep=';')
 
 
 

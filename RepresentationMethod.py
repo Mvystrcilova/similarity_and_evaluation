@@ -121,10 +121,12 @@ class SOM_TF_idf(TextMethod):
 
 
 class SOM_W2V(TextMethod):
-    def __init__(self, sigma, learning_rate):
+    def __init__(self, sigma, learning_rate, grid_size_multiple, iterations, model_name):
         self.sigma = sigma
         self.learning_rate = learning_rate
-        self.model_name = 'som_w2v.p'
+        self.model_name = model_name
+        self.grid_size_multiple = grid_size_multiple,
+        self.iterations = iterations
 
     def train(self, songs):
         train_data = pandas.DataFrame()
@@ -136,15 +138,14 @@ class SOM_W2V(TextMethod):
         scaler = preprocessing.MinMaxScaler()
         train_data = scaler.fit_transform(train_data)
         # train_data = pandas.DataFrame(train_data)
-        grid_size = int(3 * (math.sqrt(len(songs))))
+        grid_size = int(self.grid_size_multiple * int(math.sqrt(len(songs))))
         som = MiniSom(grid_size, grid_size, 300)
         som.random_weights_init(train_data)
-        som.train_random(train_data, num_iteration=(len(songs) * 3))
+        som.train_random(train_data, num_iteration=(len(songs) * self.iterations))
         with open(self.model_name, 'wb') as outfile:
             pickle.dump(som, outfile)
         for s in songs:
             s.som_w2v_representation = som.winner(s.W2V_representation)
-
 
     # song representations are defined during training
     def represent_song(self, song):
@@ -155,6 +156,18 @@ class SOM_W2V(TextMethod):
         song.som_w2v_representation = som.winner(song.W2V_representation)
         pass
 
+    def load_representation(self, representation_place):
+        songs_from_file = pandas.read_csv(representation_place, sep=';',
+                                names=['somethingWeird',
+                                       'songId', 'title',
+                                       'artist', 'tf_idf_representation',
+                                       'W2V_representation'],
+                                usecols=['songId', 'title', 'artist',
+                                         'W2V_representation'], header=None)
+        for i, s in songs_from_file.iterrows():
+            s.W2V_representation = s['W2V_representation']
+
+        return songs_from_file
 
 
 class AudioMethod(RepresentationMethod):
