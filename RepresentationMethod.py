@@ -1,7 +1,7 @@
 import abc
 from Song import Song
 import librosa
-import numpy, pandas
+import numpy, pandas, scipy
 import librosa.display
 import matplotlib.pyplot as plt
 from matplotlib import interactive
@@ -52,8 +52,11 @@ class TF_idf(TextMethod):
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_train_matrix = (tfidf_vectorizer.fit_transform(lyrics))
         for i, s in enumerate(songs):
-            s.tf_idf_representation = tfidf_train_matrix[i].toarray()
+            s.tf_idf_representation = tfidf_train_matrix[i]
             # numpy.set_printoptions(threshold=numpy.nan)
+
+        scipy.sparse.save_npz('tf_idf_distance_matrix', tfidf_train_matrix)
+        pickle.dump(tfidf_vectorizer, open('tfidf_model', 'wb'))
 
 
 class Word2Vec(TextMethod):

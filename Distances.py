@@ -1,25 +1,10 @@
-import pandas, numpy
+import pandas, numpy, scipy, sklearn
 from scipy import spatial
-
+from sklearn import metrics
 
 def save_tf_idf_distances(TF_idf_file):
-    songs = pandas.read_csv(TF_idf_file, sep=';',
-                              names=['somethingWeird',
-                                    'songId', 'title',
-                                    'artist', 'tf_idf_representation',
-                                    'W2V_representation'],
-                              usecols=['songId', 'title', 'artist',
-                                       'tf_idf_representation'], header=None)
-
-    tf_idf_distances = [[0 for x in range(len(songs))] for y in range(len(songs))]
-
-    for i, song_1 in songs.iterrows():
-        tf_idf_repr_1 = numpy.fromstring(song_1['tf_idf_representation'].rstrip('/n')[1:-1], sep=' ').astype(float)
-        print("tf_idf: ", i)
-        for j, song_2 in songs.iterrows():
-            tf_idf_repr_2 = numpy.fromstring(song_2['tf_idf_representation'].rstrip('/n')[1:-1], sep=' ').astype(float)
-            tf_idf_distances[i][j] = 1 - spatial.distance.cosine(tf_idf_repr_1, tf_idf_repr_2)
-
+    vectors = scipy.sparse.load_npz(TF_idf_file)
+    tf_idf_distances = metrics.pairwise.cosine_similarity(vectors, dense_output=True)
     numpy.save('tf_idf_distances', tf_idf_distances)
 
 
@@ -63,7 +48,5 @@ def save_SOM_3grid_3it_distances(SOM_file):
     numpy.save('som_w2v_3g3i', som_w2v_distances)
     print("som_w2v_3g3i saved")
 
-# save_W2V_distances('../TF_idf_W2V')
-# print("W2v_saved")
-# save_tf_idf_distances('../TF_idf_W2V')
-# print("done")
+
+save_tf_idf_distances('tf_idf_distance_matrix.npz')
