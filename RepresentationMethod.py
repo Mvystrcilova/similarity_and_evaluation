@@ -16,6 +16,7 @@ from keras.models import load_model
 import math
 import pickle
 from minisom import MiniSom
+from Evaluation import Evaluation
 
 
 adam = optimizers.adam(lr=0.0001, clipnorm=1.)
@@ -417,7 +418,6 @@ class LSTM_Spectrogram(AudioMethod):
 
     def represent_song(self, song):
         return self.get_model.predict(self.extract_audio(song).reshape(1, self.time_stamps, self.features))[0, :, 0]
-
 
 
 

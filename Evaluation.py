@@ -28,19 +28,19 @@ class Evaluation():
         # splits user data in two datasets
         user_train_data, user_test_data = self.split_data(user)
         user_distances = pandas.DataFrame()
-
+        indices = user_train_data['ind']
         # finds the distance from the users train set to every song
-        for i, song in self.songs.iterrows():
-            song_distance = 0
-            for j, user_song in user_train_data.iterrows():
-                if (song['ind'] != user_song['ind']):
-                    song_distance += self.distance_matrix[song['ind']][user_song['ind']]
-
-            song_distances = pandas.DataFrame([song])
-            user_distances = user_distances.append(song_distances)
-            # print(song_distance, type(song_distance))
-            user_distances.loc[i,'distance'] = song_distance
-            # print(user_distances.dtypes)
+        # for i in range(len(self.songs)):
+        #     song_distance = self.distance_matrix[i][indices].sum()
+        #     song_distances = pandas.DataFrame([self.songs.loc[i,:]])
+        #     user_distances = user_distances.append(song_distances)
+        #     # print(song_distance, type(song_distance))
+        #     user_distances.loc[i,'distance'] = song_distance
+        sums = numpy.sum(self.distance_matrix[:,indices], axis=1)
+        print(sums)
+        user_distances = self.songs
+        user_distances['distance'] = sums
+        # print(user_distances.dtypes)
         # selects 100 songs closest to the user
         # print(user_distances.dtypes)
         user_distances = user_distances.sort_values(ascending=False, by=['distance'])
@@ -101,17 +101,55 @@ class Evaluation():
 
         return user_train_data, user_test_data
 
-# save_SOM_3grid_3it_distances('SOM_W2V')
-som_evaluation = Evaluation('som_w2v_3g3i.npy', 'useful_playlists_bigger_than_10','useful_songs')
-results = pandas.DataFrame(columns=['playlist_lenght','test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
-i = 0
-for user in som_evaluation.users:
-    user_results = som_evaluation.eval_playlist(user)
-    print('user ', i, " out of ", len(som_evaluation.users))
-    print(user_results)
-    temp_frame = pandas.DataFrame([user_results], columns=['playlist_lenght','test_list_lenght', 'number_of_matches','match_ranking','recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
-    results = results.append(temp_frame)
-    i = i+1
+for j in range(5):
+    # save_SOM_3grid_3it_distances('SOM_W2V')
+    som_evaluation = Evaluation('som_w2v_3g3i.npy', 'useful_playlists','useful_songs')
+    results = pandas.DataFrame(columns=['playlist_lenght','test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
+    i = 0
+    for user in som_evaluation.users:
+        user_results = som_evaluation.eval_playlist(user)
+        print('user ', i, " out of ", len(som_evaluation.users))
+        print(user_results)
+        temp_frame = pandas.DataFrame([user_results], columns=['playlist_lenght','test_list_lenght', 'number_of_matches','match_ranking','recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
+        results = results.append(temp_frame)
+        i = i+1
 
-print(results.shape)
-results.to_csv('som_w2v_resutls', sep=';', header=False, index=False)
+    print(results.shape)
+    filename = 'results/som_w2v_results/som_w2v_results_' + str(j+1)
+    results.to_csv(filename, sep=';', header=False, index=False)
+# for j in range(3,6):
+#     evaluation = Evaluation('w2v_distances.npy', 'useful_playlists','useful_songs')
+#     results = pandas.DataFrame(columns=['playlist_lenght','test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
+#     i = 0
+#     for user in evaluation.users:
+#             user_results = evaluation.eval_playlist(user)
+#             print('user ', i, " out of ", len(evaluation.users))
+#             print(user_results)
+#             temp_frame = pandas.DataFrame([user_results],
+#                                           columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
+#                                                    'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
+#                                                    'nDGC'])
+#             results = results.append(temp_frame)
+#             i = i + 1
+#     filename = 'results/w2v_results/w2v_results_' + str(j)
+#     print(results.shape)
+#     results.to_csv(filename, sep=';', header=False, index=False)
+
+# for j in range(5):
+#     evaluation = Evaluation('tf_idf_distances.npy', 'useful_playlists', 'useful_songs')
+#     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
+#                  'recall_at_50', 'recall_at_100', 'nDGC'])
+#     i = 0
+#     for user in evaluation.users:
+#         user_results = evaluation.eval_playlist(user)
+#         print('user ', i, " out of ", len(evaluation.users))
+#         print(user_results)
+#         temp_frame = pandas.DataFrame([user_results],
+#                                       columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
+#                                                'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
+#                                                'nDGC'])
+#         results = results.append(temp_frame)
+#         i = i + 1
+#     filename = 'results/tf_idf_results/tf_idf_results_' + str(j+1)
+#     print(results.shape)
+#     results.to_csv(filename, sep=';', header=False, index=False)

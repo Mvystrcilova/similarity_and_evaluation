@@ -49,4 +49,4 @@ def save_SOM_3grid_3it_distances(SOM_file):
     print("som_w2v_3g3i saved")
 
 
-save_tf_idf_distances('tf_idf_distance_matrix.npz')
+# save_tf_idf_distances('tf_idf_distance_matrix.npz')

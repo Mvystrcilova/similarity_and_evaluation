@@ -34,4 +34,4 @@ for user in evaluation.users:
     i = i+1
 
 print(results.shape)
-results.to_csv('w2v_resutls', sep=';', header=False, index=False)
+results.to_csv('w2v_results', sep=';', header=False, index=False)
