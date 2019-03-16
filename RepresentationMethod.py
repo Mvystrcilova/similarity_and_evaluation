@@ -16,7 +16,10 @@ from keras.models import load_model
 import math
 import pickle
 from minisom import MiniSom
-from Evaluation import Evaluation
+# from Evaluation import Evaluation
+from Dataset import Dataset
+from gensim.models.keyedvectors import KeyedVectors
+
 
 
 adam = optimizers.adam(lr=0.0001, clipnorm=1.)
@@ -62,9 +65,9 @@ class TF_idf(TextMethod):
 
 class Word2Vec(TextMethod):
 
-    def __init__(self, w2v_model, stopwords=[]):
-        self.w2v_model = w2v_model
+    def __init__(self, stopwords=[]):
         self.stopwords = stopwords
+        self.w2v_model = KeyedVectors.load('/Users/m_vys/Documents/matfyz/rocnikac/djangoApp/rocnikac/w2v_subset', mmap='r')
 
     def represent_song(self, song):
         lyrics = song.lyrics.lower()
@@ -83,6 +86,7 @@ class Word2Vec(TextMethod):
         # PS: There are other & better ways to do it.
         vector = numpy.mean(word_vecs, axis=0)
         song.W2V_representation = vector
+        return vector
 
     def train(self, songs):
         # the model for W2V is already pretrained by Google so no need to implement this
@@ -131,21 +135,23 @@ class SOM_W2V(TextMethod):
         self.model_name = model_name
         self.grid_size_multiple = grid_size_multiple,
         self.iterations = iterations
+        self.w2v_model = Word2Vec([])
 
     def train(self, songs):
-        train_data = pandas.DataFrame()
+        train_data = []
         # the representation is used from the W2V method
         for s in songs:
-            song_representation = pandas.DataFrame(data=[s.W2V_representation])
-            train_data = train_data.append(song_representation)
+            song_representation = self.w2v_model.represent_song(s)
+            train_data.append(song_representation)
 
         scaler = preprocessing.MinMaxScaler()
+        lenght = len(train_data)
         train_data = scaler.fit_transform(train_data)
         # train_data = pandas.DataFrame(train_data)
-        grid_size = int(self.grid_size_multiple * int(math.sqrt(len(songs))))
-        som = MiniSom(grid_size, grid_size, 300)
+        grid_size = int(self.grid_size_multiple[0]) * int(math.sqrt(lenght))
+        som = MiniSom(grid_size, grid_size, som_model_name=self.model_name, input_len=300, )
         som.random_weights_init(train_data)
-        som.train_random(train_data, num_iteration=(len(songs) * self.iterations))
+        som.train_batch(train_data, num_iteration=(lenght * self.iterations), verbose=True)
         with open(self.model_name, 'wb') as outfile:
             pickle.dump(som, outfile)
         for s in songs:
@@ -153,7 +159,7 @@ class SOM_W2V(TextMethod):
 
     # song representations are defined during training
     def represent_song(self, song):
-        w2v_repr = Word2Vec(w2v_model, stopwords=[])
+        w2v_repr = Word2Vec(self.w2v_model, stopwords=[])
         w2v_repr.represent_song(song)
         with open(self.model_name, 'rb') as infile:
             som = pickle.load(infile)
@@ -420,4 +426,12 @@ class LSTM_Spectrogram(AudioMethod):
         return self.get_model.predict(self.extract_audio(song).reshape(1, self.time_stamps, self.features))[0, :, 0]
 
 
+d = Dataset('[bla]', 'bla')
+songs = d.load_songs('~/Documents/matfyz/rocnikac/data/songs_with_lyrics')
+som_w2v_1 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=5, iterations=5, model_name='SOM_W2V_batch_5g5i')
+som_w2v_2 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=3, iterations=5, model_name='SOM_W2V_batch_3g5i')
+som_w2v_3 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=2, iterations=5, model_name='SOM_W2V_batch_2g5i')
 
+som_w2v_1.train(songs)
+som_w2v_2.train(songs)
+som_w2v_3.train(songs)
