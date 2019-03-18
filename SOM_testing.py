@@ -1,4 +1,4 @@
-from minisom import MiniSom
+# from minisom import MiniSom
 import pandas, numpy, math
 from sklearn import preprocessing
 import numpy as np
@@ -35,23 +35,25 @@ from pylab import bone, pcolor, colorbar, plot, show
 # plt.plot()
 # plt.show()
 
-som_vectors = pandas.read_csv('SOM_W2V', sep=';',
-                              names=['somethingWeird', 'songId',
-                                     'title', 'artist', 'som_representation'],
-                              usecols=[2,3,4])
+som_vectors = pandas.read_csv('som_5g5i_1_representations.txt', sep=' ', header=None,
+                              names=['index','som_representation_1', 'som_representation_2'],
+                              usecols=[1,2])
 print(som_vectors.shape)
+
+songs = pandas.read_csv('useful_songs', names=['title', 'artist'], sep=';',header=None, index_col=False)
 
 # som_distances = [[0 for x in range(len(som_vectors))] for y in range(len(som_vectors))]
 plt.figure(figsize=(30,30))
 
 for i, song_1 in som_vectors.iterrows():
-    # if i < 1000:
-        som_repr_1 = numpy.fromstring(song_1['som_representation'].replace("(","").replace(')',''), sep=',')
-        plt.text(som_repr_1[0]+numpy.random.rand()*20, som_repr_1[1]+numpy.random.rand()*20, song_1['title'])
+    if i < 1000:
+        som_repr_1 = numpy.fromstring((str(song_1['som_representation_1']) + str(song_1['som_representation_2'])
+                                       ).replace("(","").replace(')',''), sep=',')
+        plt.text(som_repr_1[0]+numpy.random.rand()*0.9, som_repr_1[1]+numpy.random.rand()*0.9, songs.at[i, 'artist'])
 
 plt.grid()
-plt.xlim([0, int(3 * math.sqrt(len(som_vectors)))])
-plt.ylim([0, int(3 * math.sqrt(len(som_vectors)))])
+plt.xlim([0, int(5 * math.sqrt(len(som_vectors)))])
+plt.ylim([0, int(5 * math.sqrt(len(som_vectors)))])
 plt.plot()
 plt.show()
 

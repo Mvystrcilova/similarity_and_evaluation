@@ -78,3 +78,4 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
 # ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_results_', 'rankings', 'SOM with W2V ranking distribution')
 
+ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')

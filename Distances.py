@@ -1,12 +1,22 @@
-import pandas, numpy, scipy, sklearn
+import pandas, numpy, scipy, sklearn, pickle, csv
 from scipy import spatial
-from sklearn import metrics
+from sklearn import metrics, preprocessing
 
 def save_tf_idf_distances(TF_idf_file):
     vectors = scipy.sparse.load_npz(TF_idf_file)
     tf_idf_distances = metrics.pairwise.cosine_similarity(vectors, dense_output=True)
     numpy.save('tf_idf_distances', tf_idf_distances)
 
+
+def save_spectrogram_distances(spectrogram_file):
+    vectors = numpy.load(spectrogram_file).reshape([16594, 900048])
+    distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
+    numpy.save('spectrogram_distances', distances)
+
+def save_mel_distances(mel_spec_file):
+    vectors = numpy.load(mel_spec_file).reshape([16594, 130560])
+    distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
+    numpy.save('mel_spectrogram_distances', distances)
 
 
 def save_W2V_distances(W2V_file):
@@ -50,3 +60,48 @@ def save_SOM_3grid_3it_distances(SOM_file):
 
 
 # save_tf_idf_distances('tf_idf_distance_matrix.npz')
+
+def get_som_representation(model_name):
+    representation_place = '/Users/m_vys/PycharmProjects/TF_idf_W2V'
+
+    songs_from_file = pandas.read_csv(representation_place, sep=';',
+                                    names=['somethingWeird',
+                                           'songId', 'title',
+                                           'artist', 'tf_idf_representation',
+                                           'W2V_representation'],
+                                    usecols=['songId', 'title', 'artist',
+                                             'W2V_representation'], header=None)
+    representations = numpy.empty([16594, 2])
+    w2v_representations = []
+    scaler = preprocessing.MinMaxScaler()
+    with open(model_name, 'rb') as model:
+        som = pickle.load(model)
+
+    for i, s in songs_from_file.iterrows():
+        w2v_repr_2 = numpy.fromstring(s['W2V_representation'][1:-1], sep=' ').astype(float)
+        w2v_representations.append(w2v_repr_2)
+
+    w2v_representations = scaler.fit_transform(w2v_representations)
+    for i in range(len(w2v_representations)):
+        som_w2v_repr_2 = som.winner(w2v_representations[i])
+        print(str(i) + " " + str(som_w2v_repr_2))
+        representations[i] = som_w2v_repr_2
+
+    return representations
+
+def save_som_distances_from_array(representations, model_name):
+    distances = sklearn.metrics.pairwise.cosine_similarity(representations)
+    numpy.save(model_name + '_distances', distances)
+
+
+som_repr = get_som_representation('SOM_W2V_batch_5g5i49782')
+with open("som_5g5i_3_representation.txt", "wb") as f:
+    try:
+        writer = csv.writer(f, delimiter=',')
+        writer.writerows(som_repr)
+    except Exception as e:
+        print(e)
+save_som_distances_from_array(som_repr, 'SOM_W2V_batch_5g5i49782')
+
+
+

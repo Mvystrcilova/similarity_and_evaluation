@@ -1,6 +1,6 @@
 import numpy, pandas, operator, itertools, math
 
-from Distances import save_SOM_3grid_3it_distances
+# from Distances import save_SOM_3grid_3it_distances
 
 class Evaluation():
     def __init__(self, distance_matrix_file, useful_playlists_file, song_file):
@@ -101,22 +101,22 @@ class Evaluation():
 
         return user_train_data, user_test_data
 
-for j in range(5):
-    # save_SOM_3grid_3it_distances('SOM_W2V')
-    som_evaluation = Evaluation('som_w2v_3g3i.npy', 'useful_playlists','useful_songs')
-    results = pandas.DataFrame(columns=['playlist_lenght','test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
-    i = 0
-    for user in som_evaluation.users:
-        user_results = som_evaluation.eval_playlist(user)
-        print('user ', i, " out of ", len(som_evaluation.users))
-        print(user_results)
-        temp_frame = pandas.DataFrame([user_results], columns=['playlist_lenght','test_list_lenght', 'number_of_matches','match_ranking','recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
-        results = results.append(temp_frame)
-        i = i+1
-
-    print(results.shape)
-    filename = 'results/som_w2v_results/som_w2v_results_' + str(j+1)
-    results.to_csv(filename, sep=';', header=False, index=False)
+# for j in range(5):
+#     # save_SOM_3grid_3it_distances('SOM_W2V')
+#     som_evaluation = Evaluation('som_w2v_3g3i.npy', 'useful_playlists','useful_songs')
+#     results = pandas.DataFrame(columns=['playlist_lenght','test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
+#     i = 0
+#     for user in som_evaluation.users:
+#         user_results = som_evaluation.eval_playlist(user)
+#         print('user ', i, " out of ", len(som_evaluation.users))
+#         print(user_results)
+#         temp_frame = pandas.DataFrame([user_results], columns=['playlist_lenght','test_list_lenght', 'number_of_matches','match_ranking','recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
+#         results = results.append(temp_frame)
+#         i = i+1
+#
+#     print(results.shape)
+#     filename = 'results/som_w2v_results/som_w2v_results_' + str(j+1)
+#     results.to_csv(filename, sep=';', header=False, index=False)
 # for j in range(3,6):
 #     evaluation = Evaluation('w2v_distances.npy', 'useful_playlists','useful_songs')
 #     results = pandas.DataFrame(columns=['playlist_lenght','test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100', 'nDGC'])
@@ -135,21 +135,23 @@ for j in range(5):
 #     print(results.shape)
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
-# for j in range(5):
-#     evaluation = Evaluation('tf_idf_distances.npy', 'useful_playlists', 'useful_songs')
-#     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
-#                  'recall_at_50', 'recall_at_100', 'nDGC'])
-#     i = 0
-#     for user in evaluation.users:
-#         user_results = evaluation.eval_playlist(user)
-#         print('user ', i, " out of ", len(evaluation.users))
-#         print(user_results)
-#         temp_frame = pandas.DataFrame([user_results],
-#                                       columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
-#                                                'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
-#                                                'nDGC'])
-#         results = results.append(temp_frame)
-#         i = i + 1
-#     filename = 'results/tf_idf_results/tf_idf_results_' + str(j+1)
-#     print(results.shape)
-#     results.to_csv(filename, sep=';', header=False, index=False)
+for j in range(5):
+    evaluation = Evaluation('distances/SOM_W2V_batch_5g5i16594_distances.npy', 'useful_playlists', 'useful_songs')
+    results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
+                 'recall_at_50', 'recall_at_100', 'nDGC'])
+    i = 0
+    for user in evaluation.users:
+        user_results = evaluation.eval_playlist(user)
+        print('user ', i, " out of ", len(evaluation.users))
+        print(user_results)
+        temp_frame = pandas.DataFrame([user_results],
+                                      columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
+                                               'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
+                                               'nDGC'])
+        results = results.append(temp_frame)
+        i = i + 1
+    filename = 'results/som_w2v_results/som_w2v_b_5g5i_1_results_' + str(j+1)
+    print(results.shape)
+    results.to_csv(filename, sep=';', header=False, index=False)
+
+

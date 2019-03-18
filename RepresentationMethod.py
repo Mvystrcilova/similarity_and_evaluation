@@ -249,7 +249,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
     def __init__(self):
         self.model_name = 'LSTM_Mel_model.h5'
-        self.time_stamps = 136
+        self.time_stamps = 408
         self.features = 320
 
     def extract_audio(self, song):
@@ -291,7 +291,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 class GRU_Mel_Spectrogram(AudioMethod):
     def __init__(self):
         self.model_name = 'GRU_Mel_model.h5'
-        self.time_stamps = 136
+        self.time_stamps = 408
         self.features = 320
 
     def extract_audio(self, song):
@@ -339,7 +339,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
 class GRU_Spectrogram(AudioMethod):
     def __init__(self):
         self.model_name = 'GRU_Spec_model.h5'
-        self.time_stamps = 136
+        self.time_stamps = 408
         self.features = 2206
 
     def extract_audio(self, song):
@@ -387,7 +387,7 @@ class LSTM_Spectrogram(AudioMethod):
 
     def __init__(self):
         self.model_name = 'LSTM_Spec_model.h5'
-        self.time_stamps = 136
+        self.time_stamps = 408
         self.features = 320
 
     def extract_audio(self, song):
@@ -426,12 +426,12 @@ class LSTM_Spectrogram(AudioMethod):
         return self.get_model.predict(self.extract_audio(song).reshape(1, self.time_stamps, self.features))[0, :, 0]
 
 
-d = Dataset('[bla]', 'bla')
-songs = d.load_songs('~/Documents/matfyz/rocnikac/data/songs_with_lyrics')
-som_w2v_1 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=5, iterations=5, model_name='SOM_W2V_batch_5g5i')
-som_w2v_2 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=3, iterations=5, model_name='SOM_W2V_batch_3g5i')
-som_w2v_3 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=2, iterations=5, model_name='SOM_W2V_batch_2g5i')
-
-som_w2v_1.train(songs)
-som_w2v_2.train(songs)
-som_w2v_3.train(songs)
+# d = Dataset('[bla]', 'bla')
+# songs = d.load_songs('~/Documents/matfyz/rocnikac/data/songs_with_lyrics')
+# som_w2v_1 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=5, iterations=5, model_name='SOM_W2V_batch_5g5i')
+# som_w2v_2 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=3, iterations=5, model_name='SOM_W2V_batch_3g5i')
+# som_w2v_3 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=2, iterations=5, model_name='SOM_W2V_batch_2g5i')
+#
+# som_w2v_1.train(songs)
+# som_w2v_2.train(songs)
+# som_w2v_3.train(songs)

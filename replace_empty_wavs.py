@@ -15,7 +15,7 @@ all_songs = pandas.read_csv('downloaded_extra_songs',sep=';', header=None, index
 def download_song_at_i(position, results, song_frame, index):
     video = results[position]
     l = 'https://www.youtube.com' + video['href']
-    name = str(song_frame.at[index, 'title']) + ' - ' + str(all_songs.at[index, 'artist'])
+    name = str(song_frame.at[index, 'artist']) + ' - ' + str(all_songs.at[index, 'title'])
     regex = re.compile('[^A-Za-z0-9. -]')
     song_frame.at[index, 'link'] = l
     name = regex.sub("", name)
@@ -39,12 +39,12 @@ def download_song_at_i(position, results, song_frame, index):
             l = info_dict['url']
 
         ydl.download([l])
-        new_mp3_file = '/Users/m_vys/PycharmProjects/missing_mp3_files/' + name + '.mp3'
+        new_mp3_file = '/Users/m_vys/PycharmProjects/empty_mp3_files/' + name + '.mp3'
         song = AudioSegment.from_mp3(new_mp3_file)
 
         print(info_dict.get('filename', None))
-        song_frame.at[index, 'path'] = '/Users/m_vys/PycharmProjects/missing_mp3_files/' + name + '.mp3'
-        print(song_frame.at[index, 'path'])
+        song_frame.at[index, 'path'] = '/Users/m_vys/PycharmProjects/mp3_files/' + name + '.mp3'
+
 
         return len(song), new_mp3_file
 
