@@ -10,48 +10,48 @@ interactive(True)
 from sklearn import decomposition, preprocessing
 from sklearn.preprocessing import normalize
 from numpy import array
-from keras.models import Sequential, Model
-from keras.layers import LSTM, Input, RepeatVector, Bidirectional
-import keras.backend as K
-from keras.layers import Dense
-from keras.layers import RepeatVector
-from keras.layers import TimeDistributed
-from keras.utils import plot_model
+# from keras.models import Sequential, Model
+# from keras.layers import LSTM, Input, RepeatVector, Bidirectional
+# import keras.backend as K
+# from keras.layers import Dense
+# from keras.layers import RepeatVector
+# from keras.layers import TimeDistributed
+# from keras.utils import plot_model
 
-from keras import optimizers
+# from keras import optimizers
 
 # All parameter gradients will be clipped to
 # a maximum norm of 1.
-adam = optimizers.adam(lr=0.0001, clipnorm=1.)
+# adam = optimizers.adam(lr=0.0001, clipnorm=1.)
 
 filename = 'Adele - Someone Like You-hLQl3WQQoQ0.wav'
-filename_3 = 'Black Sabbath - Die Young (lyrics)-CJgHn7MeAwc.wav'
-filename_2 = 'Adele - Rolling in the Deep-rYEDA3JcQqw.wav'
-y, sr = librosa.load(filename, offset=15, duration=5)
-y_2, sr_2 = librosa.load(filename_2, offset=15, duration=5)
-y_3, sr_3 = librosa.load(filename_3, offset=15, duration=60)
-plt.figure(figsize=(10, 4))
-
+# filename_3 = 'Black Sabbath - Die Young (lyrics)-CJgHn7MeAwc.wav'
+# filename_2 = 'Adele - Rolling in the Deep-rYEDA3JcQqw.wav'
+y, sr = librosa.load(filename)
+# y_2, sr_2 = librosa.load(filename_2, offset=15, duration=5)
+# y_3, sr_3 = librosa.load(filename_3, offset=15, duration=60)
+# plt.figure(figsize=(10, 4))
+#
 # MFCC = librosa.feature.melspectrogram(y=y, sr=sr)
 # MFCC_2 = librosa.feature.melspectrogram(y=y_2, sr=sr_2)
 # MFCC_3 = librosa.feature.melspectrogram(y=y_3, sr=sr_3)
-
-MFCC_features = librosa.feature.mfcc(y=y, sr=sr)
-MFCC_2_features = librosa.feature.mfcc(y=y_2, sr=sr_2)
-MFCC_3_features = librosa.feature.mfcc(y=y_3, sr=sr_3)
-MFCC_features_normalized = normalize(MFCC_features, axis=0)
-MFCC_features_normalized = MFCC_features_normalized.reshape(1, len(MFCC_features_normalized[0]), len(MFCC_features))
+#
+# MFCC_features = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=320)
+# MFCC_2_features = librosa.feature.mfcc(y=y_2, sr=sr_2)
+# MFCC_3_features = librosa.feature.mfcc(y=y_3, sr=sr_3)
+# MFCC_features_normalized = normalize(MFCC_features, axis=0)
+# MFCC_features_normalized = MFCC_features_normalized.reshape(1, len(MFCC_features_normalized[0]), len(MFCC_features))
 spectrogram = numpy.abs(librosa.core.stft(y, n_fft=4410, hop_length=812))
-spectrogram_2 = numpy.abs(librosa.core.stft(y_2, n_fft=4410, hop_length=812))
-spectrogram_3 = numpy.abs(librosa.core.stft(y_3))
-
-mel_spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=320, n_fft=4410, hop_length=812)
-mel_spectrogram2 = librosa.feature.melspectrogram(y=y_2, sr=sr_2, n_mels=320, n_fft=4410, hop_length=812)
-
-normalized_input = normalize(mel_spectrogram, axis=1).reshape(len(mel_spectrogram[0]), len(mel_spectrogram))
-normalized_input2 = normalize(mel_spectrogram2, axis=1).reshape(len(mel_spectrogram2[0]), len(mel_spectrogram2))
-
-double_input = numpy.array([normalized_input, normalized_input2])
+# spectrogram_2 = numpy.abs(librosa.core.stft(y_2, n_fft=4410, hop_length=812))
+# spectrogram_3 = numpy.abs(librosa.core.stft(y_3))
+#
+# mel_spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=320, n_fft=4410, hop_length=812)
+# mel_spectrogram2 = librosa.feature.melspectrogram(y=y_2, sr=sr_2, n_mels=320, n_fft=4410, hop_length=812)
+#
+# normalized_input = normalize(mel_spectrogram, axis=1).reshape(len(mel_spectrogram[0]), len(mel_spectrogram))
+# normalized_input2 = normalize(mel_spectrogram2, axis=1).reshape(len(mel_spectrogram2[0]), len(mel_spectrogram2))
+#
+# double_input = numpy.array([normalized_input, normalized_input2])
 # vector = MFCC.flatten()
 # vector_2 = MFCC_2.flatten()
 # vector_3 = MFCC_3.flatten()
@@ -77,24 +77,25 @@ double_input = numpy.array([normalized_input, normalized_input2])
 # print(yhat[0, :, 0])
 
 librosa.display.specshow(librosa.power_to_db(spectrogram),
-                         y_axis='log', fmax=8000, x_axis='time')
+                         y_axis='log', x_axis='time')
 plt.colorbar(format='%+2.0f dB')
 plt.title('Power spectrogram')
 plt.tight_layout()
 plt.show()
-librosa.display.specshow(librosa.power_to_db(spectrogram_2),
-                         y_axis='log', fmax=8000, x_axis='time')
-plt.colorbar(format='%+2.0f dB')
-plt.title('Power spectrogram 2' )
-plt.tight_layout()
-plt.show()
 
-librosa.display.specshow(librosa.power_to_db(spectrogram_3),
-                         y_axis='log', fmax=8000, x_axis='time')
-plt.colorbar(format='%+2.0f dB')
-plt.title('Power spectrogram 3')
-plt.tight_layout()
-plt.show()
+# librosa.display.specshow(librosa.power_to_db(spectrogram_2),
+#                          y_axis='log', fmax=8000, x_axis='time')
+# plt.colorbar(format='%+2.0f dB')
+# plt.title('Power spectrogram 2' )
+# plt.tight_layout()
+# plt.show()
+#
+# librosa.display.specshow(librosa.power_to_db(spectrogram_3),
+#                          y_axis='log', fmax=8000, x_axis='time')
+# plt.colorbar(format='%+2.0f dB')
+# plt.title('Power spectrogram 3')
+# plt.tight_layout()
+# plt.show()
 
 # df = pandas.DataFrame(data=[vector, vector_2, vector_3])
 #
@@ -115,18 +116,18 @@ plt.show()
 # dist_PCA_13 = spatial.distance.cosine(df[0], df[2])
 # dist_PCA_23 = spatial.distance.cosine(df[1], df[2])
 
-librosa.display.specshow(librosa.power_to_db(normalized_input),
-                         y_axis='mel', fmax=8000, x_axis='time')
-plt.colorbar(format='%+2.0f dB')
-plt.title('Mel spectrogram')
-plt.tight_layout()
-plt.show()
-librosa.display.specshow(librosa.power_to_db(yhat[0]),
-                         y_axis='mel', fmax=8000, x_axis='time')
-plt.colorbar(format='%+2.0f dB')
-plt.title('MFCC spectrogram 2')
-plt.tight_layout()
-plt.show()
-
-plt.show()
-print(y)
+# librosa.display.specshow(librosa.power_to_db(normalized_input),
+#                          y_axis='mel', fmax=8000, x_axis='time')
+# plt.colorbar(format='%+2.0f dB')
+# plt.title('Mel spectrogram')
+# plt.tight_layout()
+# plt.show()
+# librosa.display.specshow(librosa.power_to_db(yhat[0]),
+#                          y_axis='mel', fmax=8000, x_axis='time')
+# plt.colorbar(format='%+2.0f dB')
+# plt.title('MFCC spectrogram 2')
+# plt.tight_layout()
+# plt.show()
+#
+# plt.show()
+# print(y)

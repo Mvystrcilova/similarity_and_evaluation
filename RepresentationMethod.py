@@ -1,7 +1,7 @@
 import abc
-from Song import Song
+# from Song import Song
 import librosa
-import numpy, pandas, scipy
+import numpy, pandas, scipy, sklearn
 import librosa.display
 import matplotlib.pyplot as plt
 from matplotlib import interactive
@@ -14,12 +14,19 @@ from keras import Sequential, optimizers, Model
 from keras.layers import LSTM, Bidirectional, GRU, Input
 from keras.models import load_model
 import math
-import pickle
+import pickle, glob
 from minisom import MiniSom
 # from Evaluation import Evaluation
-from Dataset import Dataset
+# from Dataset import Dataset
 from gensim.models.keyedvectors import KeyedVectors
 
+
+import re
+numbers = re.compile(r'(\d+)')
+def numericalSort(value):
+    parts = numbers.split(value)
+    parts[1::2] = map(int, parts[1::2])
+    return parts
 
 
 adam = optimizers.adam(lr=0.0001, clipnorm=1.)
@@ -208,41 +215,67 @@ class MFCCRepresentation(AudioMethod):
 
 class PCA_Mel_spectrogram(AudioMethod):
 
+    def __init__(self, mel_spectrograms):
+        self.mel_spectrograms = mel_spectrograms
+
     def represent_song(self, song):
         mel_spectrogram = librosa.feature.melspectrogram(y=self.get_spectrogram(song).y, sr=self.get_spectrogram(song).sr, n_mels=128, fmax=8000).flatten()
         return mel_spectrogram.flatten()
 
     def train(self, songs):
-        song_frame = pandas.DataFrame()
-        for s in songs:
-            spec = self.represent_song(s)
-            temp_df = pandas.DataFrame(data=spec)
-            song_frame = song_frame.append(temp_df)
-
+        # song_frame = pandas.DataFrame()
+        # for s in songs:
+        #     spec = self.represent_song(s)
+        #     temp_df = pandas.DataFrame(data=spec)
+        #     song_frame = song_frame.append(temp_df)
+        #
         pca = decomposition.PCA()
+        song_frame = numpy.load(self.mel_spectrograms)
+        song_frame = song_frame.reshape([16594, 130560])
         song_frame_afterPCA = pca.fit_transform(song_frame)
-        for i, s in enumerate(songs):
-            s.mel_pca_representation = song_frame_afterPCA[i]
+        pca_spec_distances = sklearn.metrics.pairwise.cosine_similarity(song_frame_afterPCA)
+        numpy.save('pca_spec_distances', pca_spec_distances)
+        pickle.dump(song_frame_afterPCA, 'mel_spectrogram_model')
+
+        # for i, s in enumerate(songs):
+        #     s.mel_pca_representation = song_frame_afterPCA[i]
+
+
 
 
 class PCA_Spectrogram(AudioMethod):
+
+    def __init__(self, spec_directory):
+        self.spec_directory = spec_directory
 
     def extract_audio(self, song):
         spec = numpy.abs(librosa.stft(self.get_spectrogram(song).y)).flatten()
         return spec
 
+    def represent_song(self, song):
+        pass
 
-    def train(self, songs):
-        song_frame = pandas.DataFrame()
-        for s in songs:
-            spec = self.represent_song(s)
-            temp_df = pandas.DataFrame(data=spec)
-            song_frame = song_frame.append(temp_df)
+    def train(self):
+        i = 0
+        chunk = numpy.empty([553, 900048])
+        ipca = decomposition.IncrementalPCA(n_components=320, batch_size=7)
+        for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
+            if (i % 553 != 0) or (i == 0):
+                array = numpy.load(file)
+                array = array.reshape([1,900048])
+                print(i, str(i % 553))
+                chunk[i % 553] = array
+            else:
+                ipca.partial_fit(chunk, )
+                print('chunk fitted')
+            i = i+1
+        with open('spec_pca_model', 'wb') as pca_model:
+            pickle.dump(ipca, pca_model)
 
-        pca = decomposition.PCA()
-        song_frame_afterPCA = pca.fit_transform(song_frame)
-        for i,s in enumerate(songs):
-            s.pca_representation = song_frame_afterPCA[i]
+
+
+
+
 
 
 class LSTM_Mel_Spectrogram(AudioMethod):
@@ -429,9 +462,12 @@ class LSTM_Spectrogram(AudioMethod):
 # d = Dataset('[bla]', 'bla')
 # songs = d.load_songs('~/Documents/matfyz/rocnikac/data/songs_with_lyrics')
 # som_w2v_1 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=5, iterations=5, model_name='SOM_W2V_batch_5g5i')
-# som_w2v_2 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=3, iterations=5, model_name='SOM_W2V_batch_3g5i')
-# som_w2v_3 = SOM_W2V(sigma=0.8, learning_rate=0.2, grid_size_multiple=2, iterations=5, model_name='SOM_W2V_batch_2g5i')
+# som_w2v_2 = SOM_W2V(sigma=1, learning_rate=0.5, grid_size_multiple=3, iterations=5, model_name='SOM_W2V_batch_3g5i')
+# som_w2v_3 = SOM_W2V(sigma=1, learning_rate=0.5, grid_size_multiple=2, iterations=5, model_name='SOM_W2V_batch_2g5i')
 #
 # som_w2v_1.train(songs)
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
+
+pca_spec = PCA_Spectrogram('/Users/m_vys/PycharmProjects/similarity_and_evaluation/spectrograms')
+pca_spec.train()

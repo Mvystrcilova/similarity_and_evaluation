@@ -60,22 +60,25 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     ranks_21_more = ranks_1_21_more + ranks_2_21_more + ranks_3_21_more + ranks_4_21_more + ranks_5_21_more
 
     palette = sns.color_palette('husl', 6)
+
     sns.set_palette(palette)
 
-    sns.distplot(ranks, bins=50, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5))
-    sns.kdeplot(ranks_4_6, bw=0.2,  label='4 to 6 songs' )
-    sns.kdeplot(ranks_7_10, bw=0.2, label='7 to 10 songs')
-    sns.kdeplot(ranks_11_15, bw=0.2, label='11 to 15 songs')
-    sns.kdeplot(ranks_16_20, bw=0.2, label='16 to 20 songs')
-    sns.kdeplot(ranks_21_more, bw=0.2, label='21 and longer playlists')
+    g = sns.distplot(ranks, bins=500, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5, cumulative=True), kde_kws=dict(cumulative=True))
+    # g.set_xscale('log')
+    g.set
+    sns.kdeplot(ranks_4_6,  bw=0.2, label='4 to 6 songs', linestyle='--', kernel='biw')
+    sns.kdeplot(ranks_7_10, bw=0.2, label='7 to 10 songs', linestyle="--", kernel='epa')
+    sns.kdeplot(ranks_11_15, bw=0.2, label='11 to 15 songs', linestyle="--", kernel='cos')
+    sns.kdeplot(ranks_16_20, bw=0.2, label='16 to 20 songs', linestyle="--", kernel='triw')
+    sns.kdeplot(ranks_21_more, bw=0.2, label='21 and longer playlists', linestyle="--", kernel='tri')
 
     plt.xlim(0,16594)
     plt.title(plot_tile)
 
     plt.show()
 
-# ranking_distribution_plot('results/w2v_results/w2v_results_', 'rankings', 'W2V ranking distribution')
-# ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
+ranking_distribution_plot('results/w2v_results/w2v_results_', 'rankings', 'W2V ranking distribution')
+ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_results_', 'rankings', 'SOM with W2V ranking distribution')
 
 ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')

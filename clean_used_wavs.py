@@ -1,22 +1,15 @@
 from __future__ import unicode_literals
 
 import pandas, os
-from pathlib import Path
-from pydub import AudioSegment
-from pydub.playback import play
 
-
-
+from audio_representations import convert_files_to_mfcc
 import pandas
 import string
 import urllib.request
 from bs4 import BeautifulSoup
 import time
-import re, os
-import youtube_dl
-from pydub import AudioSegment
-from pathlib import Path
-from replace_empty_wavs import download_song_at_i
+
+# from replace_empty_wavs import download_song_at_i
 
 def add_empty_mp3():
     all_songs = pandas.read_csv('not_empty_songs',sep=';', header=None, index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
@@ -102,5 +95,7 @@ def clean_wav_files(directory, all_songs):
 # print(empty_indexes)
 # h.close()
 
-all_songs = pandas.read_csv('not_empty_songs',sep=';', header=None, index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
-clean_wav_files('/Users/m_vys/PycharmProjects/used_wav_files/', all_songs)
+# all_songs = pandas.read_csv('not_empty_songs',sep=';', header=None, index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
+# clean_wav_files('/Users/m_vys/PycharmProjects/used_wav_files/', all_songs)
+
+convert_files_to_mfcc('not_empty_songs', 320)

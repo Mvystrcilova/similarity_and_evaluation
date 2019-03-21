@@ -8,16 +8,17 @@ def file_to_spectrogram(filename, n_fft, hop_length):
 def convert_files_to_specs(directory, n_fft, hop_length):
     all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
     scaler = sklearn.preprocessing.MinMaxScaler()
-    specs = numpy.empty(shape=[16594,2206,408])
+    # specs = numpy.empty(shape=[16594,2206,408])
     for i, song in all_songs.iterrows():
-        filename = song['path'].split('/')
-        wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
-        spectrogram = file_to_spectrogram(wav_file, n_fft, hop_length)
-        spectrogram = scaler.fit_transform(spectrogram)
-        specs[i] = spectrogram
-        print(i)
+        if i >= 12247:
+            filename = song['path'].split('/')
+            wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
+            spectrogram = file_to_spectrogram(wav_file, n_fft, hop_length)
+            spectrogram = scaler.fit_transform(spectrogram)
+            numpy.save('/Users/m_vys/PycharmProjects/similarity_and_evaluation/spectrograms/' + str(i) + '_' + str(song['artist'] + ' - ' + str(song['title'])), spectrogram)
+            print(i)
 
-    numpy.save('song_spectrograms', specs)
+
 
 # convert_files_to_specs('not_empty_songs', 4410, 812)
 
@@ -38,17 +39,26 @@ def convert_files_to_mels(directory, n_mels, n_fft, hop_length):
         mel_spectrogram = file_to_mel(wav_file, n_mels, n_fft, hop_length)
         mel_spectrogram = scaler.fit_transform(mel_spectrogram)
         mels[i] = mel_spectrogram
+        print(i)
 
     numpy.save('song_mel_spectrograms', mels)
 
-def convert_spectrograms_to_mfcc(spectrogram_representations, ):
-    vectors = numpy.load(spectrogram_representations)
-    mfcc_representations = numpy.empty([16594, 0,0])
-    scaler = sklearn.preprocessing.MinMaxScaler
-    for i in range(16594):
-        mfcc_representation = librosa.feature.mfcc(vectors[i], sr=22050, n_mels = 320)
+def convert_files_to_mfcc(directory, n_mfcc):
+    all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False,
+                                names=['artist', 'title', 'lyrics', 'link', 'path'])
+    scaler = sklearn.preprocessing.MinMaxScaler()
+    mfcc_representations = numpy.empty([16594, 128, 646])
+    for i, song in all_songs.iterrows():
+        filename = song['path'].split('/')
+        wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
+        vector = librosa.load(wav_file)
+        mfcc_representation = librosa.feature.mfcc(vector[0], vector[1], n_mfcc= n_mfcc)
         mfcc_representation = scaler.fit_transform(mfcc_representation)
         mfcc_representations[i] = mfcc_representation
+        print(i)
 
     numpy.save('mfcc_representations', mfcc_representations)
 
+
+# convert_files_to_mels('not_empty_songs', 329, 4410, 812)
+# convert_files_to_mfcc('not_empty_songs', 320)

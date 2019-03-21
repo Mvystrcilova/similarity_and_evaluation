@@ -128,6 +128,6 @@ def get_distribution(df, min_length, max_length):
 # print(ranks, numpy.mean(ranks))
 
 
-from audio_representations import convert_files_to_mels
+# from audio_representations import convert_files_to_specs
 
-convert_files_to_mels('not_empty_songs', int(320), int(4410), int(812))
+# convert_files_to_specs('not_empty_songs', 4410, 812)
