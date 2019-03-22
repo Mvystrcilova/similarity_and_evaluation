@@ -1,7 +1,7 @@
 import abc
 # from Song import Song
 import librosa
-import numpy, pandas, scipy, sklearn
+import numpy, pandas, scipy, sklearn, keras
 import librosa.display
 import matplotlib.pyplot as plt
 from matplotlib import interactive
@@ -13,13 +13,13 @@ from sklearn.preprocessing import normalize, MinMaxScaler
 from keras import Sequential, optimizers, Model
 from keras.layers import LSTM, Bidirectional, GRU, Input
 from keras.models import load_model
-import math
-import pickle, glob
+import math, os
+import pickle, glob, joblib
 from minisom import MiniSom
 # from Evaluation import Evaluation
 # from Dataset import Dataset
 from gensim.models.keyedvectors import KeyedVectors
-
+from joblib import dump, load
 
 import re
 numbers = re.compile(r'(\d+)')
@@ -269,8 +269,18 @@ class PCA_Spectrogram(AudioMethod):
                 ipca.partial_fit(chunk, )
                 print('chunk fitted')
             i = i+1
-        with open('spec_pca_model', 'wb') as pca_model:
-            pickle.dump(ipca, pca_model)
+        try:
+            joblib.dump(ipca, 'spec_pca_model_joblib')
+        except:
+            file_path = "spec_pca_model.pkl"
+            max_bytes = 2 ** 31 - 1
+
+            ## write
+            bytes_out = pickle.dumps(ipca)
+            with open(file_path, 'wb') as f_out:
+                for idx in range(0, len(bytes_out), max_bytes):
+                    f_out.write(bytes_out[idx:idx + max_bytes])
+
 
 
 
@@ -327,6 +337,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         self.time_stamps = 408
         self.features = 320
 
+
     def extract_audio(self, song):
         y, sr = librosa.load(song.file_path)
         mel_spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=320, n_fft=4410, hop_length=812)
@@ -370,10 +381,11 @@ class GRU_Mel_Spectrogram(AudioMethod):
 
 
 class GRU_Spectrogram(AudioMethod):
-    def __init__(self):
+    def __init__(self, spec_directory):
         self.model_name = 'GRU_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
+        self.spec_directory = spec_directory
 
     def extract_audio(self, song):
         y, sr = librosa.load(song.file_path)
@@ -400,12 +412,20 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = []
-        for s in songs:
-            input_song = self.normalize_input(self.extract_audio(s))
-            input_songs.append(input_song)
 
-        auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=100)
+        input_songs = numpy.empty([16954, 2206, 408])
+        i = 0
+        for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
+            if i > 100:
+                input_song = numpy.load(file)
+                input_songs[i] = input_song
+                print(i)
+                i = i+1
+
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='./Graph', histogram_freq=0,
+                                    write_graph=True, write_images=True)
+        auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=30, verbose=True,
+                         batch_size=100, callbacks=[tbCallBack])
         encoder.save(self.model_name)
 
     def get_model(self):
@@ -469,5 +489,8 @@ class LSTM_Spectrogram(AudioMethod):
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
 
-pca_spec = PCA_Spectrogram('/Users/m_vys/PycharmProjects/similarity_and_evaluation/spectrograms')
-pca_spec.train()
+# pca_spec = PCA_Spectrogram('/Users/m_vys/PycharmProjects/similarity_and_evaluation/spectrograms')
+# pca_spec.train()
+
+gru_spec = GRU_Spectrogram('spectrograms')
+gru_spec.train([])

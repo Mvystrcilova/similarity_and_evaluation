@@ -2,7 +2,7 @@ import numpy, pandas, operator, itertools, math
 import sklearn.preprocessing
 # from Distances import save_SOM_3grid_3it_distances
 # from audio_representations import file_to_spectrogram
-from audio_representations import convert_files_to_mfcc
+# from audio_representations import convert_files_to_mfcc
 class Evaluation():
     def __init__(self, distance_matrix_file, useful_playlists_file, song_file):
         self.distance_matrix = numpy.load(distance_matrix_file)
@@ -137,22 +137,22 @@ class Evaluation():
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
 # for j in range(5):
-#     evaluation = Evaluation('distances/SOM_W2V_batch_5g5i16594_distances.npy', 'useful_playlists', 'useful_songs')
+#     evaluation = Evaluation('mfcc_distances.npy', 'useful_playlists', 'useful_songs')
 #     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
 #                  'recall_at_50', 'recall_at_100', 'nDGC'])
 #     i = 0
 #     for user in evaluation.users:
 #         user_results = evaluation.eval_playlist(user)
 #         print('user ', i, " out of ", len(evaluation.users))
-#         print(user_results)
+#         # print(user_results)
 #         temp_frame = pandas.DataFrame([user_results],
 #                                       columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
 #                                                'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
 #                                                'nDGC'])
 #         results = results.append(temp_frame)
 #         i = i + 1
-#     filename = 'results/som_w2v_results/som_w2v_b_5g5i_1_results_' + str(j+1)
+#     filename = 'results/mfcc_results/mfcc_' + str(j+1)
 #     print(results.shape)
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
-convert_files_to_mfcc('not_empty_songs', 320)
+# convert_files_to_mfcc('not_empty_songs', 320)

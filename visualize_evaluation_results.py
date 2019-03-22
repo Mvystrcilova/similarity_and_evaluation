@@ -1,5 +1,6 @@
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy
 from scipy import stats
 from evaluation_results import get_distribution, read_cross_file
 
@@ -63,22 +64,34 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
 
     sns.set_palette(palette)
 
-    g = sns.distplot(ranks, bins=500, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5, cumulative=True), kde_kws=dict(cumulative=True))
-    # g.set_xscale('log')
-    g.set
-    sns.kdeplot(ranks_4_6,  bw=0.2, label='4 to 6 songs', linestyle='--', kernel='biw')
-    sns.kdeplot(ranks_7_10, bw=0.2, label='7 to 10 songs', linestyle="--", kernel='epa')
-    sns.kdeplot(ranks_11_15, bw=0.2, label='11 to 15 songs', linestyle="--", kernel='cos')
-    sns.kdeplot(ranks_16_20, bw=0.2, label='16 to 20 songs', linestyle="--", kernel='triw')
-    sns.kdeplot(ranks_21_more, bw=0.2, label='21 and longer playlists', linestyle="--", kernel='tri')
+    distribution = numpy.empty([16594])
+    for i in range(len(ranks)):
+        distribution[ranks[i]] +=1
+    distribution = numpy.divide(distribution, len(ranks))
 
+    g = sns.distplot(ranks, bins=5000, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5))
+    g.set_xscale('log')
+
+    # sns.kdeplot(ranks_4_6, label='4 to 6 songs', linestyle='--')
+    # sns.kdeplot(ranks_7_10, label='7 to 10 songs', linestyle="--")
+    # sns.kdeplot(ranks_11_15, label='11 to 15 songs', linestyle="--")
+    # sns.kdeplot(ranks_16_20, label='16 to 20 songs', linestyle="--")
+    # sns.kdeplot(ranks_21_more, label='21 and longer playlists', linestyle="--")
+    sns.lineplot([x for x in range(len(ranks))], distribution)
+    # sns.distplot(ranks_4_6, label='4 to 6 songs',hist = False, kde = True, kde_kws={'linestyle':'-.'},
+    #          bins=5000)
+    # sns.distplot(ranks_7_10, bins=5000, label='7 to 10 songs', hist = False, kde = True)
+    # sns.distplot(ranks_11_15, bins=5000,  label='11 to 15 songs', hist = False, kde = True)
+    # sns.distplot(ranks_16_20, bins=5000, label='16 to 20 songs', hist = False, kde = True)
+    # sns.distplot(ranks_21_more, bins=5000, label='21 and longer playlists', hist = False, kde = True)
+    g.set_xscale('log')
     plt.xlim(0,16594)
     plt.title(plot_tile)
 
     plt.show()
 
-ranking_distribution_plot('results/w2v_results/w2v_results_', 'rankings', 'W2V ranking distribution')
-ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
+ranking_distribution_plot('results/mfcc_results/mfcc_', 'rankings', 'MFCC ranking distribution')
+# ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_results_', 'rankings', 'SOM with W2V ranking distribution')
 
-ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')
+# ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')
