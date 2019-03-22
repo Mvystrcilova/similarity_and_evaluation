@@ -1,6 +1,6 @@
 import abc
 # from Song import Song
-import librosa
+# import librosa
 import numpy, pandas, scipy, sklearn, keras
 import librosa.display
 import matplotlib.pyplot as plt
@@ -30,7 +30,7 @@ def numericalSort(value):
 
 
 adam = optimizers.adam(lr=0.0001, clipnorm=1.)
-w2v_model = "model to be inserted"
+w2v_model = 'model to be inserted'
 
 
 class RepresentationMethod(abc.ABC):
@@ -78,7 +78,7 @@ class Word2Vec(TextMethod):
 
     def represent_song(self, song):
         lyrics = song.lyrics.lower()
-        words = [w.strip('.,!:?-') for w in lyrics.split(" ") if w.strip(".,!?:-") not in self.stopwords]
+        words = [w.strip('.,!:?-') for w in lyrics.split(' ') if w.strip('.,!?:-') not in self.stopwords]
         word_vecs = []
         for word in words:
             try:
@@ -272,7 +272,7 @@ class PCA_Spectrogram(AudioMethod):
         try:
             joblib.dump(ipca, 'spec_pca_model_joblib')
         except:
-            file_path = "spec_pca_model.pkl"
+            file_path = 'spec_pca_model.pkl'
             max_bytes = 2 ** 31 - 1
 
             ## write
