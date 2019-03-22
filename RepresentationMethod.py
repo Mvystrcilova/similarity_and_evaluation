@@ -413,17 +413,19 @@ class GRU_Spectrogram(AudioMethod):
         encoder.summary()
 
 
-        input_songs = numpy.empty([16954, 2206, 408])
+        input_songs = numpy.empty([1000, 408, 2206])
         i = 0
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
-            if i < 100:
-                input_song = numpy.load(file)
+            if i < 1000:
+                input_song = numpy.load(file).T
                 input_songs[i] = input_song
                 print(i)
                 i = i+1
 
         tbCallBack = keras.callbacks.TensorBoard(log_dir='./Graph', histogram_freq=0,
                                     write_graph=True, write_images=True)
+        auto_encoder.compile(adam, loss='mse')
+        encoder.compile(adam, loss='mse')
         auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=5, verbose=True,
                          batch_size=10, callbacks=[tbCallBack])
         encoder.save(self.model_name)

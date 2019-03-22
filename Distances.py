@@ -110,5 +110,5 @@ def save_som_distances_from_array(representations, model_name):
 # save_som_distances_from_array(som_repr, 'SOM_W2V_batch_5g5i49782')
 
 
-# save_mel_distances('song_mel_spectrograms.npy')
-save_mfcc_distances('mfcc_representations.npy')
+save_mel_distances('song_mel_spectrograms.npy')
+# save_mfcc_distances('mfcc_representations.npy')
