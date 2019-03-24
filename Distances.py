@@ -27,7 +27,7 @@ def save_mfcc_distances(mffc_file):
 def save_mel_distances(mel_spec_file):
     vectors = numpy.load(mel_spec_file).reshape([16594, 130560])
     distances = sklearn.metrics.pairwise(vectors)
-    numpy.save('mel_spectrogram_distances', distances)
+    numpy.save('/mnt/0/mel_spectrogram_distances', distances)
 
 
 def save_W2V_distances(W2V_file):
@@ -115,6 +115,6 @@ def save_som_distances_from_array(representations, model_name):
 # save_som_distances_from_array(som_repr, 'SOM_W2V_batch_5g5i49782')
 
 
-save_mel_distances('song_mel_spectrograms.npy')
+save_mel_distances('/mnt/0/song_mel_spectrograms.npy')
 # save_mfcc_distances('mfcc_representations.npy')
 # save_pca_distances('pca_spec_representations.npy')
