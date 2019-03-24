@@ -137,7 +137,7 @@ class Evaluation():
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
 for j in range(5):
-    evaluation = Evaluation('pca_melspectrogram_distances.npy', 'useful_playlists', 'useful_songs')
+    evaluation = Evaluation('mel_spectrogram_distances.npy', 'useful_playlists', 'useful_songs')
     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                  'recall_at_50', 'recall_at_100', 'nDGC'])
     i = 0
@@ -151,7 +151,7 @@ for j in range(5):
                                                'nDGC'])
         results = results.append(temp_frame)
         i = i + 1
-    filename = 'results/pca_mel_results/pca_mel_' + str(j+1)
+    filename = 'results/mel_results/mel_' + str(j+1)
     print(results.shape)
     results.to_csv(filename, sep=';', header=False, index=False)
 

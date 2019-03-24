@@ -429,7 +429,7 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
         auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=5, verbose=True,
-                         batch_size=100)
+                         batch_size=10)
         encoder.save(self.model_name)
 
     def get_model(self):
