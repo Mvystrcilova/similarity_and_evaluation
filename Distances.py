@@ -13,6 +13,11 @@ def save_spectrogram_distances(spectrogram_file):
     distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
     numpy.save('spectrogram_distances', distances)
 
+def save_pca_distances(pca_file):
+    vectors = numpy.load(pca_file)
+    distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
+    numpy.save('pca_spectrogram_distances', distances)
+
 def save_mfcc_distances(mffc_file):
     vectors = numpy.load(mffc_file).reshape([16594, 82688])
 
@@ -21,7 +26,12 @@ def save_mfcc_distances(mffc_file):
 
 def save_mel_distances(mel_spec_file):
     vectors = numpy.load(mel_spec_file).reshape([16594, 130560])
-    distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
+    distances = numpy.empty([16594, 16594])
+    for i in range(16594):
+        for j in range(16594):
+            one_distance = sklearn.metrics.pairwise.cosine_similarity(vectors[i].reshape(1,-1), vectors[j].reshape(1,-1))
+        distances[i][j] = one_distance
+        print(i, 'out of  16594')
     numpy.save('mel_spectrogram_distances', distances)
 
 
@@ -110,5 +120,6 @@ def save_som_distances_from_array(representations, model_name):
 # save_som_distances_from_array(som_repr, 'SOM_W2V_batch_5g5i49782')
 
 
-save_mel_distances('/mnt/0/song_mel_spectrograms.npy')
+save_mel_distances('song_mel_spectrograms.npy')
 # save_mfcc_distances('mfcc_representations.npy')
+# save_pca_distances('pca_spec_representations.npy')

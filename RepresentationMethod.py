@@ -223,19 +223,22 @@ class PCA_Mel_spectrogram(AudioMethod):
         return mel_spectrogram.flatten()
 
     def train(self, songs):
-        # song_frame = pandas.DataFrame()
-        # for s in songs:
-        #     spec = self.represent_song(s)
-        #     temp_df = pandas.DataFrame(data=spec)
-        #     song_frame = song_frame.append(temp_df)
-        #
-        pca = decomposition.PCA()
-        song_frame = numpy.load(self.mel_spectrograms)
-        song_frame = song_frame.reshape([16594, 130560])
-        song_frame_afterPCA = pca.fit_transform(song_frame)
-        pca_spec_distances = sklearn.metrics.pairwise.cosine_similarity(song_frame_afterPCA)
-        numpy.save('pca_spec_distances', pca_spec_distances)
-        pickle.dump(song_frame_afterPCA, 'mel_spectrogram_model')
+        mel_spectrograms = numpy.load('song_mel_spectrograms.npy').reshape([16594, 130560])
+        ipca = decomposition.IncrementalPCA(n_components=320, batch_size=20)
+        for j in range(1,int(16594/1106)):
+                ipca.partial_fit(mel_spectrograms[int((j-1)*1106):int(j*1106)])
+                print(j, 'chunk fitted')
+        try:
+            joblib.dump(ipca, 'mel_pca_model_joblib')
+        except:
+            file_path = 'spec_pca_model.pkl'
+            max_bytes = 2 ** 31 - 1
+
+            ## write
+            bytes_out = pickle.dumps(ipca)
+            with open(file_path, 'wb') as f_out:
+                for idx in range(0, len(bytes_out), max_bytes):
+                    f_out.write(bytes_out[idx:idx + max_bytes])
 
         # for i, s in enumerate(songs):
         #     s.mel_pca_representation = song_frame_afterPCA[i]
@@ -491,8 +494,8 @@ class LSTM_Spectrogram(AudioMethod):
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
 
-# pca_spec = PCA_Spectrogram('/Users/m_vys/PycharmProjects/similarity_and_evaluation/spectrograms')
-# pca_spec.train()
-
-gru_spec = GRU_Spectrogram('spectrograms')
-gru_spec.train([])
+mel_pca_spec = PCA_Mel_spectrogram('')
+mel_pca_spec.train([])
+#
+# gru_spec = GRU_Spectrogram('spectrograms')
+# gru_spec.train([])

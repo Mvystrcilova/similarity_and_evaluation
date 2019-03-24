@@ -20,16 +20,17 @@ import unittest, pickle
 
 def _incremental_index_verbose(m):
     """Yields numbers from 0 to m-1 printing the status on the stdout."""
-    progress = f'\r [ {0:{len(str(m))}} / {m} ] {0:3.0f}% ? it/s'
-    stdout.write(progress)
-    beginning = time()
-    for i in range(m):
-        yield i
-        it_per_sec = (time() - beginning) / (i+1)
-        progress = f'\r [ {i+1:{len(str(m))}} / {m} ]'
-        progress += f' {100*(i+1)/m:3.0f}%'
-        progress += f' {it_per_sec:4.5f} it/s'
-        stdout.write(progress)
+    # progress = f'\r [ {0:{len(str(m))}} / {m} ] {0:3.0f}% ? it/s'
+    # stdout.write(progress)
+    # beginning = time()
+    # for i in range(m):
+    #     yield i
+    #     it_per_sec = (time() - beginning) / (i+1)
+    #     progress = f'\r [ {i+1:{len(str(m))}} / {m} ]'
+    #     progress += f' {100*(i+1)/m:3.0f}%'
+    #     progress += f' {it_per_sec:4.5f} it/s'
+    #     stdout.write(progress)
+    pass
 
 
 def fast_norm(x):

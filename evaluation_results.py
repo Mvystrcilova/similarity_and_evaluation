@@ -106,7 +106,7 @@ def get_means_for_playlists(min_length, max_lenght, df):
     print(means)
     return(means)
 
-# get_results('/Users/m_vys/PycharmProjects/similarity_and_evaluation/results/som_w2v_results/som_w2v_results_')
+get_results('/Users/m_vys/PycharmProjects/similarity_and_evaluation/results/pca_mel_results/pca_mel_')
 
 
 def get_distribution(df, min_length, max_length):

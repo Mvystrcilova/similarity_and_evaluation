@@ -77,7 +77,7 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     # sns.kdeplot(ranks_11_15, label='11 to 15 songs', linestyle="--")
     # sns.kdeplot(ranks_16_20, label='16 to 20 songs', linestyle="--")
     # sns.kdeplot(ranks_21_more, label='21 and longer playlists', linestyle="--")
-    sns.lineplot([x for x in range(len(ranks))], distribution)
+    # sns.lineplot([x for x in range(len(ranks))], distribution)
     # sns.distplot(ranks_4_6, label='4 to 6 songs',hist = False, kde = True, kde_kws={'linestyle':'-.'},
     #          bins=5000)
     # sns.distplot(ranks_7_10, bins=5000, label='7 to 10 songs', hist = False, kde = True)
@@ -90,7 +90,7 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
 
     plt.show()
 
-ranking_distribution_plot('results/mfcc_results/mfcc_', 'rankings', 'MFCC ranking distribution')
+ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF idf ranking distribution')
 # ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_results_', 'rankings', 'SOM with W2V ranking distribution')
 
