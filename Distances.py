@@ -26,12 +26,7 @@ def save_mfcc_distances(mffc_file):
 
 def save_mel_distances(mel_spec_file):
     vectors = numpy.load(mel_spec_file).reshape([16594, 130560])
-    distances = numpy.empty([16594, 16594])
-    for i in range(16594):
-        for j in range(16594):
-            one_distance = sklearn.metrics.pairwise.cosine_similarity(vectors[i].reshape(1,-1), vectors[j].reshape(1,-1))
-        distances[i][j] = one_distance
-        print(i, 'out of  16594')
+    distances = sklearn.metrics.pairwise(vectors)
     numpy.save('mel_spectrogram_distances', distances)
 
 

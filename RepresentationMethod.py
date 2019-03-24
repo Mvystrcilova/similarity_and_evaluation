@@ -385,7 +385,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
 
 class GRU_Spectrogram(AudioMethod):
     def __init__(self, spec_directory):
-        self.model_name = 'GRU_Spec_model.h5'
+        self.model_name = '~/evaluation_project/similarity_and_evaluation/GRU_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
         self.spec_directory = spec_directory
@@ -425,7 +425,7 @@ class GRU_Spectrogram(AudioMethod):
                 print(i)
                 i = i+1
 
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='./Graph', histogram_freq=0,
+        tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
                                     write_graph=True, write_images=True)
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
