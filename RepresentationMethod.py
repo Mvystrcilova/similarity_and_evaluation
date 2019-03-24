@@ -385,7 +385,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
 
 class GRU_Spectrogram(AudioMethod):
     def __init__(self, spec_directory):
-        self.model_name = '~/evaluation_project/similarity_and_evaluation/GRU_Spec_model.h5'
+        self.model_name = '/mnt/0/GRU_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
         self.spec_directory = spec_directory
@@ -416,21 +416,20 @@ class GRU_Spectrogram(AudioMethod):
         encoder.summary()
 
 
-        input_songs = numpy.empty([1000, 408, 2206])
+        input_songs = numpy.empty([16594, 408, 2206])
         i = 0
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
-            if i < 1000:
-                input_song = numpy.load(file).T
-                input_songs[i] = input_song
-                print(i)
-                i = i+1
+            input_song = numpy.load(file).T
+            input_songs[i] = input_song
+            print(i)
+            i = i+1
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
         #                             write_graph=True, write_images=True)
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
-        auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=5, verbose=True,
-                         batch_size=10)
+        auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=1, verbose=True,
+                         batch_size=256)
         encoder.save(self.model_name)
 
     def get_model(self):
