@@ -223,7 +223,7 @@ class PCA_Mel_spectrogram(AudioMethod):
         return mel_spectrogram.flatten()
 
     def train(self, songs):
-        mel_spectrograms = numpy.load('song_mel_spectrograms.npy').reshape([16594, 130560])
+        mel_spectrograms = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 130560])
         ipca = decomposition.IncrementalPCA(n_components=320, batch_size=20)
         for j in range(1,int(16594/1106)):
                 ipca.partial_fit(mel_spectrograms[int((j-1)*1106):int(j*1106)])
@@ -494,8 +494,8 @@ class LSTM_Spectrogram(AudioMethod):
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
 
-mel_pca_spec = PCA_Mel_spectrogram('')
-mel_pca_spec.train([])
+# mel_pca_spec = PCA_Mel_spectrogram('')
+# mel_pca_spec.train([])
 #
-# gru_spec = GRU_Spectrogram('spectrograms')
-# gru_spec.train([])
+gru_spec = GRU_Spectrogram('/mnt/0/spectrograms')
+gru_spec.train([])
