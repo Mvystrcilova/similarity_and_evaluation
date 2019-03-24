@@ -425,12 +425,12 @@ class GRU_Spectrogram(AudioMethod):
                 print(i)
                 i = i+1
 
-        tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
-                                    write_graph=True, write_images=True)
+        # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
+        #                             write_graph=True, write_images=True)
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
         auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=5, verbose=True,
-                         batch_size=10, callbacks=[tbCallBack])
+                         batch_size=10)
         encoder.save(self.model_name)
 
     def get_model(self):
