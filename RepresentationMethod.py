@@ -419,10 +419,12 @@ class GRU_Spectrogram(AudioMethod):
         input_songs = numpy.empty([16594, 408, 2206])
         i = 0
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
-            input_song = numpy.load(file).T
-            input_songs[i] = input_song
-            print(i)
-            i = i+1
+
+            if i < 100:
+                input_song = numpy.load(file).T
+                input_songs[i] = input_song
+                print(i)
+                i = i+1
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
         #                             write_graph=True, write_images=True)
