@@ -415,21 +415,15 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
+        auto_encoder.compile(adam, loss='mse')
+        encoder.compile(adam, loss='mse')
+        trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=79, mode="train")
+        auto_encoder.fit_generator(trainGen, steps_per_epoch=210, epochs=5)
 
-        input_songs = numpy.empty([16594, 408, 2206])
-        i = 0
-        for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
-                input_song = numpy.load(file).T
-                input_songs[i] = input_song
-                print(i)
-                i = i+1
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
         #                             write_graph=True, write_images=True)
-        auto_encoder.compile(adam, loss='mse')
-        encoder.compile(adam, loss='mse')
-        auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=5, verbose=True,
-                         batch_size=10)
+
         encoder.save(self.model_name)
 
     def get_model(self):
@@ -481,6 +475,22 @@ class LSTM_Spectrogram(AudioMethod):
 
     def represent_song(self, song):
         return self.get_model.predict(self.extract_audio(song).reshape(1, self.time_stamps, self.features))[0, :, 0]
+
+def generate_spectrograms(spec_directory, batch_size, mode='train'):
+    while True:
+        specs = []
+        i = 0
+        files = sorted(glob.glob(spec_directory + '/*.npy'), key=numericalSort)
+
+        while len(specs) < batch_size:
+            if i > 16593:
+                i = 0
+                if mode == 'eval':
+                    break
+            spec = numpy.load(files[i]).T
+            specs.append(spec)
+            i = i+1
+        yield (numpy.array(specs), numpy.array(specs))
 
 
 # d = Dataset('[bla]', 'bla')
