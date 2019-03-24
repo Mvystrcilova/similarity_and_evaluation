@@ -416,7 +416,7 @@ class GRU_Spectrogram(AudioMethod):
         encoder.summary()
 
 
-        input_songs = numpy.empty([16594, 408, 2206])
+        input_songs = numpy.empty([100, 408, 2206])
         i = 0
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
 
@@ -431,7 +431,7 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
         auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=1, verbose=True,
-                         batch_size=256)
+                         batch_size=10)
         encoder.save(self.model_name)
 
     def get_model(self):
