@@ -416,9 +416,9 @@ class GRU_Spectrogram(AudioMethod):
 
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
-        trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=158, mode="train")
+        trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
         testGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=39, mode="eval")
-        auto_encoder.fit_generator(trainGen, steps_per_epoch=105, epochs=50, validation_data=testGen)
+        auto_encoder.fit_generator(trainGen, steps_per_epoch=45, epochs=50, validation_data=testGen, validation_steps=85)
 
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
@@ -483,12 +483,17 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
         files = sorted(glob.glob(spec_directory + '/*.npy'), key=numericalSort)
 
         while len(specs) < batch_size:
-            if i > 16593:
-                i = 0
-                if mode == 'eval':
-                    break
-            spec = numpy.load(files[i]).T
-            specs.append(spec)
+            if mode != 'eval':
+                if (i > 13275):
+                    i = 0
+                spec = numpy.load(files[i]).T
+                specs.append(spec)
+            else:
+                if (i > 13275) and (i < 16593):
+                    spec = numpy.load(files[i]).T
+                    specs.append(spec)
+                if i > 16593:
+                    break;
             i = i+1
         yield (numpy.array(specs), numpy.array(specs))
 
