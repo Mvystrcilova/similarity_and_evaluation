@@ -294,7 +294,7 @@ class PCA_Spectrogram(AudioMethod):
 class LSTM_Mel_Spectrogram(AudioMethod):
 
     def __init__(self):
-        self.model_name = 'LSTM_Mel_model.h5'
+        self.model_name = '/mnt/0/LSTM_Mel_model.h5'
         self.time_stamps = 408
         self.features = 320
 
@@ -316,16 +316,17 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         model.compile(optimizer=adam, loss='mse')
 
         model.summary()
-        input_songs = []
-        for s in songs:
-            input_song = self.normalize_input(self.extract_audio(s))
-            input_songs.append(input_song)
 
-        model.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=100)
+        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 408, 320])
 
+        train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs,
+                                                                                    test_size=0.2, random_state=13)
+        model.compile(adam, loss='mse')
+        model.fit(train_X, train_X, batch_size=256, epochs=100, validation_data=(test_y, test_y))
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
+
         encoder.save(self.model_name)
-        # model.fit(normalized_input, normalized_input, epochs=1)
+        model.save('/mnt/0/lstm_mel_spec_autoencoder.h5')
 
     def get_model(self):
         return load_model(self.model_name)
