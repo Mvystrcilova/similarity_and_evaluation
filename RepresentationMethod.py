@@ -338,7 +338,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
     def __init__(self):
         self.model_name = 'mnt/0/GRU_Mel_model.h5'
         self.time_stamps = 408
-        self.features = 2206
+        self.features = 320
 
 
     def extract_audio(self, song):
@@ -440,7 +440,7 @@ class LSTM_Spectrogram(AudioMethod):
     def __init__(self, spec_directory):
         self.model_name = '/mnt/0/LSTM_Spec_model.h5'
         self.time_stamps = 408
-        self.features = 320
+        self.features = 2206
         self.spec_directory = spec_directory
 
     def extract_audio(self, song):
