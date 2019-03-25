@@ -438,7 +438,7 @@ class GRU_Spectrogram(AudioMethod):
 class LSTM_Spectrogram(AudioMethod):
 
     def __init__(self, spec_directory):
-        self.model_name = 'LSTM_Spec_model.h5'
+        self.model_name = '/mnt/0/LSTM_Spec_model.h5'
         self.time_stamps = 408
         self.features = 320
         self.spec_directory = spec_directory
