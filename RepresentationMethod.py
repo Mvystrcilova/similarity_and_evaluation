@@ -336,7 +336,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
 class GRU_Mel_Spectrogram(AudioMethod):
     def __init__(self):
-        self.model_name = 'GRU_Mel_model.h5'
+        self.model_name = 'mnt/0/GRU_Mel_model.h5'
         self.time_stamps = 408
         self.features = 320
 
@@ -366,7 +366,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('song_mel_spectrograms.npy').reshape([16594,408,320])
+        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594,408,320])
 
         auto_encoder.compile(adam, loss='mse')
         auto_encoder.fit(input_songs, input_songs, batch_size=79, epochs=158)
