@@ -489,15 +489,17 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
                 if (i > 13275):
                     i = 0
                 spec = numpy.load(files[i]).T
+                spec = scaler.fit_transform(spec)
                 specs.append(spec)
             else:
                 if (i > 13275) and (i < 16593):
                     spec = numpy.load(files[i]).T
+                    spec = scaler.fit_transform(spec)
                     specs.append(spec)
                 if i > 16593:
                     break;
             i = i+1
-        yield (scaler.fit_transform(specs), scaler.fit_transform(numpy.array(specs)))
+        yield ((numpy.array(specs)), numpy.array(specs))
 
 
 # d = Dataset('[bla]', 'bla')
