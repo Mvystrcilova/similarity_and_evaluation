@@ -437,10 +437,11 @@ class GRU_Spectrogram(AudioMethod):
 
 class LSTM_Spectrogram(AudioMethod):
 
-    def __init__(self):
+    def __init__(self, spec_directory):
         self.model_name = 'LSTM_Spec_model.h5'
         self.time_stamps = 408
         self.features = 320
+        self.spec_directory = spec_directory
 
     def extract_audio(self, song):
         y, sr = librosa.load(song.file_path)
@@ -460,13 +461,11 @@ class LSTM_Spectrogram(AudioMethod):
         model.compile(optimizer=adam, loss='mse')
 
         model.summary()
-        input_songs = []
-        for s in songs:
-            input_song = self.normalize_input(self.extract_audio(s))
-            input_songs.append(input_song)
 
-        model.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=100)
-
+        trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
+        testGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=39, mode="eval")
+        model.fit_generator(trainGen, steps_per_epoch=45, epochs=50, validation_data=testGen,
+                                   validation_steps=85)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
         encoder.save(self.model_name)
         # model.fit(normalized_input, normalized_input, epochs=1)
