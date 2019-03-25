@@ -1,6 +1,7 @@
 import pandas, numpy, scipy, sklearn, pickle, csv
 from scipy import spatial
 from sklearn import metrics, preprocessing
+from RepresentationMethod import GRU_Mel_Spectrogram
 
 def save_tf_idf_distances(TF_idf_file):
     vectors = scipy.sparse.load_npz(TF_idf_file)
@@ -115,6 +116,9 @@ def save_som_distances_from_array(representations, model_name):
 # save_som_distances_from_array(som_repr, 'SOM_W2V_batch_5g5i49782')
 
 
-save_mel_distances('/mnt/0/song_mel_spectrograms.npy')
+# save_mel_distances('/mnt/0/song_mel_spectrograms.npy')
 # save_mfcc_distances('mfcc_representations.npy')
 # save_pca_distances('pca_spec_representations.npy')
+
+gru_mel = GRU_Mel_Spectrogram()
+gru_mel.train([])

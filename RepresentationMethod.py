@@ -366,12 +366,10 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = []
-        for s in songs:
-            input_song = self.normalize_input(self.extract_audio(s))
-            input_songs.append(input_song)
+        input_songs = numpy.load('song_mel_spectrograms.npy').reshape([16594,408,320])
 
-        auto_encoder.fit(numpy.array(input_songs), numpy.array(input_songs), epochs=100)
+        auto_encoder.compile(adam, loss='mse')
+        auto_encoder.fit(input_songs, input_songs, batch_size=79, epochs=158)
         encoder.save(self.model_name)
 
     def get_model(self):
@@ -506,5 +504,3 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # mel_pca_spec = PCA_Mel_spectrogram('')
 # mel_pca_spec.train([])
 #
-gru_spec = GRU_Spectrogram('/mnt/0/spectrograms')
-gru_spec.train([])
