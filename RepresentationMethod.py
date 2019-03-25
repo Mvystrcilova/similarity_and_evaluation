@@ -366,10 +366,11 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594,408,320])
+        input_songs = numpy.load('song_mel_spectrograms.npy').reshape([16594,408,320])
 
+        train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs, test_size=0.2, random_state=13)
         auto_encoder.compile(adam, loss='mse')
-        auto_encoder.fit(input_songs, input_songs, batch_size=79, epochs=158)
+        auto_encoder.fit(train_X, train_X, batch_size=256, epochs=100, validation_data=(test_y, test_y))
         encoder.save(self.model_name)
 
     def get_model(self):
