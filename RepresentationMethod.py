@@ -457,7 +457,7 @@ class LSTM_Spectrogram(AudioMethod):
         model = Sequential()
         model.add(LSTM(int(self.features/5), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
         model.add(LSTM(int(self.features/7), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
-        model.add(Bidirectional(LSTM(self.features/2, activation='tanh', return_sequences=True)))
+        model.add(Bidirectional(LSTM(int(self.features/2), activation='tanh', return_sequences=True)))
         model.compile(optimizer=adam, loss='mse')
 
         model.summary()
