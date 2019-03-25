@@ -310,8 +310,8 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
     def train(self, songs):
         model = Sequential()
-        model.add(LSTM(160, activation='sigmoid', return_sequences=True, input_shape=(136, 320)))
-        model.add(LSTM(80, activation='sigmoid', return_sequences=True, input_shape=(136, 160)))
+        model.add(LSTM(160, activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(80, activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
         model.add(Bidirectional(LSTM(160, activation='tanh', return_sequences=True)))
         model.compile(optimizer=adam, loss='mse')
 
