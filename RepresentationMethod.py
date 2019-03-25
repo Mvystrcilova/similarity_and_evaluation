@@ -480,6 +480,7 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
     while True:
         specs = []
         i = 0
+        scaler = sklearn.preprocessing.MinMaxScaler()
         files = sorted(glob.glob(spec_directory + '/*.npy'), key=numericalSort)
 
         while len(specs) < batch_size:
@@ -487,10 +488,12 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
                 if (i > 13275):
                     i = 0
                 spec = numpy.load(files[i]).T
+                spec = scaler.fit_transform(spec)
                 specs.append(spec)
             else:
                 if (i > 13275) and (i < 16593):
                     spec = numpy.load(files[i]).T
+                    spec = scaler.fit_transform(spec)
                     specs.append(spec)
                 if i > 16593:
                     break;
