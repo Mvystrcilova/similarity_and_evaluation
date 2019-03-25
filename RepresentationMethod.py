@@ -372,6 +372,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         auto_encoder.fit(train_X, train_X, batch_size=256, epochs=100, validation_data=(test_y, test_y))
         encoder.save(self.model_name)
+        auto_encoder.save('/mnt/0/gru_spec_autoencoder.h5')
 
     def get_model(self):
         return load_model(self.model_name)
@@ -488,17 +489,15 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
                 if (i > 13275):
                     i = 0
                 spec = numpy.load(files[i]).T
-                spec = scaler.fit_transform(spec)
                 specs.append(spec)
             else:
                 if (i > 13275) and (i < 16593):
                     spec = numpy.load(files[i]).T
-                    spec = scaler.fit_transform(spec)
                     specs.append(spec)
                 if i > 16593:
                     break;
             i = i+1
-        yield (numpy.array(specs), numpy.array(specs))
+        yield (scaler.fit_transform(specs), scaler.fit_transform(numpy.array(specs)))
 
 
 # d = Dataset('[bla]', 'bla')
