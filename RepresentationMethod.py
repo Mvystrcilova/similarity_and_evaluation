@@ -317,7 +317,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
         model.summary()
 
-        input_songs = numpy.load('/mnt/0/representations/song_mel_spectrograms.npy').reshape([16594, 408, 320])
+        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 408, 320])
 
         # train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs,
         #                                                                             test_size=0.2, random_state=13)
@@ -367,7 +367,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/representations/song_mel_spectrograms.npy').reshape([16594,408,320])
+        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594,408,320])
 
         auto_encoder.compile(adam, loss='mse')
         auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
