@@ -1,7 +1,7 @@
 import pandas, numpy, scipy, sklearn, pickle, csv
 from scipy import spatial
 from sklearn import metrics, preprocessing
-from RepresentationMethod import GRU_Mel_Spectrogram
+# from RepresentationMethod import GRU_Mel_Spectrogram
 
 def save_tf_idf_distances(TF_idf_file):
     vectors = scipy.sparse.load_npz(TF_idf_file)
@@ -30,6 +30,10 @@ def save_mel_distances(mel_spec_file):
     distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
     numpy.save('/mnt/0/mel_spectrogram_distances', distances)
 
+def save_neural_networkd(representation_file, shape, distance_file):
+    vectors = numpy.load(representation_file).reshape([16594, int(shape)])
+    distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
+    numpy.save(distance_file, distances)
 
 def save_W2V_distances(W2V_file):
     songs = pandas.read_csv(W2V_file, sep=';',
@@ -119,6 +123,4 @@ def save_som_distances_from_array(representations, model_name):
 # save_mel_distances('/mnt/0/song_mel_spectrograms.npy')
 # save_mfcc_distances('mfcc_representations.npy')
 # save_pca_distances('pca_spec_representations.npy')
-
-gru_mel = GRU_Mel_Spectrogram()
-gru_mel.train([])
+save_neural_networkd('lstm_spec_representations.npy', 128520,'lstm_spec_distances')

@@ -294,7 +294,7 @@ class PCA_Spectrogram(AudioMethod):
 class LSTM_Mel_Spectrogram(AudioMethod):
 
     def __init__(self):
-        self.model_name = '/mnt/0/LSTM_Mel_model.h5'
+        self.model_name = '/mnt/0/models/final_LSTM_Mel_model.h5'
         self.time_stamps = 408
         self.features = 320
 
@@ -317,16 +317,16 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
         model.summary()
 
-        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 408, 320])
+        input_songs = numpy.load('/mnt/0/representations/song_mel_spectrograms.npy').reshape([16594, 408, 320])
 
-        train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs,
-                                                                                    test_size=0.2, random_state=13)
+        # train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs,
+        #                                                                             test_size=0.2, random_state=13)
         model.compile(adam, loss='mse')
-        model.fit(train_X, train_X, batch_size=256, epochs=100, validation_data=(test_y, test_y))
+        model.fit(input_songs, input_songs, batch_size=256, epochs=150)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
 
         encoder.save(self.model_name)
-        model.save('/mnt/0/lstm_mel_spec_autoencoder.h5')
+        model.save('/mnt/0/models/lstm_mel_spec_autoencoder.h5')
 
     def get_model(self):
         return load_model(self.model_name)
@@ -337,7 +337,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
 class GRU_Mel_Spectrogram(AudioMethod):
     def __init__(self):
-        self.model_name = 'mnt/0/GRU_Mel_model.h5'
+        self.model_name = 'mnt/0/models/final_GRU_Mel_model.h5'
         self.time_stamps = 408
         self.features = 320
 
@@ -367,13 +367,12 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594,408,320])
+        input_songs = numpy.load('/mnt/0/representations/song_mel_spectrograms.npy').reshape([16594,408,320])
 
-        train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs, test_size=0.2, random_state=13)
         auto_encoder.compile(adam, loss='mse')
-        auto_encoder.fit(train_X, train_X, batch_size=256, epochs=100, validation_data=(test_y, test_y))
+        auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
         encoder.save(self.model_name)
-        auto_encoder.save('/mnt/0/gru_spec_autoencoder.h5')
+        auto_encoder.save('/mnt/0/models/gru_spec_autoencoder.h5')
 
     def get_model(self):
         return load_model(self.model_name)
@@ -386,7 +385,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
 
 class GRU_Spectrogram(AudioMethod):
     def __init__(self, spec_directory):
-        self.model_name = '/mnt/0/GRU_Spec_model.h5'
+        self.model_name = '/mnt/0/models/final_GRU_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
         self.spec_directory = spec_directory
@@ -419,13 +418,12 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
         trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
-        testGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=39, mode="eval")
-        auto_encoder.fit_generator(trainGen, steps_per_epoch=45, epochs=50, validation_data=testGen, validation_steps=85)
+        auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=128)
 
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
         #                             write_graph=True, write_images=True)
-
+        auto_encoder.save('/mnt/0/models/gru_spec_autoencoder.h5')
         encoder.save(self.model_name)
 
     def get_model(self):
@@ -439,7 +437,7 @@ class GRU_Spectrogram(AudioMethod):
 class LSTM_Spectrogram(AudioMethod):
 
     def __init__(self, spec_directory):
-        self.model_name = '/mnt/0/LSTM_Spec_model.h5'
+        self.model_name = '/mnt/0/models/final_LSTM_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
         self.spec_directory = spec_directory
@@ -464,11 +462,10 @@ class LSTM_Spectrogram(AudioMethod):
         model.summary()
 
         trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
-        testGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=39, mode="eval")
-        model.fit_generator(trainGen, steps_per_epoch=45, epochs=50, validation_data=testGen,
-                                   validation_steps=85)
+        model.fit_generator(trainGen, steps_per_epoch=56, epochs=128)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
         encoder.save(self.model_name)
+        model.save('/mnt/0/models/LSTM_Spec_autoencoder.h5')
         # model.fit(normalized_input, normalized_input, epochs=1)
 
     def get_model(self):
@@ -485,19 +482,11 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
         files = sorted(glob.glob(spec_directory + '/*.npy'), key=numericalSort)
 
         while len(specs) < batch_size:
-            if mode != 'eval':
-                if (i > 13275):
-                    i = 0
-                spec = numpy.load(files[i]).T
-                spec = scaler.fit_transform(spec)
-                specs.append(spec)
-            else:
-                if (i > 13275) and (i < 16593):
-                    spec = numpy.load(files[i]).T
-                    spec = scaler.fit_transform(spec)
-                    specs.append(spec)
-                if i > 16593:
-                    break;
+            if (i > 16593):
+                i = 0
+            spec = numpy.load(files[i]).T
+            spec = scaler.fit_transform(spec)
+            specs.append(spec)
             i = i+1
         yield ((numpy.array(specs)), numpy.array(specs))
 

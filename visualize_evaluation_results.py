@@ -90,7 +90,7 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
 
     plt.show()
 
-ranking_distribution_plot('results/mel_results/mel_', 'rankings', 'Mel Spectrogram ranking distribution')
+ranking_distribution_plot('results/lstm_spec_results/lstm_spec_', 'rankings', 'LSTM Mel Spectrogram ranking distribution')
 # ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_results_', 'rankings', 'SOM with W2V ranking distribution')
 

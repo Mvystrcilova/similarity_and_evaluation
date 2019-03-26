@@ -1,6 +1,8 @@
 from sklearn.metrics.pairwise import cosine_similarity
-import pandas
-from Song import Song
+from keras.models import load_model
+import numpy
+import glob
+# from Song import Song
 
 
 class Dataset:
@@ -51,3 +53,25 @@ def get_song(songs, title, artist):
             return s
 
     return None
+
+import re
+numbers = re.compile(r'(\d+)')
+def numericalSort(value):
+    parts = numbers.split(value)
+    parts[1::2] = map(int, parts[1::2])
+    return parts
+
+def load_neural_mel_representations(model_file, spec_directory):
+    model = load_model(model_file)
+    new_representations = numpy.empty([16594, 128520])
+    i = 0
+    for file in sorted(glob.glob(spec_directory + '/*.npy'), key=numericalSort):
+        new_repr = numpy.load(file).reshape(1, 408, 2206)
+        new_repr = model.predict(new_repr)
+        new_representations[i] = new_repr.reshape(1, 128520)
+        print(i)
+        i = i +1
+
+    numpy.save('lstm_spec_representations', new_representations)
+
+load_neural_mel_representations('LSTM_Spec_model.h5', 'spectrograms')
