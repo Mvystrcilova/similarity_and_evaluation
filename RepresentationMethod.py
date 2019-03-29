@@ -29,7 +29,7 @@ def numericalSort(value):
     return parts
 
 
-adam = optimizers.adam(lr=0.0001, clipnorm=1.)
+# adam = optimizers.adam(lr=0.0001, clipnorm=1.)
 w2v_model = 'model to be inserted'
 
 
