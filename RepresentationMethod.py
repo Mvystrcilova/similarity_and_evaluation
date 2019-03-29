@@ -223,7 +223,7 @@ class PCA_Mel_spectrogram(AudioMethod):
         return mel_spectrogram.flatten()
 
     def train(self, songs):
-        mel_spectrograms = numpy.load('mnt/0/representations/song_mel_spectrograms.npy').reshape([16594, 130560])
+        mel_spectrograms = numpy.load('mnt/0/song_mel_spectrograms.npy').reshape([16594, 130560])
         ipca = decomposition.IncrementalPCA(n_components=3000, batch_size=30)
         for j in range(1,int(16594/3000)):
                 ipca.partial_fit(mel_spectrograms[int((j-1)*3000):int(j*3000)])
