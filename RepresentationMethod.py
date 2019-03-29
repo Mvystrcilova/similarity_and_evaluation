@@ -259,7 +259,7 @@ class PCA_Spectrogram(AudioMethod):
         pass
 
     def train_with_a_lot_of_memory(self):
-        arrays = numpy.empyt(16594, 900048)
+        arrays = numpy.empty(16594, 900048)
         ipca = decomposition.IncrementalPCA(n_components=3000, batch_size=30)
         i = 0
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
