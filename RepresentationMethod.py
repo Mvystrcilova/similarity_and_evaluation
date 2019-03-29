@@ -1,7 +1,7 @@
 import abc
 # from Song import Song
 # import librosa
-import numpy, pandas, scipy, sklearn, keras
+import numpy, pandas, scipy, sklearn
 import librosa.display
 import matplotlib.pyplot as plt
 from matplotlib import interactive
@@ -10,9 +10,9 @@ from sklearn import decomposition, preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import normalize, MinMaxScaler
-from keras import Sequential, optimizers, Model
-from keras.layers import LSTM, Bidirectional, GRU, Input
-from keras.models import load_model
+# from keras import Sequential, optimizers, Model
+# from keras.layers import LSTM, Bidirectional, GRU, Input
+# from keras.models import load_model
 import math, os
 import pickle, glob, joblib
 from minisom import MiniSom
