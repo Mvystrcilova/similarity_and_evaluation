@@ -1,6 +1,6 @@
 from sklearn.metrics.pairwise import cosine_similarity
 from keras.models import load_model
-import numpy
+import numpy, pandas
 import glob
 # from Song import Song
 
@@ -61,17 +61,32 @@ def numericalSort(value):
     parts[1::2] = map(int, parts[1::2])
     return parts
 
-def load_neural_mel_representations(model_file, spec_directory):
+def load_neural_spec_representations(model_file, second_dim,spec_directory, representation_name):
     model = load_model(model_file)
-    new_representations = numpy.empty([16594, 128520])
+    new_representations = numpy.empty([16594, second_dim])
     i = 0
     for file in sorted(glob.glob(spec_directory + '/*.npy'), key=numericalSort):
         new_repr = numpy.load(file).reshape(1, 408, 2206)
         new_repr = model.predict(new_repr)
-        new_representations[i] = new_repr.reshape(1, 128520)
+        new_representations[i] = new_repr.reshape(1, second_dim)
         print(i)
         i = i +1
 
-    numpy.save('lstm_spec_representations', new_representations)
+    numpy.save(representation_name, new_representations)
 
-load_neural_mel_representations('LSTM_Spec_model.h5', 'spectrograms')
+def save_neural_mel_representations(model_file, second_dim, mel_specs, representation_name):
+    model = load_model(model_file)
+    old_representations = numpy.load(mel_specs).reshape([16594, 408, 320])
+    new_representations = numpy.empty([16594,second_dim])
+    for i in range(16594):
+        new_repr = model.predict(old_representations[i].reshape(1, 408, 320))
+        new_representations[i] = new_repr.reshape(1,second_dim)
+        print(i)
+
+    numpy.save(representation_name, new_representations)
+
+
+# load_neural_spec_representations('/Users/m_vys/PycharmProjects/similarity_and_evaluation/models/models/final_GRU_Spec_model.h5', 128520, 'spectrograms', 'representations/final_GRU_Spec_representations')
+# save_neural_mel_representations('/Users/m_vys/PycharmProjects/similarity_and_evaluation/models/models/final_GRU_Mel_model.h5', 32640, 'representations/song_mel_spectrograms.npy', 'representations/final_GRU_mel_representations')
+# save_neural_mel_representations('/Users/m_vys/PycharmProjects/similarity_and_evaluation/models/models/final_LSTM_Mel_model.h5', 32640, 'representations/song_mel_spectrograms.npy', 'representations/final_LSTM_mel_representations')
+

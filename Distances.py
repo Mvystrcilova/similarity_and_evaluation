@@ -123,4 +123,7 @@ def save_som_distances_from_array(representations, model_name):
 # save_mel_distances('/mnt/0/song_mel_spectrograms.npy')
 # save_mfcc_distances('mfcc_representations.npy')
 # save_pca_distances('pca_spec_representations.npy')
-save_neural_networkd('lstm_spec_representations.npy', 128520,'lstm_spec_distances')
+save_neural_networkd('representations/final_GRU_Spec_representations.npy', 128520,'distances/final_gru_spec_distances')
+save_neural_networkd('representations/final_GRU_mel_representations.npy', 32640,'distances/final_gru_mel_distances')
+save_neural_networkd('representations/final_LSTM_mel_representations.npy', 32640,'distances/final_lstm_mel_distances')
+

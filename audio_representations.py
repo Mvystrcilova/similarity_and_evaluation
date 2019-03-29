@@ -60,5 +60,6 @@ def convert_files_to_mfcc(directory, n_mfcc):
     numpy.save('mfcc_representations', mfcc_representations)
 
 
-convert_files_to_mels('not_empty_songs', 329, 4410, 812)
+
+#convert_files_to_mels('not_empty_songs', 329, 4410, 812)
 # convert_files_to_mfcc('not_empty_songs', 320)

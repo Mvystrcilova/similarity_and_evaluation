@@ -223,13 +223,13 @@ class PCA_Mel_spectrogram(AudioMethod):
         return mel_spectrogram.flatten()
 
     def train(self, songs):
-        mel_spectrograms = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 130560])
-        ipca = decomposition.IncrementalPCA(n_components=320, batch_size=20)
-        for j in range(1,int(16594/1106)):
-                ipca.partial_fit(mel_spectrograms[int((j-1)*1106):int(j*1106)])
+        mel_spectrograms = numpy.load('mnt/0/representations/song_mel_spectrograms.npy').reshape([16594, 130560])
+        ipca = decomposition.IncrementalPCA(n_components=3000, batch_size=30)
+        for j in range(1,int(16594/3000)):
+                ipca.partial_fit(mel_spectrograms[int((j-1)*3000):int(j*3000)])
                 print(j, 'chunk fitted')
         try:
-            joblib.dump(ipca, 'mel_pca_model_joblib')
+            joblib.dump(ipca, 'mnt/0/big_mel_pca_model')
         except:
             file_path = 'spec_pca_model.pkl'
             max_bytes = 2 ** 31 - 1
@@ -260,20 +260,20 @@ class PCA_Spectrogram(AudioMethod):
 
     def train(self):
         i = 0
-        chunk = numpy.empty([553, 900048])
-        ipca = decomposition.IncrementalPCA(n_components=320, batch_size=7)
+        chunk = numpy.empty([1106, 900048])
+        ipca = decomposition.IncrementalPCA(batch_size=20)
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
-            if (i % 553 != 0) or (i == 0):
+            if (i % 1106 != 0) or (i == 0):
                 array = numpy.load(file)
                 array = array.reshape([1,900048])
-                print(i, str(i % 553))
-                chunk[i % 553] = array
+                print(i, str(i % 1106))
+                chunk[i % 1106] = array
             else:
                 ipca.partial_fit(chunk, )
                 print('chunk fitted')
             i = i+1
         try:
-            joblib.dump(ipca, 'spec_pca_model_joblib')
+            joblib.dump(ipca, 'big_spec_pca_model')
         except:
             file_path = 'spec_pca_model.pkl'
             max_bytes = 2 ** 31 - 1
@@ -501,6 +501,9 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
 
-# mel_pca_spec = PCA_Mel_spectrogram('')
-# mel_pca_spec.train([])
+pca_spec = PCA_Mel_spectrogram('/mnt/0/spectrograms')
+pca_spec.train([])
+
+pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
+pca_spec.train()
 #
