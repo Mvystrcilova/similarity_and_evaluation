@@ -267,6 +267,7 @@ class PCA_Spectrogram(AudioMethod):
             array = array.reshape([1, 900048])
             print(i)
             arrays[i] = array
+            i = i + 1
 
 
         for j in range(1, int(16594 / 3319)):
