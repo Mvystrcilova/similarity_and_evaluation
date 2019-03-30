@@ -266,7 +266,7 @@ class PCA_Spectrogram(AudioMethod):
 
     def train_with_a_lot_of_memory(self):
         arrays = numpy.empty([16594, 900048])
-        ipca = decomposition.IncrementalPCA(n_components=2370, batch_size=30)
+        ipca = decomposition.IncrementalPCA(n_components=1106, batch_size=20)
         i = 0
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
             array = numpy.load(file)
@@ -274,9 +274,9 @@ class PCA_Spectrogram(AudioMethod):
             print(i)
             arrays[i] = array
             i = i + 1
-        for j in range(1, int(16594 / 2370)):
-            ipca.partial_fit(arrays[int((j - 1) * 2370):int(j * 2370)])
-            print(j, 'chunk fitted out of', int(16594/2370))
+        for j in range(1, int(16594 / 1106)):
+            ipca.partial_fit(arrays[int((j - 1) * 1106):int(j * 1106)])
+            print(j, 'chunk fitted out of', int(16594/1106))
         joblib.dump(ipca, 'mnt/0/big_pca_model')
 
     def train(self):
@@ -535,9 +535,9 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
 
-# pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
-# pca_spec.train_with_a_lot_of_memory()
+pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
+pca_spec.train_with_a_lot_of_memory()
 
-pca_mel_spec = PCA_Mel_spectrogram([])
-pca_mel_spec.train_normal_PCA()
+# pca_mel_spec = PCA_Mel_spectrogram([])
+# pca_mel_spec.train_normal_PCA()
 #
