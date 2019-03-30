@@ -281,20 +281,20 @@ class PCA_Spectrogram(AudioMethod):
 
     def train(self):
         i = 0
-        chunk = numpy.empty([3319, 900048])
-        ipca = decomposition.IncrementalPCA(n_components=3319, batch_size=50)
+        chunk = numpy.empty([2370, 900048])
+        ipca = decomposition.IncrementalPCA(n_components=2370, batch_size=20)
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
-            if (i % 3319 != 0) or (i == 0):
+            if (i % 2370 != 0) or (i == 0):
                 array = numpy.load(file)
                 array = array.reshape([1, 900048])
-                print(i, str(i % 3319))
-                chunk[i % 3319] = array
+                print(i, str(i % 2370))
+                chunk[i % 2370] = array
             else:
                 ipca.partial_fit(chunk)
                 print('chunk fitted')
             i = i+1
         try:
-            joblib.dump(ipca, 'big_spec_pca_model')
+            joblib.dump(ipca, '/mnt/0/big_spec_pca_model')
         except:
             file_path = 'spec_pca_model.pkl'
             max_bytes = 2 ** 31 - 1
