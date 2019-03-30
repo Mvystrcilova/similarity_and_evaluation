@@ -245,7 +245,7 @@ class PCA_Mel_spectrogram(AudioMethod):
     def train_normal_PCS(self):
         arrays = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 130560])
         print('mels loaded')
-        pca = decomposition.PCA(verbose=1)
+        pca = decomposition.PCA()
         print('pca created')
         pca.fit(arrays)
         joblib.dump(pca, '/mnt/0/normal_mel_spec_pca_model')
