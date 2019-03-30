@@ -242,13 +242,13 @@ class PCA_Mel_spectrogram(AudioMethod):
 
         # for i, s in enumerate(songs):
         #     s.mel_pca_representation = song_frame_afterPCA[i]
-    def train_normal_PCS(self):
+    def train_normal_PCA(self):
         arrays = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 130560])
         print('mels loaded')
-        pca = decomposition.PCA()
+        pca = decomposition.PCA(n_components=5715)
         print('pca created')
         pca.fit(arrays)
-        joblib.dump(pca, '/mnt/0/normal_mel_spec_pca_model')
+        joblib.dump(pca, '/mnt/0/mel_spec_pca_model_90_ratio')
 
 
 
@@ -535,9 +535,9 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
 
-pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
-pca_spec.train_with_a_lot_of_memory()
+# pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
+# pca_spec.train_with_a_lot_of_memory()
 
-# pca_mel_spec = PCA_Mel_spectrogram([])
-# pca_mel_spec.train_normal_PCS()
+pca_mel_spec = PCA_Mel_spectrogram([])
+pca_mel_spec.train_normal_PCS()
 #
