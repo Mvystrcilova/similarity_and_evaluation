@@ -248,7 +248,7 @@ class PCA_Mel_spectrogram(AudioMethod):
         pca = decomposition.PCA(verbose=1)
         print('pca created')
         pca.fit(arrays)
-        joblib.dump(pca, 'normal_mel_spec_pca_model')
+        joblib.dump(pca, '/mnt/0/normal_mel_spec_pca_model')
 
 
 
@@ -320,7 +320,7 @@ class PCA_Spectrogram(AudioMethod):
 
         pca = decomposition.PCA()
         pca.fit(arrays)
-        joblib.dump(pca, 'normal_spec_pca_model')
+        joblib.dump(pca, '/mnt/0/normal_spec_pca_model')
 
 
 
