@@ -539,5 +539,5 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # pca_spec.train_with_a_lot_of_memory()
 
 pca_mel_spec = PCA_Mel_spectrogram([])
-pca_mel_spec.train_normal_PCS()
+pca_mel_spec.train_normal_PCA()
 #
