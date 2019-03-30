@@ -266,7 +266,7 @@ class PCA_Spectrogram(AudioMethod):
 
     def train_with_a_lot_of_memory(self):
         arrays = numpy.empty([16594, 900048])
-        ipca = decomposition.IncrementalPCA(n_components=3318, batch_size=50)
+        ipca = decomposition.IncrementalPCA(n_components=2370, batch_size=30)
         i = 0
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
             array = numpy.load(file)
@@ -274,21 +274,21 @@ class PCA_Spectrogram(AudioMethod):
             print(i)
             arrays[i] = array
             i = i + 1
-        for j in range(1, int(16594 / 3318)):
-            ipca.partial_fit(arrays[int((j - 1) * 3318):int(j * 3318)])
-            print(j, 'chunk fitted out of', int(16594/3318))
+        for j in range(1, int(16594 / 2370)):
+            ipca.partial_fit(arrays[int((j - 1) * 2370):int(j * 2370)])
+            print(j, 'chunk fitted out of', int(16594/2370))
         joblib.dump(ipca, 'mnt/0/big_pca_model')
 
     def train(self):
         i = 0
-        chunk = numpy.empty([2370, 900048])
-        ipca = decomposition.IncrementalPCA(n_components=2370, batch_size=20)
+        chunk = numpy.empty([1106, 900048])
+        ipca = decomposition.IncrementalPCA(n_components=1106, batch_size=20)
         for file in sorted(glob.glob(self.spec_directory + '/*.npy'), key=numericalSort):
-            if (i % 2370 != 0) or (i == 0):
+            if (i % 1106 != 0) or (i == 0):
                 array = numpy.load(file)
                 array = array.reshape([1, 900048])
-                print(i, str(i % 2370))
-                chunk[i % 2370] = array
+                print(i, str(i % 1106))
+                chunk[i % 1106] = array
             else:
                 ipca.partial_fit(chunk)
                 print('chunk fitted')
