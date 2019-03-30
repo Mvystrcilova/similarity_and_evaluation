@@ -537,8 +537,8 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
 
-pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
-pca_spec.train_normal_PCA()
+# pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
+# pca_spec.train_normal_PCA()
 
 pca_mel_spec = PCA_Mel_spectrogram()
 pca_mel_spec.train_normal_PCS()
