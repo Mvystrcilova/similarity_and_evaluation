@@ -353,7 +353,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         # train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs,
         #                                                                             test_size=0.2, random_state=13)
         model.compile(adam, loss='mse')
-        model.fit(input_songs, input_songs, batch_size=256, epochs=150)
+        model.fit(input_songs, input_songs, batch_size=256, epochs=200)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
 
         encoder.compile(adam, loss='mse')
