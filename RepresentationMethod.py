@@ -446,8 +446,8 @@ class GRU_Spectrogram(AudioMethod):
 
     def train(self, songs):
         encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
-        encoded = GRU(int(self.features/4), return_sequences=True)(encoder_inputs)
-        encoded = GRU(int(self.features/7), return_sequences=True)(encoded)
+        encoded = GRU(int(self.features/22), return_sequences=True)(encoder_inputs)
+        encoded = GRU(int(self.features/44), return_sequences=True)(encoded)
         decoded = Bidirectional(GRU(int(self.features/2),
                                     activation='softmax',
                                     return_sequences=True,
