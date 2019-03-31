@@ -10,9 +10,11 @@ from sklearn import decomposition, preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import normalize, MinMaxScaler
-# from keras import Sequential, optimizers, Model
-# from keras.layers import LSTM, Bidirectional, GRU, Input
-# from keras.models import load_model
+from keras import Sequential, optimizers, Model
+from keras.layers import LSTM, Bidirectional, GRU, Input
+from keras.models import load_model
+from keras.models import model_from_json
+
 import math, os
 import pickle, glob, joblib
 from minisom import MiniSom
@@ -29,7 +31,7 @@ def numericalSort(value):
     return parts
 
 
-# adam = optimizers.adam(lr=0.0001, clipnorm=1.)
+adam = optimizers.adam(lr=0.0001, clipnorm=1.)
 w2v_model = 'model to be inserted'
 
 
@@ -99,6 +101,7 @@ class Word2Vec(TextMethod):
         # the model for W2V is already pretrained by Google so no need to implement this
         pass
 
+
 class SOM_TF_idf(TextMethod):
     def __init__(self, sigma, learning_rate):
         self.sigma = sigma
@@ -132,7 +135,6 @@ class SOM_TF_idf(TextMethod):
         #     som = pickle.load(infile)
         # song.som_w2v_representation = som.winner(song.W2V_representation)
         pass
-
 
 
 class SOM_W2V(TextMethod):
@@ -251,7 +253,6 @@ class PCA_Mel_spectrogram(AudioMethod):
         joblib.dump(pca, '/mnt/0/mel_spec_pca_model_90_ratio')
 
 
-
 class PCA_Spectrogram(AudioMethod):
 
     def __init__(self, spec_directory):
@@ -321,10 +322,6 @@ class PCA_Spectrogram(AudioMethod):
         joblib.dump(pca, '/mnt/0/normal_spec_pca_model')
 
 
-
-
-
-
 class LSTM_Mel_Spectrogram(AudioMethod):
 
     def __init__(self):
@@ -344,8 +341,8 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
     def train(self, songs):
         model = Sequential()
-        model.add(LSTM(160, activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
-        model.add(LSTM(80, activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/4), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/7), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
         model.add(Bidirectional(LSTM(160, activation='tanh', return_sequences=True)))
         model.compile(optimizer=adam, loss='mse')
 
@@ -359,8 +356,15 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         model.fit(input_songs, input_songs, batch_size=256, epochs=150)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
 
+        encoder.compile(adam, loss='mse')
         encoder.save(self.model_name)
         model.save('/mnt/0/models/lstm_mel_spec_autoencoder.h5')
+        model_json = encoder.to_json()
+        with open("/mnt/0/LSTM_Mel_model.json", "w") as json_file:
+            json_file.write(model_json)
+        # serialize weights to HDF5
+        encoder.save_weights("/mnt/0/LSTM_Mel_model.h5")
+        print("Saved LSTM Mel model to disk")
 
     def get_model(self):
         return load_model(self.model_name)
@@ -388,8 +392,8 @@ class GRU_Mel_Spectrogram(AudioMethod):
 
     def train(self, songs):
         encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
-        encoded = GRU(int(self.features/2), return_sequences=True)(encoder_inputs)
-        encoded = GRU(int(self.features/4), return_sequences=True)(encoded)
+        encoded = GRU(int(self.features/4), return_sequences=True)(encoder_inputs)
+        encoded = GRU(int(self.features/7), return_sequences=True)(encoded)
         decoded = Bidirectional(GRU(int(self.features/2),
                                     activation='tanh',
                                     return_sequences=True,
@@ -404,9 +408,15 @@ class GRU_Mel_Spectrogram(AudioMethod):
         input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594,408,320])
 
         auto_encoder.compile(adam, loss='mse')
-        auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
+        auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=200)
         encoder.save(self.model_name)
         auto_encoder.save('/mnt/0/models/gru_spec_autoencoder.h5')
+        model_json = encoder.to_json()
+        with open("/mnt/0/GRU_Mel_model.json", "w") as json_file:
+            json_file.write(model_json)
+        # serialize weights to HDF5
+        encoder.save_weights("/mnt/0/GRU_Mel_model.h5")
+        print("Saved GRU Mel model to disk")
 
     def get_model(self):
         return load_model(self.model_name)
@@ -452,7 +462,7 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
         trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
-        auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=128)
+        auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=150)
 
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
@@ -467,6 +477,7 @@ class GRU_Spectrogram(AudioMethod):
         return self.get_model.predict(
                 self.extract_audio(song).reshape(
                 1, self.time_stamps, self.features))[0, :, 0]
+
 
 class LSTM_Spectrogram(AudioMethod):
 
@@ -508,6 +519,7 @@ class LSTM_Spectrogram(AudioMethod):
     def represent_song(self, song):
         return self.get_model.predict(self.extract_audio(song).reshape(1, self.time_stamps, self.features))[0, :, 0]
 
+
 def generate_spectrograms(spec_directory, batch_size, mode='train'):
     while True:
         specs = []
@@ -535,9 +547,11 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # som_w2v_2.train(songs)
 # som_w2v_3.train(songs)
 
-pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
-pca_spec.train_with_a_lot_of_memory()
+# pca_spec = PCA_Spectrogram('/mnt/0/spectrograms')
+# pca_spec.train_with_a_lot_of_memory()
 
 # pca_mel_spec = PCA_Mel_spectrogram([])
 # pca_mel_spec.train_normal_PCA()
-#
+
+gru_mel = GRU_Mel_Spectrogram()
+gru_mel.train([])
