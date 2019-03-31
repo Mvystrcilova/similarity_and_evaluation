@@ -467,8 +467,15 @@ class GRU_Spectrogram(AudioMethod):
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
         #                             write_graph=True, write_images=True)
+
         auto_encoder.save('/mnt/0/models/gru_spec_autoencoder.h5')
         encoder.save(self.model_name)
+        model_json = encoder.to_json()
+        with open("/mnt/0/GRU_Spec_model.json", "w") as json_file:
+            json_file.write(model_json)
+        # serialize weights to HDF5
+        encoder.save_weights("/mnt/0/GRU_Spec_model.h5")
+        print("Saved GRU Spec model to disk")
 
     def get_model(self):
         return load_model(self.model_name)
