@@ -553,5 +553,4 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # pca_mel_spec = PCA_Mel_spectrogram([])
 # pca_mel_spec.train_normal_PCA()
 
-gru_mel = GRU_Mel_Spectrogram()
-gru_mel.train([])
+
