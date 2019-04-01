@@ -353,7 +353,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         # train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs,
         #                                                                             test_size=0.2, random_state=13)
         model.compile(adam, loss='mse')
-        model.fit(input_songs, input_songs, batch_size=256, epochs=200)
+        model.fit(input_songs, input_songs, batch_size=256, epochs=150)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
 
         encoder.compile(adam, loss='mse')
@@ -408,7 +408,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594,408,320])
 
         auto_encoder.compile(adam, loss='mse')
-        auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=200)
+        auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
         encoder.save(self.model_name)
         auto_encoder.save('/mnt/0/models/gru_spec_autoencoder.h5')
         model_json = encoder.to_json()
@@ -462,7 +462,7 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
         trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
-        auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=150)
+        auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=128)
 
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
@@ -506,8 +506,8 @@ class LSTM_Spectrogram(AudioMethod):
 
     def train(self, songs):
         model = Sequential()
-        model.add(LSTM(int(self.features/5), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
-        model.add(LSTM(int(self.features/7), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/22), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/44), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
         model.add(Bidirectional(LSTM(int(self.features/2), activation='tanh', return_sequences=True)))
         model.compile(optimizer=adam, loss='mse')
 
