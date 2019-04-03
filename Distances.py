@@ -110,14 +110,6 @@ def save_som_distances_from_array(representations, model_name):
     numpy.save(model_name + '_distances', distances)
 
 
-# som_repr = get_som_representation('SOM_W2V_batch_5g5i49782')
-# with open("som_5g5i_3_representation.txt", "wb") as f:
-#     try:
-#         writer = csv.writer(f, delimiter=',')
-#         writer.writerows(som_repr)
-#     except Exception as e:
-#         print(e)
-# save_som_distances_from_array(som_repr, 'SOM_W2V_batch_5g5i49782')
 
 
 # save_mel_distances('/mnt/0/song_mel_spectrograms.npy')

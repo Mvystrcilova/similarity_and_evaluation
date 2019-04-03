@@ -2,7 +2,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from keras.models import load_model
 import numpy, pandas
 import glob
-# from Song import Song
+from Song import Song
 
 
 class Dataset:

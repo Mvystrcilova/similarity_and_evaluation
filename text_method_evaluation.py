@@ -1,11 +1,9 @@
 import pandas, numpy
-from Evaluation_legacy import User, TF_idfStatistics
+from things_i_hopefully_wont_use_anymore.Evaluation_legacy import User, TF_idfStatistics
 from scipy import spatial
 from Song import Song
 from Dataset import get_song
-from RepresentationMethod import TF_idf, Word2Vec
-
-from sklearn.metrics.pairwise import cosine_similarity
+from RepresentationMethod import TF_idf
 
 # evaluating TF-idf, W2V and Som_W2V
 data = pandas.read_csv('~/Documents/matfyz/rocnikac/data/songs_with_lyrics', sep=';', quotechar='"',

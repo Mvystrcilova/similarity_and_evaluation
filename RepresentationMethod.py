@@ -3,25 +3,21 @@ import abc
 # import librosa
 import numpy, pandas, scipy, sklearn
 import librosa.display
-import matplotlib.pyplot as plt
 from matplotlib import interactive
 interactive(True)
 from sklearn import decomposition, preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.preprocessing import normalize, MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler
 from keras import Sequential, optimizers, Model
 from keras.layers import LSTM, Bidirectional, GRU, Input
 from keras.models import load_model
-from keras.models import model_from_json
 
-import math, os
+import math
 import pickle, glob, joblib
-from minisom import MiniSom
+from things_i_hopefully_wont_use_anymore.minisom import MiniSom
 # from Evaluation import Evaluation
 # from Dataset import Dataset
 from gensim.models.keyedvectors import KeyedVectors
-from joblib import dump, load
 
 import re
 numbers = re.compile(r'(\d+)')
@@ -64,12 +60,13 @@ class TF_idf(TextMethod):
 
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_train_matrix = (tfidf_vectorizer.fit_transform(lyrics))
+        tf_idf_representations = numpy.empty([1, tfidf_train_matrix[0].toarray().size])
         for i, s in enumerate(songs):
-            s.tf_idf_representation = tfidf_train_matrix[i]
-            # numpy.set_printoptions(threshold=numpy.nan)
+            tf_idf_representations[i] = tfidf_vectorizer.transform(lyrics[i])
 
         scipy.sparse.save_npz('tf_idf_distance_matrix', tfidf_train_matrix)
         pickle.dump(tfidf_vectorizer, open('tfidf_model', 'wb'))
+        numpy.save('tf_idf_representations', tf_idf_representations)
 
 
 class Word2Vec(TextMethod):
@@ -201,7 +198,7 @@ class AudioMethod(RepresentationMethod):
 class MFCCRepresentation(AudioMethod):
 
     def represent_song(self, song):
-        MFCC = librosa.feature.mfcc(y=self.get_spectrogram(song).y, sr=self.get_spectrogram(song).sr, n_mels=128, fmax=8000).flatten()
+        MFCC = librosa.feature.mfcc(y=self.get_spectrogram(song).y, sr=self.get_spectrogram(song).sr, n_mels=320, fmax=8000).flatten()
         return MFCC
 
     def train(self, songs):
@@ -358,7 +355,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
         encoder.compile(adam, loss='mse')
         encoder.save(self.model_name)
-        model.save('/mnt/0/models/lstm_mel_spec_autoencoder.h5')
+        model.save('/mnt/0/models/lstm_mel_spec_autoencoder2.h5')
         model_json = encoder.to_json()
         with open("/mnt/0/LSTM_Mel_model.json", "w") as json_file:
             json_file.write(model_json)

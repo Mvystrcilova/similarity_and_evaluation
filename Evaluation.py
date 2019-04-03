@@ -151,7 +151,7 @@ for j in range(5):
                                                'nDGC'])
         results = results.append(temp_frame)
         i = i + 1
-    filename = 'results/final_lstm_mel_results/lstm_mel_' + str(j+1)
+    filename = 'results/semi_old_lstm_mel_results/lstm_mel_' + str(j+1)
     print(results.shape)
     results.to_csv(filename, sep=';', header=False, index=False)
 
@@ -171,7 +171,7 @@ for j in range(5):
                                                'nDGC'])
         results = results.append(temp_frame)
         i = i + 1
-    filename = 'results/final_gru_mel_results/gru_mel_' + str(j + 1)
+    filename = 'results/semi_old_gru_mel_results/gru_mel_' + str(j + 1)
     print(results.shape)
     results.to_csv(filename, sep=';', header=False, index=False)
 
@@ -190,7 +190,7 @@ for j in range(5):
                                                'nDGC'])
         results = results.append(temp_frame)
         i = i + 1
-    filename = 'results/final_gru_spec_results/gru_spec_' + str(j+1)
+    filename = 'results/semi_old_gru_spec_results/gru_spec_' + str(j+1)
     print(results.shape)
     results.to_csv(filename, sep=';', header=False, index=False)
 

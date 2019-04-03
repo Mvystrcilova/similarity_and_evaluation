@@ -1,4 +1,11 @@
-import numpy, pandas, librosa, os, sklearn.preprocessing
+import numpy, pandas, librosa, os, sklearn.preprocessing, joblib, glob, pickle
+
+import re
+numbers = re.compile(r'(\d+)')
+def numericalSort(value):
+    parts = numbers.split(value)
+    parts[1::2] = map(int, parts[1::2])
+    return parts
 
 def file_to_spectrogram(filename, n_fft, hop_length):
     y,sr = librosa.load(filename)
@@ -58,6 +65,34 @@ def convert_files_to_mfcc(directory, n_mfcc):
         print(i)
 
     numpy.save('mfcc_representations', mfcc_representations)
+
+
+def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
+    model = joblib.load(model)
+    mel_specs = numpy.load(mel_spec_matrix)
+    pca_mel_representations = numpy.empty([16594, 5717])
+    for i in range(16594):
+        mel_spec = mel_specs[i].reshape([1, 130560])
+        pca_mel_spec = model.transform(mel_spec)
+        pca_mel_representations[i] = pca_mel_spec
+
+    numpy.save(repr_name, pca_mel_representations)
+
+
+def get_PCA_Spec_representations(pca_model, directory, repr_name):
+    representations = numpy.empty[1, 1106]
+    pca_model = joblib.load(pca_model)
+    i = 0
+    for file in sorted(glob.glob(directory + '/*.npy'), key=numericalSort):
+        spec = numpy.load(file).reshape([1,900048])
+        pca_spec = pca_model.transform(spec)
+        representations[i] = pca_spec
+        i = i+1
+
+    numpy.save(repr_name, representations)
+
+def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
+    vectorizer = pickle.load(open(tf_idf_model, 'rb'))
 
 
 
