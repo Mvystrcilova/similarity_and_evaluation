@@ -278,7 +278,7 @@ class PCA_Spectrogram(AudioMethod):
         for j in range(1, int(16594 / 1106)):
             ipca.partial_fit(arrays[int((j - 1) * 1106):int(j * 1106)])
             print(j, 'chunk fitted out of', int(16594/1106))
-        joblib.dump(ipca, 'mnt/0/big_pca_model')
+        joblib.dump(ipca, 'mnt/0/pca_spec_model_1106')
 
     def train(self):
         i = 0
