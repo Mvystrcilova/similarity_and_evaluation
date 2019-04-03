@@ -100,6 +100,6 @@ def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
     vectorizer = pickle.load(open(tf_idf_model, 'rb'))
 
 # get_PCA_Spec_representations('/mnt/0/big_pca_model', 'mnt/0/spectrograms', 'mnt/0/pca_spec_representations_1106')
-get_PCA_Mel_representations('models/mel_spec_pca_model_90_ratio', 'representations/song_mel_spectrograms.npy', 'representations/mel_spec_representations_5717')
+get_PCA_Mel_representations('mnt/0/mel_spec_pca_model_90_ratio', 'mnt/0/song_mel_spectrograms.npy', 'mnt/0//mel_spec_representations_5717')
 #convert_files_to_mels('not_empty_songs', 329, 4410, 812)
 # convert_files_to_mfcc('not_empty_songs', 320)
