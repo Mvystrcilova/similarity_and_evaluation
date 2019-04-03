@@ -90,7 +90,7 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
 
     plt.show()
 
-ranking_distribution_plot('results/semi_old_gru_spec_results/gru_spec_', 'rankings', 'GRU Spectrogram ranking distribution')
+ranking_distribution_plot('results/pca_mel_results/pca_mel_', 'rankings', 'PCA Mel 5715 ranking distribution')
 # ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_results_', 'rankings', 'SOM with W2V ranking distribution')
 

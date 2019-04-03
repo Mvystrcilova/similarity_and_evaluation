@@ -190,7 +190,7 @@ for j in range(5):
 #                                                'nDGC'])
 #         results = results.append(temp_frame)
 #         i = i + 1
-#     filename = 'results/pca_mel_results_5715/pca_mel_' + str(j+1)
+#     filename = 'results/pca_mel_results/pca_mel_' + str(j+1)
 #     print(results.shape)
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
