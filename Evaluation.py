@@ -137,7 +137,7 @@ class Evaluation():
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
 for j in range(5):
-    evaluation = Evaluation('mnt/0/lstm_mel_distances_5712.npy', 'useful_playlists', 'useful_songs')
+    evaluation = Evaluation('mnt/0/lstm_mel_distances_5712.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs')
     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                  'recall_at_50', 'recall_at_100', 'nDGC'])
     i = 0
@@ -156,7 +156,7 @@ for j in range(5):
     results.to_csv(filename, sep=';', header=False, index=False)
 
 for j in range(5):
-    evaluation = Evaluation('mnt/0/gru_mel_distances_5712.npy', 'useful_playlists', 'useful_songs')
+    evaluation = Evaluation('mnt/0/gru_mel_distances_5712.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs')
     results = pandas.DataFrame(
         columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                  'recall_at_50', 'recall_at_100', 'nDGC'])
