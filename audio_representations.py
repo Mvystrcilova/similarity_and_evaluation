@@ -69,32 +69,38 @@ def convert_files_to_mfcc(directory, n_mfcc):
 
 def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
     model = joblib.load(model)
+    scaler = sklearn.preprocessing.MinMaxScaler()
     mel_specs = numpy.load(mel_spec_matrix)
-    pca_mel_representations = numpy.empty([16594, 5717])
+
+    pca_mel_representations = numpy.empty([16594, 5715])
     for i in range(16594):
         mel_spec = mel_specs[i].reshape([1, 130560])
+        mel_spec = scaler.fit_transform(mel_spec)
         pca_mel_spec = model.transform(mel_spec)
         pca_mel_representations[i] = pca_mel_spec
+        print(i)
 
     numpy.save(repr_name, pca_mel_representations)
 
 
 def get_PCA_Spec_representations(pca_model, directory, repr_name):
-    representations = numpy.empty[1, 1106]
+    representations = numpy.empty([16594, 1106])
     pca_model = joblib.load(pca_model)
     i = 0
     for file in sorted(glob.glob(directory + '/*.npy'), key=numericalSort):
         spec = numpy.load(file).reshape([1,900048])
         pca_spec = pca_model.transform(spec)
+        print(i, pca_spec.shape)
         representations[i] = pca_spec
         i = i+1
+
 
     numpy.save(repr_name, representations)
 
 def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
     vectorizer = pickle.load(open(tf_idf_model, 'rb'))
 
-
-
+# get_PCA_Spec_representations('models/spec_pca_model_joblib', 'spectrograms', 'representations/pca_spec_representations_1106')
+get_PCA_Mel_representations('models/mel_spec_pca_model_90_ratio', 'representations/song_mel_spectrograms.npy', 'representations/mel_spec_representations_5717')
 #convert_files_to_mels('not_empty_songs', 329, 4410, 812)
 # convert_files_to_mfcc('not_empty_songs', 320)

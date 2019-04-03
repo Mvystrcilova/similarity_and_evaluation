@@ -60,9 +60,12 @@ class TF_idf(TextMethod):
 
         tfidf_vectorizer = TfidfVectorizer()
         tfidf_train_matrix = (tfidf_vectorizer.fit_transform(lyrics))
-        tf_idf_representations = numpy.empty([1, tfidf_train_matrix[0].toarray().size])
+        tf_idf_representations = numpy.empty([16594, tfidf_train_matrix[0].toarray().size])
         for i, s in enumerate(songs):
-            tf_idf_representations[i] = tfidf_vectorizer.transform(lyrics[i])
+            l = [lyrics[i]]
+            prediction = tfidf_vectorizer.transform(l)
+            print(prediction)
+            tf_idf_representations[i] = prediction.toarray()
 
         scipy.sparse.save_npz('tf_idf_distance_matrix', tfidf_train_matrix)
         pickle.dump(tfidf_vectorizer, open('tfidf_model', 'wb'))

@@ -1,5 +1,5 @@
 from sklearn.metrics.pairwise import cosine_similarity
-from keras.models import load_model
+from keras.models import load_model, model_from_json
 import numpy, pandas
 import glob
 from Song import Song
@@ -74,12 +74,17 @@ def load_neural_spec_representations(model_file, second_dim,spec_directory, repr
 
     numpy.save(representation_name, new_representations)
 
-def save_neural_mel_representations(model_file, second_dim, mel_specs, representation_name):
-    model = load_model(model_file)
+def save_neural_mel_representations(model_file, weigths_file, second_dim, mel_specs, representation_name):
+    json_file = open(model_file, 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    model = model_from_json(loaded_model_json)
+    # load weights into new model
+    model.load_weights(weigths_file)
     old_representations = numpy.load(mel_specs).reshape([16594, 408, 320])
     new_representations = numpy.empty([16594,second_dim])
     for i in range(16594):
-        new_repr = model.predict(old_representations[i].reshape(1, 408, 320))
+        new_repr = model.predict(old_representations[i].reshape([1, 408, 320]))
         new_representations[i] = new_repr.reshape(1,second_dim)
         print(i)
 
@@ -87,6 +92,6 @@ def save_neural_mel_representations(model_file, second_dim, mel_specs, represent
 
 
 # load_neural_spec_representations('/Users/m_vys/PycharmProjects/similarity_and_evaluation/models/models/final_GRU_Spec_model.h5', 128520, 'spectrograms', 'representations/final_GRU_Spec_representations')
-# save_neural_mel_representations('/Users/m_vys/PycharmProjects/similarity_and_evaluation/models/models/final_GRU_Mel_model.h5', 32640, 'representations/song_mel_spectrograms.npy', 'representations/final_GRU_mel_representations')
-# save_neural_mel_representations('/Users/m_vys/PycharmProjects/similarity_and_evaluation/models/models/final_LSTM_Mel_model.h5', 32640, 'representations/song_mel_spectrograms.npy', 'representations/final_LSTM_mel_representations')
+save_neural_mel_representations('/mnt/0/GRU_Mel_model.json', '/mnt/0/GRU_Mel_model.h5', 5715, 'representations/song_mel_spectrograms.npy', 'final_GRU_mel_representations_5715')
+save_neural_mel_representations('/mnt/0/LSTM_Mel_model.json', '/mnt/0/LSTM_Mel_model.h5', 5715, 'representations/song_mel_spectrograms.npy', 'final_LSTM_mel_representations_5715')
 
