@@ -30,7 +30,7 @@ def save_mel_distances(mel_spec_file):
     distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
     numpy.save('/mnt/0/mel_spectrogram_distances', distances)
 
-def save_neural_networkd(representation_file, shape, distance_file):
+def save_neural_network(representation_file, shape, distance_file):
     vectors = numpy.load(representation_file).reshape([16594, int(shape)])
     distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
     numpy.save(distance_file, distances)
@@ -115,7 +115,7 @@ def save_som_distances_from_array(representations, model_name):
 # save_mel_distances('/mnt/0/song_mel_spectrograms.npy')
 # save_mfcc_distances('mfcc_representations.npy')
 # save_pca_distances('pca_spec_representations.npy')
-save_neural_networkd('representations/final_GRU_Spec_representations.npy', 128520,'distances/final_gru_spec_distances')
-save_neural_networkd('representations/final_GRU_mel_representations.npy', 32640,'distances/final_gru_mel_distances')
-save_neural_networkd('representations/final_LSTM_mel_representations.npy', 32640,'distances/final_lstm_mel_distances')
+# save_neural_networkd('representations/final_GRU_Spec_representations.npy', 128520,'distances/final_gru_spec_distances')
+save_neural_network('mnt/0/GRU_mel_representations.npy', 5712,'mnt/0/gru_mel_distances_5712')
+# save_neural_network('mnt/0/LSTM_mel_representations.npy', 5712,'mnt/0/final_lstm_mel_distances_5712')
 
