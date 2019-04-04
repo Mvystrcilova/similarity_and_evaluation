@@ -34,7 +34,7 @@ class Evaluation():
                                                        'songId', 'artist', 'title', 'lyrics' ],
                                                 usecols=[0, 1, 2, 3])
         else:
-            return pandas.read_csv('all_playlists', sep=';',
+            return pandas.read_csv('/mnt/0/all_playlists', sep=';',
                                                 names=['userID',
                                                        'songId', 'artist', 'title', 'lyrics' ],
                                                 usecols=[0, 1, 2, 3])
