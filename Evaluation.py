@@ -8,7 +8,7 @@ class Evaluation():
         self.distance_matrix = numpy.load(distance_matrix_file)
         self.useful_playlists = self.get_useful_playlists(are_all_playlists, useful_playlists_file)
 
-        self.all_playlists = pandas.read_csv('all_playlists', sep=';',
+        self.all_playlists = pandas.read_csv('/mnt/0/all_playlists', sep=';',
                                                 names=['userID',
                                                        'songId', 'artist', 'title', 'lyrics' ],
                                                 usecols=[0, 1, 2, 3])
