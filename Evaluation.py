@@ -4,15 +4,17 @@ import sklearn.preprocessing
 # from audio_representations import file_to_spectrogram
 # from audio_representations import convert_files_to_mfcc
 class Evaluation():
-    def __init__(self, distance_matrix_file, useful_playlists_file, song_file):
+    def __init__(self, distance_matrix_file, useful_playlists_file, song_file, are_all_playlists):
         self.distance_matrix = numpy.load(distance_matrix_file)
-        self.useful_playlists = pandas.read_csv(useful_playlists_file, sep=';',
+        self.useful_playlists = self.get_useful_playlists(are_all_playlists, useful_playlists_file)
+
+        self.all_playlists = pandas.read_csv('all_playlists', sep=';',
                                                 names=['userID',
                                                        'songId', 'artist', 'title', 'lyrics' ],
                                                 usecols=[0, 1, 2, 3])
-
         # a list of users with 4 songs and more in their playlist
         self.users = self.useful_playlists['userID'].drop_duplicates().tolist()
+        self.all_users = self.all_playlists['userID'].drop_duplicates().tolist()
         # a pandas DataFrame with the songs we have
         self.songs = pandas.read_csv(song_file, sep=';', names=['title', 'artist'])
         # assinges and index columns to the pandas dataframe
@@ -24,6 +26,18 @@ class Evaluation():
         x = [x for x in range(self.songs.shape[0])]
         self.songs['ind'] = x
         self.useful_playlists = pandas.merge(self.useful_playlists,self.songs, how='left', on=['artist', 'title'])
+
+    def get_useful_playlists(self, are_all_playlists, useful_playlists_file):
+        if not are_all_playlists:
+            return pandas.read_csv(useful_playlists_file, sep=';',
+                                                names=['userID',
+                                                       'songId', 'artist', 'title', 'lyrics' ],
+                                                usecols=[0, 1, 2, 3])
+        else:
+            return pandas.read_csv('all_playlists', sep=';',
+                                                names=['userID',
+                                                       'songId', 'artist', 'title', 'lyrics' ],
+                                                usecols=[0, 1, 2, 3])
 
     def eval_playlist(self, user):
         # splits user data in two datasets
@@ -176,7 +190,7 @@ class Evaluation():
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
 for j in range(5):
-    evaluation = Evaluation('mnt/0/pca_mel_distances_5717.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs')
+    evaluation = Evaluation('mnt/0/pca_mel_distances_5717.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs', True)
     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                  'recall_at_50', 'recall_at_100', 'nDGC'])
     i = 0
@@ -190,7 +204,7 @@ for j in range(5):
                                                'nDGC'])
         results = results.append(temp_frame)
         i = i + 1
-    filename = 'mnt/0/results/pca_mel_results_5717/pca_mel_' + str(j+1)
+    filename = 'mnt/0/results/all_pca_mel_results_5717/pca_mel_' + str(j+1)
     print(results.shape)
     results.to_csv(filename, sep=';', header=False, index=False)
 

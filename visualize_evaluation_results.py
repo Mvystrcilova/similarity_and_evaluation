@@ -22,6 +22,12 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     ranks_4 = get_distribution(c4, 0, float("inf"))
     ranks_5 = get_distribution(c5, 0, float("inf"))
 
+    # ranks_1_0_3 = get_distribution(c1, 0, 3)
+    # ranks_2_0_3 = get_distribution(c2, 0, 3)
+    # ranks_3_0_3 = get_distribution(c3, 0, 3)
+    # ranks_4_0_3 = get_distribution(c4, 0, 3)
+    # ranks_5_0_3 = get_distribution(c5, 0, 3)
+
     ranks_1_4_6 = get_distribution(c1, 4, 6)
     ranks_2_4_6 = get_distribution(c2, 4, 6)
     ranks_3_4_6 = get_distribution(c3, 4, 6)
@@ -52,8 +58,8 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     ranks_4_21_more = get_distribution(c4, 21, float("inf"))
     ranks_5_21_more = get_distribution(c5, 21, float("inf"))
 
-
     ranks = ranks_1 + ranks_2 + ranks_3 + ranks_4 + ranks_5
+    # ranks_0_3 = ranks_1_0_3 + ranks_2_0_3 + ranks_3_0_3 + ranks_4_0_3 + ranks_5_0_3
     ranks_4_6 = ranks_1_4_6 + ranks_2_4_6 + ranks_3_4_6 + ranks_4_4_6 + ranks_5_4_6
     ranks_7_10 = ranks_1_7_10 + ranks_2_7_10 + ranks_3_7_10 + ranks_4_7_10 + ranks_5_7_10
     ranks_11_15 = ranks_1_11_15 + ranks_2_11_15 + ranks_3_11_15 + ranks_4_11_15 + ranks_5_11_15
@@ -64,10 +70,13 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
 
     sns.set_palette(palette)
 
-    distribution = numpy.empty([16594])
-    for i in range(len(ranks)):
-        distribution[ranks[i]] +=1
-    distribution = numpy.divide(distribution, len(ranks))
+    distribution = get_ranks_distribution_for_lineplot(ranks)
+    # distribution_0_3 = get_ranks_distribution_for_lineplot(ranks_0_3)
+    distribution_4_6 = get_ranks_distribution_for_lineplot(ranks_4_6)
+    distribution_7_10 = get_ranks_distribution_for_lineplot(ranks_7_10)
+    distribution_11_15 = get_ranks_distribution_for_lineplot(ranks_11_15)
+    distribution_16_20 = get_ranks_distribution_for_lineplot(ranks_16_20)
+    distribution_21_more = get_ranks_distribution_for_lineplot(ranks_21_more)
 
     g = sns.distplot(ranks, bins=5000, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5))
     g.set_xscale('log')
@@ -77,21 +86,28 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     # sns.kdeplot(ranks_11_15, label='11 to 15 songs', linestyle="--")
     # sns.kdeplot(ranks_16_20, label='16 to 20 songs', linestyle="--")
     # sns.kdeplot(ranks_21_more, label='21 and longer playlists', linestyle="--")
-    # sns.lineplot([x for x in range(len(ranks))], distribution)
-    # sns.distplot(ranks_4_6, label='4 to 6 songs',hist = False, kde = True, kde_kws={'linestyle':'-.'},
-    #          bins=5000)
-    # sns.distplot(ranks_7_10, bins=5000, label='7 to 10 songs', hist = False, kde = True)
-    # sns.distplot(ranks_11_15, bins=5000,  label='11 to 15 songs', hist = False, kde = True)
-    # sns.distplot(ranks_16_20, bins=5000, label='16 to 20 songs', hist = False, kde = True)
-    # sns.distplot(ranks_21_more, bins=5000, label='21 and longer playlists', hist = False, kde = True)
+    sns.lineplot([x for x in range(16594)], distribution.reshape([16594]), label='over_all_distribution')
+    sns.lineplot([x for x in range(16594)], distribution_4_6.reshape([16594]), label='4 to 6 songs')
+    sns.lineplot([x for x in range(16594)], distribution_7_10.reshape([16594]), label='7 to 10 songs')
+    sns.lineplot([x for x in range(16594)], distribution_11_15.reshape([16594]), label='11 to 15 songs')
+    sns.lineplot([x for x in range(16594)], distribution_16_20.reshape([16594]), label='16 to 20 songs')
+    sns.lineplot([x for x in range(16594)], distribution_21_more.reshape([16594]), label='21 and more')
+
     g.set_xscale('log')
-    plt.xlim(0,16594)
     plt.title(plot_tile)
 
     plt.show()
+def get_ranks_distribution_for_lineplot(ranks):
+    distribution = numpy.zeros([16594, 1])
+    print(len(ranks))
+    for i in range(len(ranks)):
+        distribution[ranks[i]] += 1
+    print(distribution.min(), distribution.max())
+    distribution = numpy.divide(distribution, len(ranks))
 
-ranking_distribution_plot('results/gru_mel_results_5712/gru_mel_', 'rankings', 'GRU Mel 5715 ranking distribution')
-# ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf ranking distribution')
-# ranking_distribution_plot('results/som_w2v_results/som_w2v_results_', 'rankings', 'SOM with W2V ranking distribution')
+    return distribution
+# ranking_distribution_plot('results/pca_mel_results_5717/pca_mel_', 'rankings', 'PCA Mel 5717 ranking distribution')
+# ranking_distribution_plot('results/pca_mel_results/pca_mel_', 'rankings', 'PCA Mel ranking distribution')
+ranking_distribution_plot('results/gru_mel_results_5712/gru_mel_', 'rankings', 'GRU Mel 5712 W2V ranking distribution')
 
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')

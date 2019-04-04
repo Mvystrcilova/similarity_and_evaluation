@@ -90,23 +90,11 @@ def get_means_for_playlists(min_length, max_lenght, df):
     means.append(numpy.mean(df[4]))
     means.append(numpy.mean(df[5]))
     means.append(numpy.mean(df[6]))
-    # a = []
-    #     # df[3] = df[3].replace({']': ''}, regex=True)
-    #     # df[3] = df[3].replace({'\[': ''}, regex=True)
-    #     # df[3] = df[3].replace({',': ''}, regex=True)
-    #     # for i, row in df.iterrows():
-    #     #     ranks = row[3].split(' ')
-    #     #     for j in range(len(ranks)):
-    #     #         a.append(int(ranks[j]))
-    #     # a = numpy.array(a)
-    #     # print(a)
     means.append(numpy.mean(df[3]))
     means.append(numpy.mean(df[6]))
 
     print(means)
     return(means)
-
-get_results('/Users/m_vys/PycharmProjects/similarity_and_evaluation/results/pca_mel_results/pca_mel_')
 
 
 def get_distribution(df, min_length, max_length):
