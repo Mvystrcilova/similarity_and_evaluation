@@ -92,7 +92,7 @@ def get_MFCC_representations(mfcc_model, mfcc_weights, mfcc_representations, rep
     MFCC_model.load_weights(mfcc_weights)
     print("Loaded model from disk")
     for i in range(16594):
-        neural_mfcc = MFCC_model.transform(mfcc_representations[i].reshape(1,-1))
+        neural_mfcc = MFCC_model.predict(mfcc_representations[i].reshape(1,-1))
         new_representations[i] = neural_mfcc
         print(i)
 
