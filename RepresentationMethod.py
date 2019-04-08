@@ -405,7 +405,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594,408,320])
+        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 408, 320])
 
         auto_encoder.compile(adam, loss='mse')
         auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
@@ -425,6 +425,109 @@ class GRU_Mel_Spectrogram(AudioMethod):
         return self.get_model.predict(
                 self.extract_audio(song).reshape(
                 1, self.time_stamps, self.features))[0, :, 0]
+
+class GRU_MFCC(AudioMethod):
+    def __init__(self):
+        self.model_name = 'mnt/0/models/GRU_MFCC_model.h5'
+        self.time_stamps = 646
+        self.features = 128
+
+
+    def extract_audio(self, song):
+        y, sr = librosa.load(song.file_path)
+        mel_spectrogram = librosa.feature.mfcc(y=y, sr=sr, n_mels=320, n_fft=4410, hop_length=812)
+        return mel_spectrogram
+
+    def normalize_input(self, mel_spectrogram):
+        sc = MinMaxScaler((-1, 1))
+        normalized_input = sc.fit_transform(mel_spectrogram).reshape(self.time_stamps, self.features)
+        return normalized_input
+
+    def train(self, songs):
+        encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
+        encoded = GRU(int(self.features/7), return_sequences=True)(encoder_inputs)
+        encoded = GRU(int(self.features/15), return_sequences=True)(encoded)
+        decoded = Bidirectional(GRU(int(self.features/2),
+                                    activation='tanh',
+                                    return_sequences=True,
+                                    name='output'))(encoded)
+
+        auto_encoder = Model(encoder_inputs, decoded)
+        encoder = Model(encoder_inputs, encoded)
+
+        auto_encoder.summary()
+        encoder.summary()
+
+        input_songs = numpy.load('/mnt/0/mfcc_representations.npy').reshape([16594, 646, 128])
+
+        auto_encoder.compile(adam, loss='mse')
+        auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=200)
+        encoder.save(self.model_name)
+        auto_encoder.save('/mnt/0/models/gru_mfcc_autoencoder.h5')
+        model_json = encoder.to_json()
+        with open("/mnt/0/GRU_MFCC_model.json", "w") as json_file:
+            json_file.write(model_json)
+        # serialize weights to HDF5
+        encoder.save_weights("/mnt/0/GRU_MFCC_model.h5")
+        print("Saved GRU MFCC model to disk")
+
+    def get_model(self):
+        return load_model(self.model_name)
+
+    def represent_song(self, song):
+        return self.get_model.predict(
+                self.extract_audio(song).reshape(
+                1, self.time_stamps, self.features))[0, :, 0]
+
+class LSTM_MFCC(AudioMethod):
+
+    def __init__(self):
+        self.model_name = '/mnt/0/models/LSTM_MFCC_model.h5'
+        self.time_stamps = 408
+        self.features = 320
+
+    def extract_audio(self, song):
+        y, sr = librosa.load(song.file_path)
+        mel_spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=320, n_fft=4410, hop_length=812)
+        return mel_spectrogram
+
+    def normalize_input(self, mel_spectrogram):
+        sc = MinMaxScaler((-1,1))
+        normalized_input = sc.fit_transform(mel_spectrogram).reshape(len(mel_spectrogram[0]), len(mel_spectrogram))
+        return normalized_input
+
+    def train(self, songs):
+        model = Sequential()
+        model.add(LSTM(int(self.features/7), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/15), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(Bidirectional(LSTM(64, activation='tanh', return_sequences=True)))
+        model.compile(optimizer=adam, loss='mse')
+
+        model.summary()
+
+        input_songs = numpy.load('/mnt/0/mfcc_representations.npy').reshape([16594, 646, 128])
+
+        # train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs,
+        #                                                                             test_size=0.2, random_state=13)
+        model.compile(adam, loss='mse')
+        model.fit(input_songs, input_songs, batch_size=256, epochs=150)
+        encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
+
+        encoder.compile(adam, loss='mse')
+        encoder.save(self.model_name)
+        model.save('/mnt/0/models/lstm_mfcc_autoencoder2.h5')
+        model_json = encoder.to_json()
+        with open("/mnt/0/LSTM_MFCC_model.json", "w") as json_file:
+            json_file.write(model_json)
+        # serialize weights to HDF5
+        encoder.save_weights("/mnt/0/LSTM_MFCC_model.h5")
+        print("Saved LSTM MFCC model to disk")
+
+    def get_model(self):
+        return load_model(self.model_name)
+
+    def represent_song(self, song):
+        return self.get_model.predict(self.extract_audio(song).reshape(1, self.time_stamps, self.features))[0, :, 0]
 
 
 class GRU_Spectrogram(AudioMethod):
@@ -514,7 +617,7 @@ class LSTM_Spectrogram(AudioMethod):
         model.summary()
 
         trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
-        model.fit_generator(trainGen, steps_per_epoch=56, epochs=50)
+        model.fit_generator(trainGen, steps_per_epoch=56, epochs=40)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
         encoder.save(self.model_name)
         model.save('/mnt/0/models/LSTM_Spec_autoencoder.h5')
