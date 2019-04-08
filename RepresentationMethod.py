@@ -483,8 +483,8 @@ class LSTM_MFCC(AudioMethod):
 
     def __init__(self):
         self.model_name = '/mnt/0/models/LSTM_MFCC_model.h5'
-        self.time_stamps = 408
-        self.features = 320
+        self.time_stamps = 646
+        self.features = 128
 
     def extract_audio(self, song):
         y, sr = librosa.load(song.file_path)
