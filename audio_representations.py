@@ -1,5 +1,5 @@
 import numpy, pandas, librosa, os, sklearn.preprocessing, joblib, glob, pickle
-
+from keras.models import model_from_json
 import re
 numbers = re.compile(r'(\d+)')
 def numericalSort(value):
@@ -81,6 +81,23 @@ def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
 
     numpy.save(repr_name, pca_mel_representations)
 
+def get_MFCC_representations(mfcc_model, mfcc_weights, mfcc_representations, repr_name):
+    new_representations = numpy.empty([16594, 5168])
+    mfcc_representations = numpy.load(mfcc_representations).reshape([16594, 82866])
+    json_file = open(mfcc_model, 'r')
+    loaded_model_json = json_file.read()
+    json_file.close()
+    MFCC_model = model_from_json(loaded_model_json)
+    # load weights into new model
+    MFCC_model.load_weights(mfcc_weights)
+    print("Loaded model from disk")
+    for i in range(16594):
+        neural_mfcc = MFCC_model.transform(mfcc_representations[i].reshape(1,-1))
+        new_representations[i] = neural_mfcc
+        print(i)
+
+    numpy.save(repr_name, new_representations)
+
 
 def get_PCA_Spec_representations(pca_model, directory, repr_name):
     representations = numpy.empty([16594, 1106])
@@ -103,3 +120,8 @@ def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
 # get_PCA_Mel_representations('mnt/0/mel_spec_pca_model_90_ratio', 'mnt/0/song_mel_spectrograms.npy', 'mnt/0//mel_spec_representations_5717')
 #convert_files_to_mels('not_empty_songs', 329, 4410, 812)
 # convert_files_to_mfcc('not_empty_songs', 320)
+
+get_MFCC_representations('/mnt/0/GRU_MFCC_model.json', '/mnt/0/GRU_MFCC_model.h5', '/mnt/0/mfcc_representations.npy', 'gru_mfcc_representations')
+print('gru_mfcc representations saved')
+get_MFCC_representations('/mnt/0/LSTM_MFCC_model.json', '/mnt/0/LSTM_MFCC_model.h5', '/mnt/0/lstm_representations.npy', 'lstm_mfcc_representations')
+print('lstm mfcc representations saved')
