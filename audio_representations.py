@@ -83,7 +83,7 @@ def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
 
 def get_MFCC_representations(mfcc_model, mfcc_weights, mfcc_representations, repr_name):
     new_representations = numpy.empty([16594, 5168])
-    mfcc_representations = numpy.load(mfcc_representations).reshape([16594, 82688])
+    mfcc_representations = numpy.load(mfcc_representations).reshape([16594, 646, 128])
     json_file = open(mfcc_model, 'r')
     loaded_model_json = json_file.read()
     json_file.close()
@@ -92,8 +92,8 @@ def get_MFCC_representations(mfcc_model, mfcc_weights, mfcc_representations, rep
     MFCC_model.load_weights(mfcc_weights)
     print("Loaded model from disk")
     for i in range(16594):
-        neural_mfcc = MFCC_model.predict(mfcc_representations[i].reshape(1,-1))
-        new_representations[i] = neural_mfcc
+        neural_mfcc = MFCC_model.predict(mfcc_representations[i].reshape(1, 646, 128))
+        new_representations[i] = neural_mfcc.reshape(1, 5168)
         print(i)
 
     numpy.save(repr_name, new_representations)
