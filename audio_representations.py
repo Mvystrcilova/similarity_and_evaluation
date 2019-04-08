@@ -121,7 +121,7 @@ def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
 #convert_files_to_mels('not_empty_songs', 329, 4410, 812)
 # convert_files_to_mfcc('not_empty_songs', 320)
 
-get_MFCC_representations('/mnt/0/GRU_MFCC_model.json', '/mnt/0/GRU_MFCC_model.h5', '/mnt/0/mfcc_representations.npy', 'gru_mfcc_representations')
+get_MFCC_representations('/mnt/0/GRU_MFCC_model.json', '/mnt/0/GRU_MFCC_model.h5', '/mnt/0/mfcc_representations.npy', '/mnt/0/gru_mfcc_representations')
 print('gru_mfcc representations saved')
-get_MFCC_representations('/mnt/0/LSTM_MFCC_model.json', '/mnt/0/LSTM_MFCC_model.h5', '/mnt/0/lstm_representations.npy', 'lstm_mfcc_representations')
+get_MFCC_representations('/mnt/0/LSTM_MFCC_model.json', '/mnt/0/LSTM_MFCC_model.h5', '/mnt/0/lstm_representations.npy', '/mnt/0/lstm_mfcc_representations')
 print('lstm mfcc representations saved')
