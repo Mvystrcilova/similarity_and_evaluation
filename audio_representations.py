@@ -83,7 +83,7 @@ def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
 
 def get_MFCC_representations(mfcc_model, mfcc_weights, mfcc_representations, repr_name):
     new_representations = numpy.empty([16594, 5168])
-    mfcc_representations = numpy.load(mfcc_representations).reshape([16594, 82866])
+    mfcc_representations = numpy.load(mfcc_representations).reshape([16594, 82688])
     json_file = open(mfcc_model, 'r')
     loaded_model_json = json_file.read()
     json_file.close()
