@@ -459,7 +459,7 @@ class GRU_MFCC(AudioMethod):
         encoder.summary()
 
         input_songs = numpy.load('/mnt/0/mfcc_representations.npy')
-        input_songs.reshape([1,82688])
+        input_songs.reshape([16594, 82688])
         scaler = MinMaxScaler()
         input_songs = scaler.fit_transform(input_songs)
         input_songs = input_songs.reshape([16594, 646, 128])
@@ -510,7 +510,7 @@ class LSTM_MFCC(AudioMethod):
         model.summary()
 
         input_songs = numpy.load('/mnt/0/mfcc_representations.npy')
-        input_songs.reshape([1, 82688])
+        input_songs.reshape([16594, 82688])
         scaler = MinMaxScaler()
         input_songs = scaler.fit_transform(input_songs)
         input_songs = input_songs.reshape([16594, 646, 128])
