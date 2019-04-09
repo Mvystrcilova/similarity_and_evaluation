@@ -465,7 +465,7 @@ class GRU_MFCC(AudioMethod):
         input_songs = input_songs.reshape([16594, 646, 128])
 
         auto_encoder.compile(adam, loss='mse')
-        auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=400)
+        auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
         encoder.save(self.model_name)
         auto_encoder.save('/mnt/0/models/gru_mfcc_autoencoder.h5')
         model_json = encoder.to_json()
@@ -518,7 +518,7 @@ class LSTM_MFCC(AudioMethod):
         # train_X, train_y, test_X, test_y = sklearn.model_selection.train_test_split(input_songs, input_songs,
         #                                                                             test_size=0.2, random_state=13)
         model.compile(adam, loss='mse')
-        model.fit(input_songs, input_songs, batch_size=256, epochs=300)
+        model.fit(input_songs, input_songs, batch_size=256, epochs=150)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
 
         encoder.compile(adam, loss='mse')
