@@ -8,9 +8,9 @@ interactive(True)
 from sklearn import decomposition, preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
-# from keras import Sequential, optimizers, Model
-# from keras.layers import LSTM, Bidirectional, GRU, Input
-# from keras.models import load_model
+from keras import Sequential, optimizers, Model
+from keras.layers import LSTM, Bidirectional, GRU, Input
+from keras.models import load_model
 
 import math
 import pickle, glob, joblib
@@ -27,7 +27,7 @@ def numericalSort(value):
     return parts
 
 
-# adam = optimizers.adam(lr=0.0001, clipnorm=1.)
+adam = optimizers.adam(lr=0.0001, clipnorm=1.)
 w2v_model = 'model to be inserted'
 
 
