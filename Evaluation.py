@@ -204,7 +204,7 @@ for j in range(5):
                                                'nDGC'])
         results = results.append(temp_frame)
         i = i + 1
-    filename = 'mnt/0/results/all_lstm_mfcc_results/lstm_mfcc' + str(j+1)
+    filename = 'mnt/0/results/all_lstm_mfcc_results/lstm_mfcc_' + str(j+1)
     print(results.shape)
     results.to_csv(filename, sep=';', header=False, index=False)
 
