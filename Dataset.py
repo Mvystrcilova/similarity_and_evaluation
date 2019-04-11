@@ -91,7 +91,7 @@ def save_neural_mel_representations(model_file, weigths_file, second_dim, mel_sp
     numpy.save(representation_name, new_representations)
 
 
-load_neural_spec_representations('/mnt/0/models/final_LSTM_Spec_model.h5', 20400, '/mnt/0/spectrograms/spectrograms', 'mnt/0/final_LSTM_Spec_representations')
+load_neural_spec_representations('/mnt/0/models/final_GRU_Spec_model.h5', 20400, '/mnt/0/spectrograms/spectrograms', 'mnt/0/final_GRU_Spec_representations')
 # save_neural_spec_representations('/mnt/0/models/final_LSTM_Spec_Model.h5', 5712, 'mnt/0/song_mel_spectrograms.npy', 'mnt/0/GRU_mel_representations_5712')
 # save_neural_mel_representations('/mnt/0/LSTM_Mel_model.json', '/mnt/0/LSTM_Mel_model.h5', 5712, 'mnt/0/song_mel_spectrograms.npy', 'mnt/0/LSTM_mel_representations_5712')
 
