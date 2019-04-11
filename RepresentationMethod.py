@@ -573,7 +573,7 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
         trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
-        auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=50)
+        auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=100)
 
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
