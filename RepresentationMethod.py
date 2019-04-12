@@ -689,7 +689,7 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # pca_spec = PCA_Spectrogram('/mnt/0/spectrograms/spectrograms')
 # pca_spec.train()
 
-pca_tf_idf = PCA_tf_idf()
-pca_tf_idf.train_normal_PCA()
+# pca_tf_idf = PCA_tf_idf()
+# pca_tf_idf.train_normal_PCA()
 
 
