@@ -106,7 +106,7 @@ def get_ranks_distribution_for_lineplot(ranks):
     distribution = numpy.divide(distribution, len(ranks))
 
     return distribution
-# ranking_distribution_plot('results/pca_mel_results_5717/pca_mel_', 'rankings', 'PCA Mel 5717 ranking distribution')
+ranking_distribution_plot('results/pca_mel_results_5717/pca_mel_', 'rankings', 'PCA Mel 5717 ranking distribution')
 # ranking_distribution_plot('results/lstm_mel_results_5712/lstm_mel_', 'rankings', 'LSTM MEL ranking distribution')
 ranking_distribution_plot('results/gru_spec_results/gru_spec_', 'rankings', 'GRU SPEC  ranking distribution')
 

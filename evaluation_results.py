@@ -6,6 +6,7 @@ def get_results(filename):
     filename_3 = filename + '3'
     filename_4 = filename + '4'
     filename_5 = filename + '5'
+    overall_means = pandas.DataFrame()
 
     cross_1, c1 = read_cross_file(filename_1)
     cross_2, c2 = read_cross_file(filename_2)
@@ -68,6 +69,8 @@ def get_results(filename):
     print(means_1_16_20, means_2_16_20, means_3_16_20, means_4_16_20, means_5_16_20)
     print(means_1_21_more, means_2_21_more, means_3_21_more, means_4_21_more, means_5_21_more)
 
+    overall_means = pandas.DataFrame(data=[means_1, means_2, means_3, means_4, means_5])
+    print(overall_means.mean(axis=0))
 
 def read_cross_file(filename):
     df = pandas.read_csv(filename, sep=';', header=None)
@@ -81,7 +84,7 @@ def read_cross_file(filename):
         new_column.append(numpy.mean(a))
 
     df[3] = new_column
-    print(df.dtypes)
+    # print(df.dtypes)
     return df, ds
 
 def get_means_for_playlists(min_length, max_lenght, df):
@@ -91,9 +94,9 @@ def get_means_for_playlists(min_length, max_lenght, df):
     means.append(numpy.mean(df[5]))
     means.append(numpy.mean(df[6]))
     means.append(numpy.mean(df[3]))
-    means.append(numpy.mean(df[6]))
+    means.append(numpy.mean(df[7]))
 
-    print(means)
+    # print(means)
     return(means)
 
 
@@ -115,6 +118,42 @@ def get_distribution(df, min_length, max_length):
 # ranks = get_distribution(c1)
 # print(ranks, numpy.mean(ranks))
 
+# print('w2v results')
+# get_results('results/w2v_results/w2v_results_')
+#
+# print('tf_idf_results')
+# get_results('results/tf_idf_results/tf_idf_results_')
+#
+# print('som_w2v_results')
+# get_results('results/som_w2v_results/som_w2v_results_')
+#
+# print('pca_spec_results')
+# get_results('results/pca_spec_results_1106/pca_spec_')
+#
+# print('pca_mel_results')
+# get_results('results/pca_mel_results_5717/pca_mel_')
+#
+# print('pca 320 mel results')
+# get_results('results/pca_mel_results/pca_mel_')
+#
+# print('lstm spec results')
+# get_results('results/lstm_spec_results/lstm_spec_')
+#
+# print('lstm mfcc results')
+# get_results('results/lstm_mfcc_results/lstm_mfcc_')
+#
+#
+# print('lstm mel results')
+# get_results('results/lstm_mel_results_5712/lstm_mel_')
+#
+# print('gru_spec_results')
+# get_results('results/gru_spec_results/gru_spec_')
+#
+# print('gru_mfcc_results')
+# get_results('results/gru_mfcc_results/gru_mfcc_')
+#
+# print('gru_mel_results')
+# get_results('results/gru_mel_results_5712/gru_mel_')
 
 # from audio_representations import convert_files_to_specs
 

@@ -252,9 +252,17 @@ class PCA_Mel_spectrogram(AudioMethod):
         pca.fit(arrays)
         joblib.dump(pca, '/mnt/0/mel_spec_pca_model_90_ratio')
 
+class PCA_tf_idf():
+    def train_normal_PCA(self):
+        arrays = numpy.load('/mnt/0/tf_idf_representations.npy')
+        print('tf_idfs loaded')
+        pca = decomposition.PCA()
+        print('pca created')
+        pca.fit(arrays)
+        joblib.dump(pca, '/mnt/0/pca_tf_idf_model_big')
+
 
 class PCA_Spectrogram(AudioMethod):
-
     def __init__(self, spec_directory):
         self.spec_directory = spec_directory
 
@@ -681,7 +689,7 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # pca_spec = PCA_Spectrogram('/mnt/0/spectrograms/spectrograms')
 # pca_spec.train()
 
-# pca_mel_spec = PCA_Mel_spectrogram([])
-# pca_mel_spec.train_normal_PCA()
+pca_tf_idf = PCA_tf_idf()
+pca_tf_idf.train_normal_PCA()
 
 
