@@ -107,7 +107,7 @@ def get_ranks_distribution_for_lineplot(ranks):
 
     return distribution
 # ranking_distribution_plot('results/pca_mel_results_5717/pca_mel_', 'rankings', 'PCA Mel 5717 ranking distribution')
-ranking_distribution_plot('results/lstm_mfcc_results/lstm_mfcc_', 'rankings', 'LSTM MFCC ranking distribution')
-ranking_distribution_plot('results/gru_mfcc_results/gru_mfcc_', 'rankings', 'GRU MFCC  ranking distribution')
+# ranking_distribution_plot('results/lstm_mel_results_5712/lstm_mel_', 'rankings', 'LSTM MEL ranking distribution')
+ranking_distribution_plot('results/gru_spec_results/gru_spec_', 'rankings', 'GRU SPEC  ranking distribution')
 
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')
