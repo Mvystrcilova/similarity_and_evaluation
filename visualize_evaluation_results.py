@@ -78,7 +78,7 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     distribution_16_20 = get_ranks_distribution_for_lineplot(ranks_16_20)
     distribution_21_more = get_ranks_distribution_for_lineplot(ranks_21_more)
 
-    g = sns.distplot(ranks, bins=5000, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5))
+    g = sns.distplot(ranks, bins=5000, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5), kde=True, kde_kws=dict(linestyle=''))
     g.set_xscale('log')
 
     # sns.kdeplot(ranks_4_6, label='4 to 6 songs', linestyle='--')
@@ -86,7 +86,7 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     # sns.kdeplot(ranks_11_15, label='11 to 15 songs', linestyle="--")
     # sns.kdeplot(ranks_16_20, label='16 to 20 songs', linestyle="--")
     # sns.kdeplot(ranks_21_more, label='21 and longer playlists', linestyle="--")
-    sns.lineplot([x for x in range(16594)], distribution.reshape([16594]), label='over_all_distribution')
+    sns.lineplot([x for x in range(16594)], distribution.reshape([16594]), label='over all distribution')
     sns.lineplot([x for x in range(16594)], distribution_4_6.reshape([16594]), label='4 to 6 songs')
     sns.lineplot([x for x in range(16594)], distribution_7_10.reshape([16594]), label='7 to 10 songs')
     sns.lineplot([x for x in range(16594)], distribution_11_15.reshape([16594]), label='11 to 15 songs')
@@ -95,8 +95,11 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
 
     g.set_xscale('log')
     plt.title(plot_tile)
+    plt.savefig('results/tf_idf_results/tf_idf_graph.png', dpi=500)
 
     plt.show()
+
+
 def get_ranks_distribution_for_lineplot(ranks):
     distribution = numpy.zeros([16594, 1])
     print(len(ranks))
@@ -106,8 +109,10 @@ def get_ranks_distribution_for_lineplot(ranks):
     distribution = numpy.divide(distribution, len(ranks))
 
     return distribution
-ranking_distribution_plot('results/pca_mel_results_5717/pca_mel_', 'rankings', 'PCA Mel 5717 ranking distribution')
+# ranking_distribution_plot('results/pca_mel_results_5717/pca_mel_', 'rankings', 'PCA Mel 5717 ranking distribution')
 # ranking_distribution_plot('results/lstm_mel_results_5712/lstm_mel_', 'rankings', 'LSTM MEL ranking distribution')
-ranking_distribution_plot('results/gru_spec_results/gru_spec_', 'rankings', 'GRU SPEC  ranking distribution')
+# ranking_distribution_plot('results/gru_spec_results/gru_spec_', 'rankings', 'GRU SPEC  ranking distribution')
 
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')
+
+ranking_distribution_plot('results/tf_idf_results/tf_idf_results_', 'rankings', 'TF-idf method predicted rank distribution')

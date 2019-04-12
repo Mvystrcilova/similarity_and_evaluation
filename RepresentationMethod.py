@@ -373,7 +373,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         # # serialize weights to HDF5
         # encoder.save_weights("/mnt/0/LSTM_Mel_model.h5")
         print("Saved LSTM Mel model to disk")
-        with open('/LSTM_MEL_history', 'wb') as file_pi:
+        with open('/mnt/0/LSTM_MEL_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
 
     def get_model(self):
@@ -427,7 +427,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         # serialize weights to HDF5
         encoder.save_weights("/mnt/0/GRU_Mel_model.h5")
         print("Saved GRU Mel model to disk")
-        with open('/GRU_MEL_history', 'wb') as file_pi:
+        with open('/mnt/0/GRU_MEL_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
 
     def get_model(self):
@@ -487,7 +487,7 @@ class GRU_MFCC(AudioMethod):
         encoder.save_weights("/mnt/0/GRU_MFCC_model.h5")
         print("Saved GRU MFCC model to disk")
 
-        with open('/GRU_MFCC_history', 'wb') as file_pi:
+        with open('/mnt/0/GRU_MFCC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
 
     def get_model(self):
@@ -544,7 +544,7 @@ class LSTM_MFCC(AudioMethod):
             json_file.write(model_json)
         # serialize weights to HDF5
         encoder.save_weights("/mnt/0/LSTM_MFCC_model.h5")
-        with open('/LSTM_MFCC_history', 'wb') as file_pi:
+        with open('/mnt/0/LSTM_MFCC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
         print("Saved LSTM MFCC model to disk")
 
@@ -598,7 +598,7 @@ class GRU_Spectrogram(AudioMethod):
 
         auto_encoder.save('/mnt/0/models/short_gru_spec_autoencoder.h5')
         encoder.save(self.model_name)
-        with open('/short_GRU_SPEC_history', 'wb') as file_pi:
+        with open('/mnt/0/short_GRU_SPEC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
         # model_json = encoder.to_json()
         # with open("/mnt/0/short_GRU_Spec_model.json", "w") as json_file:
@@ -648,7 +648,7 @@ class LSTM_Spectrogram(AudioMethod):
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
         encoder.save(self.model_name)
         model.save('/mnt/0/models/short_LSTM_Spec_autoencoder.h5')
-        with open('/short_LSTM_SPEC_history', 'wb') as file_pi:
+        with open('/mnt/0/short_LSTM_SPEC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
         # model.fit(normalized_input, normalized_input, epochs=1)
 
