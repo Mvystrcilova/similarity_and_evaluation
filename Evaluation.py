@@ -166,7 +166,7 @@ for j in range(5):
                                                'nDGC'])
         results = results.append(temp_frame)
         i = i + 1
-    filename = 'mnt/0/results/all_pca_tf_idf_results/pca_tf_idf_' + str(j+1)
+    filename = 'mnt/0/results/all_pca_tf_idf_results/all_pca_tf_idf_' + str(j+1)
     print(results.shape)
     results.to_csv(filename, sep=';', header=False, index=False)
 
@@ -190,4 +190,3 @@ for j in range(5):
     results.to_csv(filename, sep=';', header=False, index=False)
 
 
-# convert_files_to_mfcc('not_empty_songs', 320)
