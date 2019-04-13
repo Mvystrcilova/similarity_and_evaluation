@@ -14,7 +14,7 @@ from keras.models import load_model
 
 import math
 import pickle, glob, joblib
-from mnt.0.minisom import MiniSom
+from minisom import MiniSom
 # from Evaluation import Evaluation
 # from Dataset import Dataset
 from gensim.models.keyedvectors import KeyedVectors
