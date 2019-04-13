@@ -92,10 +92,10 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     sns.lineplot([x for x in range(16594)], distribution_11_15.reshape([16594]), label='11 to 15 songs')
     sns.lineplot([x for x in range(16594)], distribution_16_20.reshape([16594]), label='16 to 20 songs')
     sns.lineplot([x for x in range(16594)], distribution_21_more.reshape([16594]), label='21 and more')
-    plt.ylim(0, 0.004)
+    # plt.ylim()
     g.set_xscale('log')
     plt.title(plot_tile)
-    plt.savefig('results/w2v_results/w2v_graph.png', dpi=500)
+    plt.savefig('results/pca_tf_idf_results/pca_tf_idf_graph.png', dpi=500)
 
     plt.show()
 
@@ -115,4 +115,4 @@ def get_ranks_distribution_for_lineplot(ranks):
 
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')
 
-ranking_distribution_plot('results/w2v_results/w2v_results_', 'rankings', 'Word2Vec method predicted rank distribution')
+ranking_distribution_plot('results/pca_tf_idf_results/pca_tf_idf_', 'rankings', 'PCA Tf-idf method predicted rank distribution')

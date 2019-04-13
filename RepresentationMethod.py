@@ -557,7 +557,7 @@ class LSTM_MFCC(AudioMethod):
 
 class GRU_Spectrogram(AudioMethod):
     def __init__(self, spec_directory):
-        self.model_name = '/mnt/0/models/short_GRU_Spec_model.h5'
+        self.model_name = '/mnt/0/models/GRU_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
         self.spec_directory = spec_directory
@@ -574,8 +574,8 @@ class GRU_Spectrogram(AudioMethod):
 
     def train(self, songs):
         encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
-        encoded = GRU(int(self.features/78), return_sequences=True)(encoder_inputs)
-        encoded = GRU(int(self.features/156), return_sequences=True)(encoded)
+        encoded = GRU(int(self.features/22), return_sequences=True)(encoder_inputs)
+        encoded = GRU(int(self.features/44), return_sequences=True)(encoded)
         decoded = Bidirectional(GRU(int(self.features/2),
                                     activation='softmax',
                                     return_sequences=True,
@@ -596,9 +596,9 @@ class GRU_Spectrogram(AudioMethod):
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
         #                             write_graph=True, write_images=True)
 
-        auto_encoder.save('/mnt/0/models/short_gru_spec_autoencoder.h5')
+        auto_encoder.save('/mnt/0/models/gru_spec_autoencoder.h5')
         encoder.save(self.model_name)
-        with open('/mnt/0/short_GRU_SPEC_history', 'wb') as file_pi:
+        with open('/mnt/0/GRU_SPEC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
         # model_json = encoder.to_json()
         # with open("/mnt/0/short_GRU_Spec_model.json", "w") as json_file:
@@ -619,7 +619,7 @@ class GRU_Spectrogram(AudioMethod):
 class LSTM_Spectrogram(AudioMethod):
 
     def __init__(self, spec_directory):
-        self.model_name = '/mnt/0/models/short_LSTM_Spec_model.h5'
+        self.model_name = '/mnt/0/models/LSTM_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
         self.spec_directory = spec_directory
@@ -636,8 +636,8 @@ class LSTM_Spectrogram(AudioMethod):
 
     def train(self, songs):
         model = Sequential()
-        model.add(LSTM(int(self.features/78), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
-        model.add(LSTM(int(self.features/156), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/22), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/44), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
         model.add(Bidirectional(LSTM(int(self.features/2), activation='tanh', return_sequences=True)))
         model.compile(optimizer=adam, loss='mse')
 
@@ -647,8 +647,8 @@ class LSTM_Spectrogram(AudioMethod):
         hist = model.fit_generator(trainGen, steps_per_epoch=56, epochs=100)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
         encoder.save(self.model_name)
-        model.save('/mnt/0/models/short_LSTM_Spec_autoencoder.h5')
-        with open('/mnt/0/short_LSTM_SPEC_history', 'wb') as file_pi:
+        model.save('/mnt/0/models/LSTM_Spec_autoencoder.h5')
+        with open('/mnt/0/LSTM_SPEC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
         # model.fit(normalized_input, normalized_input, epochs=1)
 
