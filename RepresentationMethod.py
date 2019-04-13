@@ -14,7 +14,7 @@ from keras.models import load_model
 
 import math
 import pickle, glob, joblib
-from things_i_hopefully_wont_use_anymore.minisom import MiniSom
+from mnt.0.minisom import MiniSom
 # from Evaluation import Evaluation
 # from Dataset import Dataset
 from gensim.models.keyedvectors import KeyedVectors
@@ -106,7 +106,7 @@ class SOM_TF_idf(TextMethod):
     def __init__(self, sigma, learning_rate):
         self.sigma = sigma
         self.learning_rate = learning_rate
-        self.model_name = 'som_tf_idf.p'
+        self.model_name = '/mnt/0/som_tf_idf.p'
 
 
     def train(self, songs):
@@ -121,12 +121,34 @@ class SOM_TF_idf(TextMethod):
         grid_size = int(5*(math.sqrt(len(songs))))
         som = MiniSom(grid_size, grid_size, len(songs[0].tf_idf_representation))
         som.random_weights_init(train_data)
-        som.train_random(train_data,num_iteration=len(songs)*10)
+        som.train_random(train_data, num_iteration=len(songs)*10)
 
         for s in songs:
             s.som_tf_idf_representation = som.winner(s.tf_idf_representation)
         with open(self.model_name, 'wb') as outfile:
             pickle.dump(som, outfile)
+
+    def train_reasonably(self):
+        train_data = numpy.load('mnt/0/pca_tf_idf_representations.npy')
+        scaler = preprocessing.MinMaxScaler()
+        train_data = scaler.fit_transform(train_data)
+        grid_size = int(5 * (math.sqrt(16594)))
+        som = MiniSom(grid_size, grid_size, 4457)
+        som.random_weights_init(train_data)
+        som.train_random(train_data, num_iteration=16594*5)
+
+        with open(self.model_name, 'wb') as outfile:
+            pickle.dump(som, outfile)
+
+        representations = numpy.zeros([16594, 2])
+        for i in range(16594):
+            repr = som.winner(train_data[i])
+            representations[i, 0] = repr[0]
+            representations[i, 1] = repr[1]
+            print(i)
+
+        numpy.save('/mnt/0/som_tf_idf_representations')
+
 
     def represent_song(self, song):
         # tf_idf_repr = Word2Vec(w2v_model, stopwords=[])
@@ -691,5 +713,9 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 
 # pca_tf_idf = PCA_tf_idf()
 # pca_tf_idf.train_normal_PCA()
+
+som_tf_idf = SOM_TF_idf(0.8, 0.5)
+som_tf_idf.train_reasonably()
+
 
 

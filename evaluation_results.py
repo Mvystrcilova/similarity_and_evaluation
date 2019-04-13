@@ -156,7 +156,7 @@ def get_distribution(df, min_length, max_length):
 # get_results('results/gru_mel_results_5712/gru_mel_')
 
 print('pca tf_idf results')
-get_results('results/som_w2v_results/som_w2v_b_5g5i_1_results_')
+get_results('results/pca_tf_idf_results/pca_tf_idf_')
 # from audio_representations import convert_files_to_specs
 
 # convert_files_to_specs('not_empty_songs', 4410, 812)
