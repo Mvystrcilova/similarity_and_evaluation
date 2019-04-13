@@ -133,7 +133,7 @@ class SOM_TF_idf(TextMethod):
         scaler = preprocessing.MinMaxScaler()
         train_data = scaler.fit_transform(train_data)
         grid_size = int(5 * (math.sqrt(16594)))
-        som = MiniSom(grid_size, grid_size, 4457)
+        som = MiniSom(grid_size, grid_size, '/mnt/0/som_tf_idf.p', train_data.shape[1])
         som.random_weights_init(train_data)
         som.train_random(train_data, num_iteration=16594*5)
 
