@@ -109,13 +109,14 @@ def get_PCA_Spec_representations(pca_model, directory, repr_name):
         print(i, pca_spec.shape)
         representations[i] = pca_spec
         i = i+1
+    numpy.save(repr_name, representations)
 
-def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
+def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
     model = joblib.load(model)
     scaler = sklearn.preprocessing.MinMaxScaler()
-    mel_specs = numpy.load(mel_spec_matrix)
-    mel_specs = scaler.fit_transform(mel_specs.reshape([16594, 130560]))
-    pca_mel_representations = numpy.empty([16594, 5715])
+    mel_specs = numpy.load(tf_idf_matrix)
+    mel_specs = scaler.fit_transform(mel_specs.reshape([16594, 40165]))
+    pca_mel_representations = numpy.empty([16594, 4457])
     for i in range(16594):
         mel_spec = mel_specs[i]
         pca_mel_spec = model.transform(mel_spec.reshape(1, -1))
@@ -124,7 +125,7 @@ def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
 
     numpy.save(repr_name, pca_mel_representations)
 
-    numpy.save(repr_name, representations)
+
 
 def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
     vectorizer = pickle.load(open(tf_idf_model, 'rb'))
@@ -142,3 +143,5 @@ def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
 # from Distances import save_neural_network
 #
 # save_neural_network('mnt/0/gru_mfcc_representations.npy', 5168, 'mnt/0/gru_mfcc_distances')
+
+get_PCA_Tf_idf_representations('/mnt/0/pca_tf_idf_model_90_ratio', '/mnt/0/tf_idf_representations.npy', '/mnt/0/pca_tf_idf_representations')
