@@ -110,6 +110,19 @@ def get_PCA_Spec_representations(pca_model, directory, repr_name):
         representations[i] = pca_spec
         i = i+1
 
+def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
+    model = joblib.load(model)
+    scaler = sklearn.preprocessing.MinMaxScaler()
+    mel_specs = numpy.load(mel_spec_matrix)
+    mel_specs = scaler.fit_transform(mel_specs.reshape([16594, 130560]))
+    pca_mel_representations = numpy.empty([16594, 5715])
+    for i in range(16594):
+        mel_spec = mel_specs[i]
+        pca_mel_spec = model.transform(mel_spec.reshape(1, -1))
+        pca_mel_representations[i] = pca_mel_spec
+        print(i)
+
+    numpy.save(repr_name, pca_mel_representations)
 
     numpy.save(repr_name, representations)
 

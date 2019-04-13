@@ -256,10 +256,10 @@ class PCA_tf_idf():
     def train_normal_PCA(self):
         arrays = numpy.load('/mnt/0/tf_idf_representations.npy')
         print('tf_idfs loaded')
-        pca = decomposition.PCA()
+        pca = decomposition.PCA(n_components=4457)
         print('pca created')
         pca.fit(arrays)
-        joblib.dump(pca, '/mnt/0/pca_tf_idf_model_big')
+        joblib.dump(pca, '/mnt/0/pca_tf_idf_model_90_ratio')
 
 
 class PCA_Spectrogram(AudioMethod):
@@ -689,7 +689,7 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # pca_spec = PCA_Spectrogram('/mnt/0/spectrograms/spectrograms')
 # pca_spec.train()
 
-# pca_tf_idf = PCA_tf_idf()
-# pca_tf_idf.train_normal_PCA()
+pca_tf_idf = PCA_tf_idf()
+pca_tf_idf.train_normal_PCA()
 
 
