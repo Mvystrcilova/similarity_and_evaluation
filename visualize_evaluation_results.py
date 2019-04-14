@@ -115,4 +115,4 @@ def get_ranks_distribution_for_lineplot(ranks):
 
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')
 
-ranking_distribution_plot('results/pca_tf_idf_results/pca_tf_idf_', 'rankings', 'PCA Tf-idf method predicted rank distribution')
+ranking_distribution_plot('results_of_unused_models/mel_results/mel_', 'rankings', 'Distribution of predicted ranks using raw Mel-spectrograms')

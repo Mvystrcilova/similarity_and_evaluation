@@ -24,7 +24,7 @@ from numpy import array
 # a maximum norm of 1.
 # adam = optimizers.adam(lr=0.0001, clipnorm=1.)
 
-filename = 'Adele - Someone Like You-hLQl3WQQoQ0.wav'
+filename = '/Users/m_vys/Music/Karel Gott - C\'est la vie.mp3'
 # filename_3 = 'Black Sabbath - Die Young (lyrics)-CJgHn7MeAwc.wav'
 # filename_2 = 'Adele - Rolling in the Deep-rYEDA3JcQqw.wav'
 y, sr = librosa.load(filename)
