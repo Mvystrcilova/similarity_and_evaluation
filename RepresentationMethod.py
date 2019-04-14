@@ -135,7 +135,7 @@ class SOM_TF_idf(TextMethod):
         grid_size = int(3 * (math.sqrt(16594)))
         som = MiniSom(grid_size, grid_size, '/mnt/0/som_tf_idf.p', train_data.shape[1])
         som.random_weights_init(train_data)
-        som.train_random(train_data, num_iteration=16594*5)
+        som.train_random(train_data,verbose=True, num_iteration=16594*5)
 
         with open(self.model_name, 'wb') as outfile:
             pickle.dump(som, outfile)
