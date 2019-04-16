@@ -4,8 +4,8 @@ import sklearn.preprocessing
 # from audio_representations import file_to_spectrogram
 # from audio_representations import convert_files_to_mfcc
 class Evaluation():
-    def __init__(self, distance_matrix_file, useful_playlists_file, song_file, are_all_playlists):
-        self.distance_matrix = numpy.load(distance_matrix_file)
+    def __init__(self, distance_matrix_file, useful_playlists_file, song_file, are_all_playlists, threshold):
+        self.distance_matrix = self.apply_threshold(threshold, distance_matrix_file)
         self.useful_playlists = self.get_useful_playlists(are_all_playlists, useful_playlists_file)
 
         # self.all_playlists = pandas.read_csv('all_playlists', sep=';',
@@ -17,8 +17,14 @@ class Evaluation():
         # self.all_users = self.all_playlists['userID'].drop_duplicates().tolist()
         # a pandas DataFrame with the songs we have
         self.songs = pandas.read_csv(song_file, sep=';', names=['title', 'artist'])
+        self.threshold = threshold
         # assinges and index columns to the pandas dataframe
         self.assing_index()
+
+    def apply_threshold(self, threshold, distance_matrix_file):
+        distance_matrix = numpy.load(distance_matrix_file)
+        distance_matrix[distance_matrix < threshold] = 0
+        return distance_matrix
 
     def assing_index(self):
         '''this function merges useful playlists with songs so that each song has its index and can
