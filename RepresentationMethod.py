@@ -14,7 +14,7 @@ from sklearn.preprocessing import MinMaxScaler
 
 import math
 import pickle, glob, joblib
-from minisom import MiniSom
+from things_i_hopefully_wont_use_anymore.minisom import MiniSom
 # from Evaluation import Evaluation
 # from Dataset import Dataset
 from gensim.models.keyedvectors import KeyedVectors
