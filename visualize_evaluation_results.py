@@ -92,11 +92,11 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     sns.lineplot([x for x in range(16594)], distribution_11_15.reshape([16594]), label='11 to 15 songs')
     sns.lineplot([x for x in range(16594)], distribution_16_20.reshape([16594]), label='16 to 20 songs')
     sns.lineplot([x for x in range(16594)], distribution_21_more.reshape([16594]), label='21 and more')
-    plt.ylim(0, 0.002)
+    # plt.ylim(0, 0.002)
     g.set_xscale('log')
     plt.title(plot_tile)
-    if filename == 'results/lstm_mfcc_results/lstm_mfcc_':
-        plt.savefig('results/lstm_mfcc_results/lstm_mfcc_graph.png', dpi=500)
+    if filename == 'results/short_LSTM_spec_results/chopped_lstm_spec_':
+        plt.savefig('results/short_LSTM_spec_results/chopped_lstm_spec_5712_graph.png', dpi=500)
     else:
         plt.savefig('results/gru_mfcc_results/gru_mfcc_graph.png', dpi=500)
 
@@ -118,5 +118,5 @@ def get_ranks_distribution_for_lineplot(ranks):
 
 # ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')
 
-ranking_distribution_plot('results/lstm_mfcc_results/lstm_mfcc_', 'rankings', 'Distribution of predicted ranks using the LSTM_MFCC network')
-ranking_distribution_plot('results/gru_mfcc_results/gru_mfcc_', 'rankings', 'Distribution of predicted ranks using the GRU_MFCC network')
+ranking_distribution_plot('results/short_LSTM_spec_results/chopped_lstm_spec_', 'rankings', 'The RDG for the LSTM_SPEC_5712 network with threshold')
+# ranking_distribution_plot('results/gru_mfcc_results/gru_mfcc_', 'rankings', 'Distribution of predicted ranks using the GRU_MFCC network')
