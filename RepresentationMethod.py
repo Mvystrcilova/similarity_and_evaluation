@@ -128,6 +128,9 @@ class SOM_TF_idf(TextMethod):
         with open(self.model_name, 'wb') as outfile:
             pickle.dump(som, outfile)
 
+    def represent_song(self, song):
+        pass
+
     def train_reasonably(self):
         train_data = numpy.load('mnt/0/pca_tf_idf_representations.npy')
         scaler = preprocessing.MinMaxScaler()
@@ -154,14 +157,18 @@ class SOM_TF_idf(TextMethod):
         numpy.save('/mnt/0/som_tf_idf_representations')
 
 
-    def represent_song(self, song):
-        # tf_idf_repr = Word2Vec(w2v_model, stopwords=[])
-        # tf_idf_repr.represent_song(song)
-        # with open(self.model_name, 'rb') as infile:
-        #     som = pickle.load(infile)
-        # song.som_w2v_representation = som.winner(song.W2V_representation)
-        pass
 
+    def represent_songs(self, model, pca_tf_idf_representations):
+        som = joblib.load(model)
+        train_data = numpy.load(pca_tf_idf_representations)
+        representations = numpy.zeros([16594, 2])
+        for i in range(16594):
+            repr = som.winner(train_data[i])
+            representations[i, 0] = repr[0]
+            representations[i, 1] = repr[1]
+            print(i)
+
+        numpy.save('/mnt/0/som_tf_idf_representations')
 
 class SOM_W2V(TextMethod):
     def __init__(self, sigma, learning_rate, grid_size_multiple, iterations, model_name):
@@ -719,7 +726,7 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # pca_tf_idf.train_normal_PCA()
 
 som_tf_idf = SOM_TF_idf(0.8, 0.5)
-som_tf_idf.train_reasonably()
+som_tf_idf.represent_songs('/mnt/0/som_tf_idf.p16594', 'mnt/0/pca_tf_idf_representations.npy')
 
 
 
