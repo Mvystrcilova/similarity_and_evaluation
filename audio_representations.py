@@ -1,5 +1,5 @@
 import numpy, pandas, librosa, os, sklearn.preprocessing, joblib, glob, pickle
-from keras.models import model_from_json
+from keras.models import model_from_json, load_model
 import re
 numbers = re.compile(r'(\d+)')
 def numericalSort(value):
@@ -100,17 +100,28 @@ def get_MFCC_representations(mfcc_model, mfcc_weights, mfcc_representations, rep
 
 
 def get_PCA_Spec_representations(pca_model, directory, repr_name):
-    representations = numpy.empty([16594, 1106])
+    representations = numpy.empty([16594, 320])
     pca_model = joblib.load(pca_model)
     i = 0
     for file in sorted(glob.glob(directory + '/*.npy'), key=numericalSort):
         spec = numpy.load(file).reshape([1,900048])
-        pca_spec = pca_model.transform(spec)
+        pca_spec = pca_model.transform(numpy.abs(spec))
         print(i, pca_spec.shape)
         representations[i] = pca_spec
         i = i+1
     numpy.save(repr_name, representations)
+def get_nn_Spec_representations(nn_model, directory, repr_name):
+    representations = numpy.empty([16594, 5712])
+    model = load_model(nn_model)
+    i = 0
+    for file in sorted(glob.glob(directory + '/*.npy'), key=numericalSort):
+        spec = numpy.load(file).reshape([1, 408, 2206])
+        nn_spec = model.predict(numpy.abs(spec))[0]
+        print(i, nn_spec.shape)
+        representations[i] = nn_spec.reshape([1, 5712])
+        i = i + 1
 
+    numpy.save(repr_name, representations)
 def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
     model = joblib.load(model)
     scaler = sklearn.preprocessing.MinMaxScaler()
@@ -126,9 +137,9 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
     numpy.save(repr_name, pca_mel_representations)
 
 
-
-def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
-    vectorizer = pickle.load(open(tf_idf_model, 'rb'))
+#
+# def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
+#     vectorizer = pickle.load(open(tf_idf_model, 'rb'))
 
 # get_PCA_Spec_representations('/mnt/0/big_pca_model', 'mnt/0/spectrograms', 'mnt/0/pca_spec_representations_1106')
 # get_PCA_Mel_representations('mnt/0/mel_spec_pca_model_90_ratio', 'mnt/0/song_mel_spectrograms.npy', 'mnt/0//mel_spec_representations_5717')
@@ -144,4 +155,6 @@ def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
 #
 # save_neural_network('mnt/0/gru_mfcc_representations.npy', 5168, 'mnt/0/gru_mfcc_distances')
 
-get_PCA_Tf_idf_representations('/mnt/0/pca_tf_idf_model_90_ratio', '/mnt/0/tf_idf_representations.npy', '/mnt/0/pca_tf_idf_representations')
+# get_PCA_Spec_representations('/Volumes/LaCie/similarity_and_evaluation/unused_models/spec_pca_model_joblib', '/Volumes/LaCie/similarity_and_evaluation/similarity_and_evaluation/spectrograms/', 'short_pca_spec_representations')
+get_nn_Spec_representations('new_models/short_GRU_Spec_model.h5', '/Volumes/LaCie/similarity_and_evaluation/similarity_and_evaluation/spectrograms', 'short_GRU_spec_representations')
+get_nn_Spec_representations('new_models/short_LSTM_Spec_model.h5', '/Volumes/LaCie/similarity_and_evaluation/similarity_and_evaluation/spectrograms', 'short_LSTM_spec_representations')

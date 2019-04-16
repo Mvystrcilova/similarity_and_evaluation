@@ -20,7 +20,7 @@ import unittest, pickle
 
 def _incremental_index_verbose(m):
     """Yields numbers from 0 to m-1 printing the status on the stdout."""
-    progress = '\r [ {0:'+ str(len(str(m))) +  '/' + str(m) + '] %f it/s'
+    progress = '\r [ {0:'+ str(len(m)/m) + '] %f it/s'
     stdout.write(progress)
     beginning = time()
     for i in range(m):

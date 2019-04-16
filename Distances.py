@@ -17,7 +17,7 @@ def save_spectrogram_distances(spectrogram_file):
 def save_pca_distances(pca_file):
     vectors = numpy.load(pca_file)
     distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
-    numpy.save('mnt/0/pca_tf_idf_distances', distances)
+    numpy.save('short_pca_tf_idf_distances', distances)
 
 def save_mfcc_distances(mffc_file):
     vectors = numpy.load(mffc_file).reshape([16594, 82688])
@@ -114,11 +114,13 @@ def save_som_distances_from_array(representations, model_name):
 
 # save_mel_distances('/mnt/0/song_mel_spectrograms.npy')
 # save_mfcc_distances('mfcc_representations.npy')
-# save_pca_distances('mnt/0/pca_spec_representations_1106.npy')
-# save_neural_network('mnt/0/final_GRU_Spec_representations.npy', 20400,'/mnt/0/distances/final_gru_spec_distances')
+# save_pca_distances('short_pca_spec_representations.npy')
+save_neural_network('mnt/0/short_GRU_Spec_representations.npy', 5712,'/mnt/0/distances/gru_spec_distances')
+save_neural_network('mnt/0/short_LSTM_Spec_representations.npy', 5712,'/mnt/0/distances/gru_spec_distances')
+
 # save_neural_network('mnt/0/GRU_mel_representations_5712.npy', 5712,'mnt/0/gru_mel_distances_5712')
 # save_neural_network('mnt/0/LSTM_mel_representations_5712.npy', 5712,'mnt/0/final_lstm_mel_distances_5712')
 # save_pca_distances('mnt/0/pca_mel_representations_5717.npy')
 # save_neural_network('mnt/0/gru_mfcc_representations.npy', 5168, 'mnt/0/gru_mfcc_distances')
 # save_neural_network('mnt/0/lstm_mfcc_representations.npy', 5168, 'mnt/0/lstm_mfcc_distances')
-save_pca_distances('/mnt/0/pca_tf_idf_representations.npy')
+# save_pca_distances('/mnt/0/pca_tf_idf_representations.npy')

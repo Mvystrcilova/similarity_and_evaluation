@@ -8,13 +8,13 @@ class Evaluation():
         self.distance_matrix = numpy.load(distance_matrix_file)
         self.useful_playlists = self.get_useful_playlists(are_all_playlists, useful_playlists_file)
 
-        self.all_playlists = pandas.read_csv('/mnt/0/all_playlists', sep=';',
-                                                names=['userID',
-                                                       'songId', 'artist', 'title', 'lyrics' ],
-                                                usecols=[0, 1, 2, 3])
+        # self.all_playlists = pandas.read_csv('all_playlists', sep=';',
+        #                                         names=['userID',
+        #                                                'songId', 'artist', 'title', 'lyrics' ],
+        #                                         usecols=[0, 1, 2, 3])
         # a list of users with 4 songs and more in their playlist
         self.users = self.useful_playlists['userID'].drop_duplicates().tolist()
-        self.all_users = self.all_playlists['userID'].drop_duplicates().tolist()
+        # self.all_users = self.all_playlists['userID'].drop_duplicates().tolist()
         # a pandas DataFrame with the songs we have
         self.songs = pandas.read_csv(song_file, sep=';', names=['title', 'artist'])
         # assinges and index columns to the pandas dataframe
@@ -151,27 +151,27 @@ class Evaluation():
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
 
-for j in range(5):
-    evaluation = Evaluation('mnt/0/pca_tf_idf_distances.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs', True)
-    results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
-                 'recall_at_50', 'recall_at_100', 'nDGC'])
-    i = 0
-    for user in evaluation.users:
-        user_results = evaluation.eval_playlist(user)
-        print('user ', i, " out of ", len(evaluation.users))
-        print(user_results)
-        temp_frame = pandas.DataFrame([user_results],
-                                      columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
-                                               'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
-                                               'nDGC'])
-        results = results.append(temp_frame)
-        i = i + 1
-    filename = 'mnt/0/results/all_pca_tf_idf_results/all_pca_tf_idf_' + str(j+1)
-    print(results.shape)
-    results.to_csv(filename, sep=';', header=False, index=False)
+# for j in range(5):
+#     evaluation = Evaluation('mnt/0/pca_tf_idf_distances.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs', True)
+#     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
+#                  'recall_at_50', 'recall_at_100', 'nDGC'])
+#     i = 0
+#     for user in evaluation.users:
+#         user_results = evaluation.eval_playlist(user)
+#         print('user ', i, " out of ", len(evaluation.users))
+#         print(user_results)
+#         temp_frame = pandas.DataFrame([user_results],
+#                                       columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
+#                                                'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
+#                                                'nDGC'])
+#         results = results.append(temp_frame)
+#         i = i + 1
+#     filename = 'mnt/0/results/all_pca_tf_idf_results/all_pca_tf_idf_' + str(j+1)
+#     print(results.shape)
+#     results.to_csv(filename, sep=';', header=False, index=False)
 
 for j in range(5):
-    evaluation = Evaluation('mnt/0/pca_tf_idf_distances.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs', False)
+    evaluation = Evaluation('short_pca_spec_distances.npy', 'useful_playlists', 'useful_songs', False)
     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                  'recall_at_50', 'recall_at_100', 'nDGC'])
     i = 0
@@ -185,7 +185,7 @@ for j in range(5):
                                                'nDGC'])
         results = results.append(temp_frame)
         i = i + 1
-    filename = 'mnt/0/results/pca_tf_idf_results/pca_tf_idf_' + str(j+1)
+    filename = 'results/short_pca_spec_results/pca_spec_' + str(j+1)
     print(results.shape)
     results.to_csv(filename, sep=';', header=False, index=False)
 

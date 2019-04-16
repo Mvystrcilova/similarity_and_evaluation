@@ -132,13 +132,17 @@ class SOM_TF_idf(TextMethod):
         train_data = numpy.load('mnt/0/pca_tf_idf_representations.npy')
         scaler = preprocessing.MinMaxScaler()
         train_data = scaler.fit_transform(train_data)
-        grid_size = int(3 * (math.sqrt(16594)))
+        grid_size = int(2 * (math.sqrt(16594)))
         som = MiniSom(grid_size, grid_size, '/mnt/0/som_tf_idf.p', train_data.shape[1])
         som.random_weights_init(train_data)
-        som.train_random(train_data,verbose=True, num_iteration=16594*5)
+        som.train_random(train_data, verbose=True, num_iteration=16594*5)
 
-        with open(self.model_name, 'wb') as outfile:
-            pickle.dump(som, outfile)
+        joblib.dump(som, self.model_name)
+        try:
+            with open(self.model_name, 'wb') as outfile:
+                pickle.dump(som, outfile)
+        except:
+            pass
 
         representations = numpy.zeros([16594, 2])
         for i in range(16594):
