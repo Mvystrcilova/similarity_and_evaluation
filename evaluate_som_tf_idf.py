@@ -2,7 +2,7 @@ from Evaluation import Evaluation
 import pandas
 
 for j in range(5):
-    evaluation = Evaluation('mnt/0/som_tf_idf_distances.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs', False, threshold=0.383)
+    evaluation = Evaluation('mnt/0/som_tf_idf_distances.npy', 'mnt/0/useful_playlists', 'mnt/0/useful_songs', False, threshold=0)
     results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                  'recall_at_50', 'recall_at_100', 'nDGC'])
     i = 0
