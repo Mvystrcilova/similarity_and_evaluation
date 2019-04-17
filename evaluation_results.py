@@ -167,6 +167,9 @@ def get_distribution(df, min_length, max_length):
 print('pca 320 mel results with threshold 2 ')
 get_results('results/pca_mel_results/chopped_pca_mel_threshold_0.383_')
 
+print('som_tf_idf_results without threshold')
+get_results('results/som_tf_idf_results/som_tf_idf_')
+
 # print('lstm spec results')
 # get_results('results/lstm_spec_results/chopped_lstm_spec_')
 

@@ -95,7 +95,7 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     # plt.ylim(0, 0.002)
     g.set_xscale('log')
     plt.title(plot_tile)
-    graph_name = filename.split('/')[0] + '/' + filename.split('/')[1] + '/chopped_graph.png'
+    graph_name = filename.split('/')[0] + '/' + filename.split('/')[1] + '/chopped_graph_0.383.png'
 
     plt.savefig(graph_name, dpi=500)
 
@@ -120,8 +120,8 @@ def get_ranks_distribution_for_lineplot(ranks):
 # ranking_distribution_plot('results/short_GRU_spec_results/chopped_GRU_spec_', 'rankings', 'GRU_spec_5712 RDG with threshold')
 # ranking_distribution_plot('results/gru_mel_results_5712/chopped_gru_mel_', 'rankings', 'GRU MEL ranking distribution with threshold')
 
-# ranking_distribution_plot('results/som_w2v_results/som_w2v_b_5g5i_1_results_', 'rankings', 'som W2V ranking distribution')
-ranking_distribution_plot('results/lstm_spec_results/chopped_lstm_spec_', 'rankings', 'The RDG of the LSTM_spec_20400 network with threshold')
+ranking_distribution_plot('results/som_tf_idf_results/som_tf_idf_', 'rankings', 'som TF-idf ranking distribution')
+# ranking_distribution_plot('results/lstm_spec_results/chopped_lstm_spec_', 'rankings', 'The RDG of the LSTM_spec_20400 network with threshold')
 # ranking_distribution_plot('results/short_LSTM_spec_results/chopped_lstm_spec_', 'rankings', 'The RDG of the LSTM_SPEC_5712 network with threshold')
 # ranking_distribution_plot('results/gru_mfcc_results/chopped_gru_mfcc_', 'rankings', 'RDG of the GRU_MFCC network with threshold')
 # ranking_distribution_plot('results/lstm_mfcc_results/chopped_lstm_mfcc_', 'rankings', 'RDG of the LSTM_MFCC network with threshold')
@@ -130,7 +130,7 @@ ranking_distribution_plot('results/lstm_spec_results/chopped_lstm_spec_', 'ranki
 # ranking_distribution_plot('results/tf_idf_results/chopped_tf_idf_', 'rankings', 'RDG of the GRU_MFCC network with threshold')
 # ranking_distribution_plot('results/w2v_results/chopped_w2v_', 'rankings', 'RDG of the W2V method with threshold')
 # ranking_distribution_plot('results/som_w2v_results/chopped_som_w2v_', 'rankings', 'RDG of the SOM W2V method with threshold')
-ranking_distribution_plot('results/pca_mel_results/chopped_pca_mel_', 'rankings', 'PCA Mel 320 ranking distribution with threshold')
+# ranking_distribution_plot('results/pca_mel_results/chopped_pca_mel_threshold_0.383_', 'rankings', 'PCA Mel 320 ranking distribution with threshold')
 
 #SOM A W2V jeste
 
