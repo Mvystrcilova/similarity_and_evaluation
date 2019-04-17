@@ -722,11 +722,11 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # pca_spec = PCA_Spectrogram('/mnt/0/spectrograms/spectrograms')
 # pca_spec.train()
 
-pca_tf_idf = PCA_tf_idf()
-pca_tf_idf.train_normal_PCA()
+# pca_tf_idf = PCA_tf_idf()
+# pca_tf_idf.train_normal_PCA()
 
-# som_tf_idf = SOM_TF_idf(0.8, 0.5)
-# som_tf_idf.represent_songs('/mnt/0/som_tf_idf.p16594', 'mnt/0/pca_tf_idf_representations.npy')
+som_tf_idf = SOM_TF_idf(0.8, 0.5)
+som_tf_idf.represent_songs('/mnt/0/som_tf_idf.p16594', 'mnt/0/pca_tf_idf_representations.npy')
 
 
 
