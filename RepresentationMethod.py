@@ -168,7 +168,7 @@ class SOM_TF_idf(TextMethod):
             representations[i, 1] = repr[1]
             print(i)
 
-        numpy.save('/mnt/0/som_tf_idf_representations')
+        numpy.save('/mnt/0/som_tf_idf_representations',representations)
 
 class SOM_W2V(TextMethod):
     def __init__(self, sigma, learning_rate, grid_size_multiple, iterations, model_name):
