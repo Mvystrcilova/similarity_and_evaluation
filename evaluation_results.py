@@ -62,12 +62,12 @@ def get_results(filename):
     means_21_more = pandas.DataFrame(data=[means_1_21_more, means_2_21_more, means_3_21_more, means_4_21_more, means_5_21_more])
     means_21_more.to_csv(filename + 'means_21_more', sep=';', header=None, index=False)
 
-    print(means_1, means_2, means_3, means_4, means_5)
-    print(means_1_4_6, means_2_4_6, means_3_4_6, means_4_4_6, means_5_4_6)
-    print(means_1_7_10, means_2_7_10, means_3_7_10, means_4_7_10, means_5_7_10)
-    print(means_1_11_15, means_2_11_15, means_3_11_15, means_4_11_15, means_5_11_15)
-    print(means_1_16_20, means_2_16_20, means_3_16_20, means_4_16_20, means_5_16_20)
-    print(means_1_21_more, means_2_21_more, means_3_21_more, means_4_21_more, means_5_21_more)
+    # print(means_1, means_2, means_3, means_4, means_5)
+    # print(means_1_4_6, means_2_4_6, means_3_4_6, means_4_4_6, means_5_4_6)
+    # print(means_1_7_10, means_2_7_10, means_3_7_10, means_4_7_10, means_5_7_10)
+    # print(means_1_11_15, means_2_11_15, means_3_11_15, means_4_11_15, means_5_11_15)
+    # print(means_1_16_20, means_2_16_20, means_3_16_20, means_4_16_20, means_5_16_20)
+    # print(means_1_21_more, means_2_21_more, means_3_21_more, means_4_21_more, means_5_21_more)
 
     overall_means = pandas.DataFrame(data=[means_1, means_2, means_3, means_4, means_5])
     print(overall_means.mean(axis=0))
@@ -118,51 +118,60 @@ def get_distribution(df, min_length, max_length):
 # ranks = get_distribution(c1)
 # print(ranks, numpy.mean(ranks))
 
-# print('w2v results')
-# get_results('results/w2v_results/chopped_w2v_results_')
-#
-print('tf_idf_results')
-get_results('results/tf_idf_results/chopped_tf_idf_')
-#
-# print('som_w2v_results')
-# get_results('results/som_w2v_results/chopped_som_w2v_results_')
-#
-print('pca_spec_results')
-get_results('results/pca_spec_results_1106/chopped_pca_spec_')
-#
-print('pca_mel_results')
-get_results('results/pca_mel_results_5717/chopped_pca_mel_')
 
-# print('pca 320 mel results')
-# get_results('results/pca_mel_results/chopped_pca_mel_')
+#
+# print('tf_idf_results')
+# get_results('results/tf_idf_results/chopped_tf_idf_')
+# #
+#
+# #
+# print('pca_spec_results')
+# get_results('results/pca_spec_results_1106/chopped_pca_spec_')
+# #
+# print('pca_mel_results')
+# get_results('results/pca_mel_results_5717/chopped_pca_mel_')
+
+print('short pca_spec_results with threshold')
+get_results('results/short_pca_spec_results/chopped_pca_spec_')
+
+print('short pca_spec_results without threshold')
+get_results('results/short_pca_spec_results/pca_spec_')
+
+# print('lstm mfcc results')
+# get_results('results/lstm_mfcc_results/lstm_mfcc_')
+
+
+# print('lstm mel results')
+# get_results('results/lstm_mel_results_5712/chopped_lstm_mel_')
+#
+# print('gru_spec_results')
+# get_results('results/gru_spec_results/chopped_gru_spec_')
+#
+# print('gru_mfcc_results')
+# get_results('results/gru_mfcc_results/chopped_gru_mfcc_')
+#
+# print('gru_mel_results')
+# get_results('results/gru_mel_results_5712/chopped_gru_mel_')
+#
+#
+# print('short gru spec results')
+# get_results('results/short_GRU_spec_results/GRU_spec_')
+# #
+# print('pca tf_idf_results')
+# get_results('results/pca_tf_idf_results/chopped_pca_tf_idf_')
+# #
+# print('short lstm spec results')
+# get_results('results/short_LSTM_spec_results/LSTM_spec_')
+
+
+print('pca 320 mel results')
+get_results('results/pca_mel_results/chopped_pca_mel_')
 
 print('lstm spec results')
 get_results('results/lstm_spec_results/chopped_lstm_spec_')
 
-print('lstm mfcc results')
-get_results('results/lstm_mfcc_results/chopped_lstm_mfcc_')
+# print('som_w2v_results')
+# get_results('results/som_w2v_results/chopped_som_w2v_')
 
-
-print('lstm mel results')
-get_results('results/lstm_mel_results_5712/chopped_lstm_mel_')
-
-print('gru_spec_results')
-get_results('results/gru_spec_results/chopped_gru_spec_')
-
-print('gru_mfcc_results')
-get_results('results/gru_mfcc_results/chopped_gru_mfcc_')
-
-print('gru_mel_results')
-get_results('results/gru_mel_results_5712/chopped_gru_mel_')
-
-print('pca_320 results')
-get_results('results/pca_mel_results/chopped_pca_mel_')
-
-print('short gru spec results')
-get_results('results/short_GRU_spec_results/chopped_GRU_spec_')
-
-print('pca tf_idf_results')
-get_results('results/pca_tf_idf_results/chopped_pca_tf_idf_')
-
-print('short lstm spec results')
-get_results('results/short_LSTM_spec_results/chopped_LSTM_spec_')
+# print('w2v results')
+# get_results('results/w2v_results/chopped_w2v_')
