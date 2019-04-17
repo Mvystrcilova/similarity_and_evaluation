@@ -131,11 +131,11 @@ def get_distribution(df, min_length, max_length):
 # print('pca_mel_results')
 # get_results('results/pca_mel_results_5717/chopped_pca_mel_')
 
-print('short pca_spec_results with threshold')
-get_results('results/short_pca_spec_results/chopped_pca_spec_')
-
-print('short pca_spec_results without threshold')
-get_results('results/short_pca_spec_results/pca_spec_')
+# print('short pca_spec_results with threshold')
+# get_results('results/short_pca_spec_results/chopped_pca_spec_')
+#
+# print('short pca_spec_results without threshold')
+# get_results('results/short_pca_spec_results/pca_spec_')
 
 # print('lstm mfcc results')
 # get_results('results/lstm_mfcc_results/lstm_mfcc_')
@@ -164,11 +164,11 @@ get_results('results/short_pca_spec_results/pca_spec_')
 # get_results('results/short_LSTM_spec_results/LSTM_spec_')
 
 
-print('pca 320 mel results')
-get_results('results/pca_mel_results/chopped_pca_mel_')
+print('pca 320 mel results with threshold 2 ')
+get_results('results/pca_mel_results/chopped_pca_mel_threshold_0.383_')
 
-print('lstm spec results')
-get_results('results/lstm_spec_results/chopped_lstm_spec_')
+# print('lstm spec results')
+# get_results('results/lstm_spec_results/chopped_lstm_spec_')
 
 # print('som_w2v_results')
 # get_results('results/som_w2v_results/chopped_som_w2v_')
