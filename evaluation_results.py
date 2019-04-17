@@ -119,47 +119,50 @@ def get_distribution(df, min_length, max_length):
 # print(ranks, numpy.mean(ranks))
 
 # print('w2v results')
-# get_results('results/w2v_results/w2v_results_')
+# get_results('results/w2v_results/chopped_w2v_results_')
 #
-# print('tf_idf_results')
-# get_results('results/tf_idf_results/tf_idf_results_')
+print('tf_idf_results')
+get_results('results/tf_idf_results/chopped_tf_idf_')
 #
 # print('som_w2v_results')
-# get_results('results/som_w2v_results/som_w2v_results_')
+# get_results('results/som_w2v_results/chopped_som_w2v_results_')
 #
-# print('pca_spec_results')
-# get_results('results/pca_spec_results_1106/pca_spec_')
+print('pca_spec_results')
+get_results('results/pca_spec_results_1106/chopped_pca_spec_')
 #
-# print('pca_mel_results')
-# get_results('results/pca_mel_results_5717/pca_mel_')
-#
+print('pca_mel_results')
+get_results('results/pca_mel_results_5717/chopped_pca_mel_')
+
 # print('pca 320 mel results')
-# get_results('results/pca_mel_results/pca_mel_')
-#
-# print('lstm spec results')
-# get_results('results/lstm_spec_results/lstm_spec_')
-#
-# print('lstm mfcc results')
-# get_results('results/lstm_mfcc_results/lstm_mfcc_')
-#
-#
-# print('lstm mel results')
-# get_results('results/lstm_mel_results_5712/lstm_mel_')
-#
-# print('gru_spec_results')
-# get_results('results/gru_spec_results/gru_spec_')
-#
-# print('gru_mfcc_results')
-# get_results('results/gru_mfcc_results/gru_mfcc_')
-#
-# print('gru_mel_results')
-# get_results('results/gru_mel_results_5712/gru_mel_')
+# get_results('results/pca_mel_results/chopped_pca_mel_')
 
-# print('pca_320 results')
-# get_results('results/pca_mel_results/pca_mel_')
+print('lstm spec results')
+get_results('results/lstm_spec_results/chopped_lstm_spec_')
 
-# print('short gru spec results')
-# get_results('results/short_GRU_spec_results/GRU_spec_')
-# from audio_representations import convert_files_to_specs
+print('lstm mfcc results')
+get_results('results/lstm_mfcc_results/chopped_lstm_mfcc_')
 
-# convert_files_to_specs('not_empty_songs', 4410, 812)
+
+print('lstm mel results')
+get_results('results/lstm_mel_results_5712/chopped_lstm_mel_')
+
+print('gru_spec_results')
+get_results('results/gru_spec_results/chopped_gru_spec_')
+
+print('gru_mfcc_results')
+get_results('results/gru_mfcc_results/chopped_gru_mfcc_')
+
+print('gru_mel_results')
+get_results('results/gru_mel_results_5712/chopped_gru_mel_')
+
+print('pca_320 results')
+get_results('results/pca_mel_results/chopped_pca_mel_')
+
+print('short gru spec results')
+get_results('results/short_GRU_spec_results/chopped_GRU_spec_')
+
+print('pca tf_idf_results')
+get_results('results/pca_tf_idf_results/chopped_pca_tf_idf_')
+
+print('short lstm spec results')
+get_results('results/short_LSTM_spec_results/chopped_LSTM_spec_')
