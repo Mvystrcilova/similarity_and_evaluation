@@ -418,7 +418,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
 class GRU_Mel_Spectrogram(AudioMethod):
     def __init__(self):
-        self.model_name = 'mnt/0/models/final_GRU_Mel_model.h5'
+        self.model_name = 'mnt/0/new_models/new_GRU_Mel_model.h5'
         self.time_stamps = 408
         self.features = 320
 
@@ -453,14 +453,16 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
         encoder.save(self.model_name)
-        auto_encoder.save('/mnt/0/models/gru_mel_autoencoder.h5')
-        model_json = encoder.to_json()
-        with open("/mnt/0/GRU_Mel_model.json", "w") as json_file:
-            json_file.write(model_json)
-        # serialize weights to HDF5
-        encoder.save_weights("/mnt/0/GRU_Mel_model.h5")
-        print("Saved GRU Mel model to disk")
-        with open('/mnt/0/GRU_MEL_history', 'wb') as file_pi:
+        try:
+            auto_encoder.save('/mnt/0/new_models/new_gru_mel_autoencoder.h5')
+        except:
+            model_json = encoder.to_json()
+            with open("/mnt/0/GRU_Mel_model.json", "w") as json_file:
+                json_file.write(model_json)
+            # serialize weights to HDF5
+            encoder.save_weights("/mnt/0/GRU_Mel_model.h5")
+            print("Saved GRU Mel model to disk")
+        with open('/mnt/0/histories/new_gru_mel_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
 
     def get_model(self):
