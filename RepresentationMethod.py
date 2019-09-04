@@ -448,7 +448,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/song_mel_spectrograms.npy').reshape([16594, 408, 320])
+        input_songs = numpy.load('/mnt/0/new_representations/song_mel_spectrograms.npy').reshape([16594, 408, 320])
 
         auto_encoder.compile(adam, loss='mse')
         hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
