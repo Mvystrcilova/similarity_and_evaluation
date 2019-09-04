@@ -520,7 +520,7 @@ class GRU_MFCC(AudioMethod):
             json_file.write(model_json)
         # serialize weights to HDF5
         encoder.save_weights("/mnt/0/GRU_MFCC_model.h5")
-        print("Saved GRU MFCC model to disk")
+        print("Saved the GRU MFCC model to disk")
 
         with open('/mnt/0/GRU_MFCC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
