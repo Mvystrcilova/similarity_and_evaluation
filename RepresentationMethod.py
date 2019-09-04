@@ -8,15 +8,15 @@ interactive(True)
 from sklearn import decomposition, preprocessing
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.preprocessing import MinMaxScaler
-# from keras import Sequential, optimizers, Model
-# from keras.layers import LSTM, Bidirectional, GRU, Input
-# from keras.models import load_model
+from keras import Sequential, optimizers, Model
+from keras.layers import LSTM, Bidirectional, GRU, Input
+from keras.models import load_model
 
 import math
 import pickle, glob, joblib
 from things_i_hopefully_wont_use_anymore.minisom import MiniSom
-# from Evaluation import Evaluation
-# from Dataset import Dataset
+from Evaluation import Evaluation
+from Dataset import Dataset
 from gensim.models.keyedvectors import KeyedVectors
 
 import re
@@ -27,7 +27,7 @@ def numericalSort(value):
     return parts
 
 
-# adam = optimizers.adam(lr=0.0001, clipnorm=1.)
+adam = optimizers.adam(lr=0.0001, clipnorm=1.)
 w2v_model = 'model to be inserted'
 
 
@@ -383,7 +383,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
     def train(self, songs):
         model = Sequential()
         model.add(LSTM(int(self.features/11), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
-        model.add(LSTM(int(self.features/22), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/22), activation='sigmoid', return_sequences=False, input_shape=(self.time_stamps, self.features)))
         model.add(Bidirectional(LSTM(160, activation='tanh', return_sequences=True)))
         model.compile(optimizer=adam, loss='mse')
 
@@ -436,7 +436,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
     def train(self, songs):
         encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
         encoded = GRU(int(self.features/11), return_sequences=True)(encoder_inputs)
-        encoded = GRU(int(self.features/22), return_sequences=True)(encoded)
+        encoded = GRU(int(self.features/22), return_sequences=False)(encoded)
         decoded = Bidirectional(GRU(int(self.features/2),
                                     activation='tanh',
                                     return_sequences=True,
@@ -491,7 +491,7 @@ class GRU_MFCC(AudioMethod):
     def train(self, songs):
         encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
         encoded = GRU(int(self.features/7), return_sequences=True)(encoder_inputs)
-        encoded = GRU(int(self.features/15), return_sequences=True)(encoded)
+        encoded = GRU(int(self.features/15), return_sequences=False)(encoded)
         decoded = Bidirectional(GRU(int(self.features/2),
                                     activation='tanh',
                                     return_sequences=True,
@@ -551,7 +551,7 @@ class LSTM_MFCC(AudioMethod):
     def train(self, songs):
         model = Sequential()
         model.add(LSTM(int(self.features/7), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
-        model.add(LSTM(int(self.features/15), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/15), activation='sigmoid', return_sequences=False, input_shape=(self.time_stamps, self.features)))
         model.add(Bidirectional(LSTM(64, activation='tanh', return_sequences=True)))
         model.compile(optimizer=adam, loss='mse')
 
@@ -608,7 +608,7 @@ class GRU_Spectrogram(AudioMethod):
     def train(self, songs):
         encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
         encoded = GRU(int(self.features/22), return_sequences=True)(encoder_inputs)
-        encoded = GRU(int(self.features/44), return_sequences=True)(encoded)
+        encoded = GRU(int(self.features/44), return_sequences=False)(encoded)
         decoded = Bidirectional(GRU(int(self.features/2),
                                     activation='softmax',
                                     return_sequences=True,
@@ -670,7 +670,7 @@ class LSTM_Spectrogram(AudioMethod):
     def train(self, songs):
         model = Sequential()
         model.add(LSTM(int(self.features/22), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
-        model.add(LSTM(int(self.features/44), activation='sigmoid', return_sequences=True, input_shape=(self.time_stamps, self.features)))
+        model.add(LSTM(int(self.features/44), activation='sigmoid', return_sequences=False, input_shape=(self.time_stamps, self.features)))
         model.add(Bidirectional(LSTM(int(self.features/2), activation='tanh', return_sequences=True)))
         model.compile(optimizer=adam, loss='mse')
 
@@ -725,8 +725,8 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # pca_tf_idf = PCA_tf_idf()
 # pca_tf_idf.train_normal_PCA()
 
-som_tf_idf = SOM_TF_idf(0.8, 0.5)
-som_tf_idf.represent_songs('/mnt/0/som_tf_idf.p16594', 'mnt/0/pca_tf_idf_representations.npy')
+# som_tf_idf = SOM_TF_idf(0.8, 0.5)
+# som_tf_idf.represent_songs('/mnt/0/som_tf_idf.p16594', 'mnt/0/pca_tf_idf_representations.npy')
 
 
 

@@ -4,7 +4,7 @@ import numpy
 from scipy import stats
 from evaluation_results import get_distribution, read_cross_file
 
-def ranking_distribution_plot(filename, axlabel, plot_tile):
+def ranking_distribution_plot(filename, axlabel, plot_tile, graph_name):
     filename_1 = filename + '1'
     cross_1, c1 = read_cross_file(filename_1)
     filename_2 = filename + '2'
@@ -16,11 +16,11 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     filename_5 = filename + '5'
     cross_5, c5 = read_cross_file(filename_5)
 
-    ranks_1 = get_distribution(c1, 0, float("inf"))
-    ranks_2 = get_distribution(c2, 0, float("inf"))
-    ranks_3 = get_distribution(c3, 0, float("inf"))
-    ranks_4 = get_distribution(c4, 0, float("inf"))
-    ranks_5 = get_distribution(c5, 0, float("inf"))
+    ranks_1 = get_distribution(c1, 1, float("inf"))
+    ranks_2 = get_distribution(c2, 1, float("inf"))
+    ranks_3 = get_distribution(c3, 1, float("inf"))
+    ranks_4 = get_distribution(c4, 1, float("inf"))
+    ranks_5 = get_distribution(c5, 1, float("inf"))
 
     # ranks_1_0_3 = get_distribution(c1, 0, 3)
     # ranks_2_0_3 = get_distribution(c2, 0, 3)
@@ -78,26 +78,29 @@ def ranking_distribution_plot(filename, axlabel, plot_tile):
     distribution_16_20 = get_ranks_distribution_for_lineplot(ranks_16_20)
     distribution_21_more = get_ranks_distribution_for_lineplot(ranks_21_more)
 
-    g = sns.distplot(ranks, bins=5000, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5), kde=True, kde_kws=dict(linestyle=''))
-    g.set_xscale('log')
+    # g = sns.distplot(ranks_21_more, bins=5000, axlabel=axlabel, hist_kws=dict(edgecolor="black", linewidth=0.5), kde=True, kde_kws=dict(linestyle=''))
+    # g.set_xscale('log')
 
     # sns.kdeplot(ranks_4_6, label='4 to 6 songs', linestyle='--')
     # sns.kdeplot(ranks_7_10, label='7 to 10 songs', linestyle="--")
     # sns.kdeplot(ranks_11_15, label='11 to 15 songs', linestyle="--")
     # sns.kdeplot(ranks_16_20, label='16 to 20 songs', linestyle="--")
-    # sns.kdeplot(ranks_21_more, label='21 and longer playlists', linestyle="--")
-    sns.lineplot([x for x in range(16594)], distribution.reshape([16594]), label='over all distribution')
+    # g = sns.distplot(ranks_21_more, label='21 and longer playlists', linestyle="--")
+    g = sns.lineplot([x for x in range(16594)], distribution.reshape([16594]), label='overall distribution')
     sns.lineplot([x for x in range(16594)], distribution_4_6.reshape([16594]), label='4 to 6 songs')
     sns.lineplot([x for x in range(16594)], distribution_7_10.reshape([16594]), label='7 to 10 songs')
     sns.lineplot([x for x in range(16594)], distribution_11_15.reshape([16594]), label='11 to 15 songs')
     sns.lineplot([x for x in range(16594)], distribution_16_20.reshape([16594]), label='16 to 20 songs')
     sns.lineplot([x for x in range(16594)], distribution_21_more.reshape([16594]), label='21 and more')
     # plt.ylim(0, 0.002)
+    plt.gca().set_ylim(bottom=0)
     g.set_xscale('log')
-    plt.title(plot_tile)
-    graph_name = filename.split('/')[0] + '/' + filename.split('/')[1] + '/chopped_graph_0.383.png'
+    plt.gca().set_xlim(0, 16594)
 
-    plt.savefig(graph_name, dpi=500)
+    plt.title(plot_tile)
+    g_name = filename.split('/')[0] + '/' + 'graphs' + '/' + graph_name
+
+    plt.savefig(g_name, dpi=500)
 
 
     plt.show()
@@ -113,24 +116,26 @@ def get_ranks_distribution_for_lineplot(ranks):
 
     return distribution
 
-# ranking_distribution_plot('results/pca_mel_results_5717/chopped_pca_mel_', 'rankings', 'PCA Mel 5717 ranking distribution with threshold')
-# ranking_distribution_plot('results/pca_spec_results_1106/chopped_pca_spec_', 'rankings', 'PCA_spec_1106 RDG with threshold')
-# ranking_distribution_plot('results/lstm_mel_results_5712/chopped_lstm_mel_', 'rankings', 'LSTM MEL ranking distribution with threshold')
-# ranking_distribution_plot('results/gru_spec_results/chopped_gru_spec_', 'rankings', 'GRU SPEC  ranking distribution with threshold')
-# ranking_distribution_plot('results/short_GRU_spec_results/chopped_GRU_spec_', 'rankings', 'GRU_spec_5712 RDG with threshold')
-# ranking_distribution_plot('results/gru_mel_results_5712/chopped_gru_mel_', 'rankings', 'GRU MEL ranking distribution with threshold')
-
-ranking_distribution_plot('results/som_tf_idf_results/som_tf_idf_', 'rankings', 'som TF-idf ranking distribution')
-# ranking_distribution_plot('results/lstm_spec_results/chopped_lstm_spec_', 'rankings', 'The RDG of the LSTM_spec_20400 network with threshold')
-# ranking_distribution_plot('results/short_LSTM_spec_results/chopped_lstm_spec_', 'rankings', 'The RDG of the LSTM_SPEC_5712 network with threshold')
-# ranking_distribution_plot('results/gru_mfcc_results/chopped_gru_mfcc_', 'rankings', 'RDG of the GRU_MFCC network with threshold')
-# ranking_distribution_plot('results/lstm_mfcc_results/chopped_lstm_mfcc_', 'rankings', 'RDG of the LSTM_MFCC network with threshold')
-
-# ranking_distribution_plot('results/pca_tf_idf_results/chopped_pca_tf_idf_', 'rankings', 'RDG of the GRU_MFCC network with threshold')
-# ranking_distribution_plot('results/tf_idf_results/chopped_tf_idf_', 'rankings', 'RDG of the GRU_MFCC network with threshold')
-# ranking_distribution_plot('results/w2v_results/chopped_w2v_', 'rankings', 'RDG of the W2V method with threshold')
-# ranking_distribution_plot('results/som_w2v_results/chopped_som_w2v_', 'rankings', 'RDG of the SOM W2V method with threshold')
-# ranking_distribution_plot('results/pca_mel_results/chopped_pca_mel_threshold_0.383_', 'rankings', 'PCA Mel 320 ranking distribution with threshold')
+# ranking_distribution_plot('results/pca_mel_results_5717/chopped_pca_mel_', 'rankings', 'RDG of the PCA mel 5715 method', 'pca_mel_5715_graph.png')
+# ranking_distribution_plot('results/pca_spec_results_1106/chopped_pca_spec_', 'rankings', 'RDG of the PCA_spec_1106 method', 'pca_spec_1106_graph.png')
+# ranking_distribution_plot('results/lstm_mel_results_5712/chopped_lstm_mel_', 'rankings', 'RDG of the LSTM_mel method', 'lstm_mel_5712_graph.png')
+# ranking_distribution_plot('results/gru_spec_results/chopped_gru_spec_', 'rankings', 'RDG of the GRU_spec_20400  method', 'gru_spec_20400_graph.png')
+# ranking_distribution_plot('results/short_GRU_spec_results/chopped_GRU_spec_', 'rankings', 'RDG of the GRU_spec_5712', 'gru_spec_5712_graph.png')
+# ranking_distribution_plot('results/gru_mel_results_5712/chopped_gru_mel_', 'rankings', 'RDG of the GRU_mel method', 'gru_mel_graph.png')
+#
+# ranking_distribution_plot('results/som_tf_idf_results/som_tf_idf_', 'rankings', 'RDG of the SOM_TF-idf method', 'som_tf_idf_graph.png')
+# ranking_distribution_plot('results/lstm_spec_results/chopped_lstm_spec_', 'rankings', 'The RDG of the LSTM_spec_20400 network', 'lstm_spec_20400_graph.png')
+# ranking_distribution_plot('results/short_LSTM_spec_results/chopped_lstm_spec_', 'rankings', 'The RDG of the LSTM_spec_5712 network', 'lstm_spec_5712.png')
+# ranking_distribution_plot('results/gru_mfcc_results/chopped_gru_mfcc_', 'rankings', 'RDG of the GRU_MFCC method', 'gru_mfcc_graph.png')
+# ranking_distribution_plot('results/lstm_mfcc_results/chopped_lstm_mfcc_', 'rankings', 'RDG of the LSTM_MFCC network', 'lstm_mfcc_graph.png')
+#
+# ranking_distribution_plot('results/pca_tf_idf_results/chopped_pca_tf_idf_', 'rankings', 'RDG of the PCA_Tf-idf method', 'pca_tf_idf_graph.png')
+# ranking_distribution_plot('results/tf_idf_results/chopped_tf_idf_', 'rankings', 'RDG of the Tf-idf method', 'tf_idf_graph.png')
+# ranking_distribution_plot('results/w2v_results/chopped_w2v_', 'rankings', 'RDG of the W2V method', 'w2v_graph.png')
+# ranking_distribution_plot('results/som_w2v_results/chopped_som_w2v_', 'rankings', 'RDG of the SOM W2V method', 'som_w2v_graph.png')
+# ranking_distribution_plot('results/pca_mel_results/chopped_pca_mel_threshold_0.383_', 'rankings', 'RDG of the PCA Mel 320 method', 'pca_mel_320_graph.png')
+ranking_distribution_plot('results_of_unused_models/mfcc_results/mfcc_', 'rankings', 'RDG of the raw MFCCs', 'raw_mfcc_graph.png')
+# ranking_distribution_plot('results/short_pca_spec_results/chopped_pca_spec_', 'rankings', 'RDG of the PCA spec 320 method', 'pca_spec_320_graph.png')
 
 #SOM A W2V jeste
 

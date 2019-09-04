@@ -10,7 +10,7 @@ import youtube_dl
 from pydub import AudioSegment
 from pathlib import Path
 import re
-all_songs = pandas.read_csv('downloaded_extra_songs',sep=';', header=None, index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
+# all_songs = pandas.read_csv('downloaded_extra_songs',sep=';', header=None, index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
 
 def download_song_at_i(position, results, song_frame, index):
     video = results[position]
@@ -116,5 +116,35 @@ def download_song_at_i(position, results, song_frame, index):
 #     except FileNotFoundError:
 #         print(row)
 
+songs_i_have = pandas.read_csv('/Users/m_vys/Documents/matfyz/bakalarka/mp3_i_have.txt', sep=';', names=['song_path'])
+all_mp3_songs = pandas.read_csv('/Users/m_vys/Documents/matfyz/bakalarka/missing_mp3.txt', sep=';', names=['song_path', 'link'])
 
+missing_songs = all_mp3_songs.merge(songs_i_have, how='left', on=['song_path'], indicator=True)
+missing_songs = missing_songs[missing_songs['_merge'] == 'left_only']
+# missing_songs['song_path','link'].to_csv('missing_songs_in_database', header=None, index=False)
+print(missing_songs.shape)
 
+for row in missing_songs.iterrows():
+    if row[0] > 1000:
+        file_name = str(row[1][0])[:-3]
+        ydl_opts = {
+                        'format': 'bestaudio/best',
+                        'postprocessors': [{
+                            'key': 'FFmpegExtractAudio',
+                            'preferredcodec': 'mp3',
+                            'preferredquality': '192',
+                        }],
+
+                        'outtmpl': file_name + '%(ext)s'
+                    }
+        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+            try:
+                info_dict = ydl.extract_info(row[1][1], download=False)
+                if 'entries' in info_dict:
+                    l = info_dict['entries'][0]['url']
+                else:
+                    l = info_dict['url']
+
+                ydl.download([row[1][1]])
+            except Exception as e:
+                print(e, row[1][0])

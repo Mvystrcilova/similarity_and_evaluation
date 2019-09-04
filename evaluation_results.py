@@ -6,7 +6,6 @@ def get_results(filename):
     filename_3 = filename + '3'
     filename_4 = filename + '4'
     filename_5 = filename + '5'
-    overall_means = pandas.DataFrame()
 
     cross_1, c1 = read_cross_file(filename_1)
     cross_2, c2 = read_cross_file(filename_2)
@@ -14,11 +13,11 @@ def get_results(filename):
     cross_4, c4 = read_cross_file(filename_4)
     cross_5, c5 = read_cross_file(filename_5)
 
-    means_1 = get_means_for_playlists(0, float("inf"), cross_1)
-    means_2 = get_means_for_playlists(0, float("inf"), cross_2)
-    means_3 = get_means_for_playlists(0, float("inf"), cross_3)
-    means_4 = get_means_for_playlists(0, float("inf"), cross_4)
-    means_5 = get_means_for_playlists(0, float("inf"), cross_5)
+    means_1 = get_means_for_playlists(2, float("inf"), cross_1)
+    means_2 = get_means_for_playlists(2, float("inf"), cross_2)
+    means_3 = get_means_for_playlists(2, float("inf"), cross_3)
+    means_4 = get_means_for_playlists(2, float("inf"), cross_4)
+    means_5 = get_means_for_playlists(2, float("inf"), cross_5)
     general_means = pandas.DataFrame(data=[means_1, means_2, means_3, means_4, means_5])
     general_means.to_csv(filename + 'general_means', sep=';', header=None, index=False)
 
@@ -130,17 +129,17 @@ def get_distribution(df, min_length, max_length):
 # #
 # print('pca_mel_results')
 # get_results('results/pca_mel_results_5717/chopped_pca_mel_')
-
+#
 # print('short pca_spec_results with threshold')
 # get_results('results/short_pca_spec_results/chopped_pca_spec_')
 #
 # print('short pca_spec_results without threshold')
 # get_results('results/short_pca_spec_results/pca_spec_')
-
+#
 # print('lstm mfcc results')
-# get_results('results/lstm_mfcc_results/lstm_mfcc_')
-
-
+# get_results('results/lstm_mfcc_results/chopped_lstm_mfcc_')
+#
+#
 # print('lstm mel results')
 # get_results('results/lstm_mel_results_5712/chopped_lstm_mel_')
 #
@@ -155,26 +154,26 @@ def get_distribution(df, min_length, max_length):
 #
 #
 # print('short gru spec results')
-# get_results('results/short_GRU_spec_results/GRU_spec_')
+# get_results('results/short_GRU_spec_results/chopped_GRU_spec_')
 # #
 # print('pca tf_idf_results')
 # get_results('results/pca_tf_idf_results/chopped_pca_tf_idf_')
-# #
+# # #
 # print('short lstm spec results')
-# get_results('results/short_LSTM_spec_results/LSTM_spec_')
-
-
-print('pca 320 mel results with threshold 2 ')
-get_results('results/pca_mel_results/chopped_pca_mel_threshold_0.383_')
-
-print('som_tf_idf_results without threshold')
-get_results('results/som_tf_idf_results/som_tf_idf_')
-
+# get_results('results/short_LSTM_spec_results/chopped_LSTM_spec_')
+#
+#
+# print('pca 320 mel results with threshold 2 ')
+# get_results('results/pca_mel_results/chopped_pca_mel_threshold_0.383_')
+#
+# print('som_tf_idf_results without threshold')
+# get_results('results/som_tf_idf_results/chopped_som_tf_idf_')
+#
 # print('lstm spec results')
 # get_results('results/lstm_spec_results/chopped_lstm_spec_')
-
+#
 # print('som_w2v_results')
 # get_results('results/som_w2v_results/chopped_som_w2v_')
-
+#
 # print('w2v results')
 # get_results('results/w2v_results/chopped_w2v_')

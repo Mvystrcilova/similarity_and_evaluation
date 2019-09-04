@@ -196,3 +196,8 @@ class Evaluation():
 #     results.to_csv(filename, sep=';', header=False, index=False)
 
 
+# useful_plalists = pandas.read_csv('useful_playlists', sep=';',
+#                                                 names=['userID',
+#                                                        'songId', 'artist', 'title', 'lyrics' ],
+#                                                 usecols=[0, 1, 2, 3])
+# print(useful_plalists.shape)
