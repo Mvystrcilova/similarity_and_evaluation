@@ -436,7 +436,11 @@ class GRU_Mel_Spectrogram(AudioMethod):
     def train(self, songs):
         encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
         encoded = GRU(int(self.features/11), return_sequences=True)(encoder_inputs)
-        encoded = GRU(int(self.features/22), return_sequences=False)(encoded)
+        encoded, encoded_states = GRU(int(self.features/22), return_sequences=True, return_state=True)(encoded)
+        print("sequence")
+        print(encoded, encoded.shape)
+        print("states")
+        print(encoded_states, encoded_states.shape)
         decoded = Bidirectional(GRU(int(self.features/2),
                                     activation='tanh',
                                     return_sequences=True,
