@@ -418,7 +418,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
 class GRU_Mel_Spectrogram(AudioMethod):
     def __init__(self):
-        self.model_name = 'mnt/0/new_models/new_GRU_Mel_model.h5'
+        self.model_name = 'mnt/0/new_models/new_GRU_Mel_model_102.h5'
         self.time_stamps = 408
         self.features = 320
 
@@ -435,8 +435,8 @@ class GRU_Mel_Spectrogram(AudioMethod):
 
     def train(self, songs):
         encoder_inputs = Input(shape=(self.time_stamps, self.features), name='input')
-        encoded = GRU(int(self.features/11), return_sequences=True)(encoder_inputs)
-        encoded, encoded_states = GRU(int(self.features/22), return_sequences=True, return_state=True)(encoded)
+        encoded = GRU(int(self.features/2), return_sequences=True)(encoder_inputs)
+        encoded, encoded_states = GRU(int(self.features/2), return_sequences=True, return_state=True)(encoded)
         print("sequence")
         print(encoded, encoded.shape)
         print("states")
@@ -447,7 +447,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
                                     name='output'))(encoded)
 
         auto_encoder = Model(encoder_inputs, decoded)
-        encoder = Model(encoder_inputs, encoded)
+        encoder = Model(encoder_inputs, encoded_states)
 
         auto_encoder.summary()
         encoder.summary()
@@ -456,9 +456,9 @@ class GRU_Mel_Spectrogram(AudioMethod):
 
         auto_encoder.compile(adam, loss='mse')
         hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
-        encoder.save(self.model_name)
+        encoded_states.save(self.model_name)
         try:
-            auto_encoder.save('/mnt/0/new_models/new_gru_mel_autoencoder.h5')
+            auto_encoder.save('/mnt/0/new_models/new_gru_mel_autoencoder_102.h5')
         except:
             model_json = encoder.to_json()
             with open("/mnt/0/GRU_Mel_model.json", "w") as json_file:
