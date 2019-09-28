@@ -1,0 +1,16 @@
+things_i_hopefully_wont_use_anymore/
+.DS_Store
+.idea/
+__pycache__/
+venv/
+*.npy
+results
+representations
+distances
+json_models
+new_autoencoders
+new_models
+results_of_unused_models
+threshold*
+*.png
+useful_playlists
