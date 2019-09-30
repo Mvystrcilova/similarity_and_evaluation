@@ -202,21 +202,25 @@ class Evaluation():
 #                                                 usecols=[0, 1, 2, 3])
 # print(useful_plalists.shape)
 
-for j in range(5):
-    evaluation = Evaluation('new_distances/new_gru_mel_distances_40.npy', 'useful_playlists', 'useful_songs', False, 0.9999999999954176)
-    results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
-                 'recall_at_50', 'recall_at_100', 'nDGC'])
-    i = 0
-    for user in evaluation.users:
-        user_results = evaluation.eval_playlist(user)
-        print('user ', i, " out of ", len(evaluation.users))
-        print(user_results)
-        temp_frame = pandas.DataFrame([user_results],
-                                      columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
-                                               'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
-                                               'nDGC'])
-        results = results.append(temp_frame)
-        i = i + 1
-    filename = 'new_results/new_gru_mel_distances_40/new_gru_mel_distances_40_' + str(j+1)
-    print(results.shape)
-    results.to_csv(filename, sep=';', header=False, index=False)
+def evaluate(distance_file, threshold):
+    mounted_dir = '/mnt/0/'
+
+    for j in range(5):
+        filename = mounted_dir + 'new_results/' + distance_file.replace('distance', 'results')[:-3] + distance_file.replace('distance', 'results')[:-3] +"_"+ str(j+1)
+        evaluation = Evaluation(distance_file, 'useful_playlists', 'useful_songs', False, threshold)
+        results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
+                     'recall_at_50', 'recall_at_100', 'nDGC'])
+        i = 0
+        for user in evaluation.users:
+            user_results = evaluation.eval_playlist(user)
+            print('user ', i, " out of ", len(evaluation.users))
+            print(user_results)
+            temp_frame = pandas.DataFrame([user_results],
+                                          columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches',
+                                                   'match_ranking', 'recall_at_10', 'recall_at_50', 'recall_at_100',
+                                                   'nDGC'])
+            results = results.append(temp_frame)
+            i = i + 1
+        print(results.shape)
+        results.to_csv(filename, sep=';', header=False, index=False)
+
