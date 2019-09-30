@@ -1,4 +1,5 @@
 import numpy, pandas, operator, itertools, math
+import os
 import sklearn.preprocessing
 # from Distances import save_SOM_3grid_3it_distances
 # from audio_representations import file_to_spectrogram
@@ -203,10 +204,10 @@ class Evaluation():
 # print(useful_plalists.shape)
 
 def evaluate(distance_file, threshold):
-    mounted_dir = '/mnt/0/'
-
+    # mounted_dir = '/mnt/0/'
+    os.makedirs(distance_file.replace('distances', 'results')[:-4])
     for j in range(5):
-        filename = mounted_dir + 'new_results/' + distance_file.replace('distance', 'results')[:-3] + distance_file.replace('distance', 'results')[:-3] +"_"+ str(j+1)
+        filename = distance_file.replace('distances', 'results')[:-4] + distance_file.split('/')[-1][:-4] +"_"+ str(j+1)
         evaluation = Evaluation(distance_file, 'mnt/0/useful_playlists', 'mnt/0/useful_songs', False, threshold)
         results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                      'recall_at_50', 'recall_at_100', 'nDGC'])
@@ -224,8 +225,14 @@ def evaluate(distance_file, threshold):
         print(results.shape)
         results.to_csv(filename, sep=';', header=False, index=False)
 
-evaluate('mnt/0/new_distances/new_gru_mel_distances_14.npy', 0.9999999999984833)
-evaluate('mnt/0/new_distances/new_gru_mel_distances_80.npy', 0.9999999999965073)
-evaluate('mnt/0/new_distances/new_gru_mfcc_distances_16.npy', 0.9948029534716075)
-evaluate('mnt/0/new_distances/new_gru_mfcc_distances_32.npy', 0.9926800385717636)
-evaluate('mnt/0/new_distances/new_gru_mfcc_distances_5.npy', 0.9985064524053973)
+# evaluate('mnt/0/new_distances/new_gru_mel_distances_14.npy', 0.9999999999984833)
+# evaluate('mnt/0/new_distances/new_gru_mel_distances_80.npy', 0.9999999999965073)
+# evaluate('mnt/0/new_distances/new_gru_mfcc_distances_16.npy', 0.9948029534716075)
+# evaluate('mnt/0/new_distances/new_gru_mfcc_distances_32.npy', 0.9926800385717636)
+# evaluate('mnt/0/new_distances/new_gru_mfcc_distances_5.npy', 0.9985064524053973)
+evaluate('mnt/0/new_distances/new_lstm_mel_distances_14.npy', 0.9999999999942446)
+evaluate('mnt/0/new_distances/new_lstm_mel_distances_40.npy', 0.9999999999998231)
+evaluate('mnt/0/new_distances/new_lstm_mel_distances_80.npy', 0.9999999999999124)
+evaluate('mnt/0/new_distances/new_lstm_mfcc_distances_16.npy', 0.9984163067049169)
+evaluate('mnt/0/new_distances/new_lstm_mfcc_distances_32.npy',0.9966145573465457)
+evaluate('mnt/0/new_distances/new_lstm_mfcc_distances_5.npy', 0.9998160194542247)
