@@ -94,7 +94,7 @@ def predict_representations(model_file, repr_string, is_in_gpulab):
     mounted_dir = ''
     if is_in_gpulab:
         mounted_dir = 'mnt/0/'
-
+    model_file = mounted_dir + model_file
     model = load_model(model_file)
 
     name_array = model_file.split('/')[-1].split('_')
