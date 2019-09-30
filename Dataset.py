@@ -90,20 +90,23 @@ def save_neural_mel_representations(model_file, weigths_file, second_dim, mel_sp
 
     numpy.save(representation_name, new_representations)
 
-def predict_representations(model_file, repr_string):
+def predict_representations(model_file, repr_string, is_in_gpulab):
     model = load_model(model_file)
+    mounted_dir = ''
+    if is_in_gpulab:
+        mounted_dir = 'mnt/0/'
     name_array = model_file.split('/')[-1].split('_')
     second_dim = int(int(name_array[4].split('.')[0])/2)
-    new_repr_name = "new_representations/new_" + name_array[1] + '_' + name_array[2] + '_representations_' + str(second_dim) + '.npy'
+    new_repr_name = mounted_dir + "new_representations/new_" + name_array[1] + '_' + name_array[2] + '_representations_' + str(second_dim) + '.npy'
     new_representations = numpy.empty([16594, second_dim])
     if repr_string == "mel":
-        mel_repr_file = 'representations/song_mel_spectrograms.npy'
+        mel_repr_file = mounted_dir + 'representations/song_mel_spectrograms.npy'
         old_representations = numpy.load(mel_repr_file).reshape([16594, 408, 320])
         for i in range(16594):
             new_repr = model.predict(old_representations[i].reshape([1,408,320]))
             new_representations[i] = new_repr.reshape(1,second_dim)
     else:
-        mfcc_repr_file = 'representations/mfcc_representations.npy'
+        mfcc_repr_file = mounted_dir + 'representations/mfcc_representations.npy'
         old_representations = numpy.load(mfcc_repr_file).reshape(16594, 646, 128)
         for i in range(16594):
             new_repr = model.predict(old_representations[i].reshape([1, 646, 128]))
@@ -117,4 +120,10 @@ def predict_representations(model_file, repr_string):
 # save_neural_spec_representations('/mnt/0/models/final_LSTM_Spec_Model.h5', 5712, 'mnt/0/song_mel_spectrograms.npy', 'mnt/0/GRU_mel_representations_5712')
 # save_neural_mel_representations('/mnt/0/LSTM_Mel_model.json', '/mnt/0/LSTM_Mel_model.h5', 5712, 'mnt/0/song_mel_spectrograms.npy', 'mnt/0/LSTM_mel_representations_5712')
 # save_neural_mel_representations('new_models/gru_mel_autoencoder29.09090909090909.h5', )
-predict_representations('new_models/new_gru_mel_model_80.0.h5', "mel")
+# predict_representations('new_models/new_gru_mel_model_80.0.h5', "mel")
+predict_representations('new_models/new_gru_mel_model_28.0.h5', "mel", True)
+predict_representations('new_models/new_gru_mel_model_160.0.h5', "mel", True)
+predict_representations('new_models/new_lstm_mel_model_28.0.h5', "mel", True)
+predict_representations('new_models/new_lstm_mel_model_80.0.h5', "mel", True)
+predict_representations('new_models/new_lstm_mel_model_160.0.h5', "mel", True)
+
