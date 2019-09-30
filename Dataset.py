@@ -91,10 +91,12 @@ def save_neural_mel_representations(model_file, weigths_file, second_dim, mel_sp
     numpy.save(representation_name, new_representations)
 
 def predict_representations(model_file, repr_string, is_in_gpulab):
-    model = load_model(model_file)
     mounted_dir = ''
     if is_in_gpulab:
         mounted_dir = 'mnt/0/'
+
+    model = load_model(model_file)
+
     name_array = model_file.split('/')[-1].split('_')
     second_dim = int(int(name_array[4].split('.')[0])/2)
     new_repr_name = mounted_dir + "new_representations/new_" + name_array[1] + '_' + name_array[2] + '_representations_' + str(second_dim) + '.npy'
