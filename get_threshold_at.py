@@ -6,6 +6,7 @@ def get_threshold_at(position, distance_matrix):
     distances = distances.flatten()
     # distances[distances > 0.99] = 0
     distances.sort()
+    print(distance_matrix)
     return distances[-(position + 16594)]
 
 # print('Value at position 829700')
@@ -87,4 +88,15 @@ def get_threshold_at(position, distance_matrix):
 # print('w2v_last', get_threshold_at((-1*16593), '/mnt/0/distances/w2v_distances.npy'))
 
 # print(get_threshold_at((16594000), 'new_distances/new_gru_mel_distances_40.npy'))
-print(get_threshold_at((829700), 'new_distances/new_gru_mel_distances_40.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_gru_mel_distances_14.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_gru_mel_distances_80.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_gru_mfcc_distances_16.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_gru_mfcc_distances_32.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_gru_mfcc_distances_5.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_lstm_mel_distances_14.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_lstm_mel_distances_40.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_lstm_mel_distances_80.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_lstm_mfcc_distances_16.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_lstm_mfcc_distances_32.npy'))
+print(get_threshold_at((829700), 'mnt/0/new_distances/new_lstm_mfcc_distances_5.npy'))
+
