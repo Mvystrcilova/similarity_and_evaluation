@@ -134,7 +134,7 @@ def get_ranks_distribution_for_lineplot(ranks):
 # ranking_distribution_plot('results/w2v_results/chopped_w2v_', 'rankings', 'RDG of the W2V method', 'w2v_graph.png')
 # ranking_distribution_plot('results/som_w2v_results/chopped_som_w2v_', 'rankings', 'RDG of the SOM W2V method', 'som_w2v_graph.png')
 # ranking_distribution_plot('results/pca_mel_results/chopped_pca_mel_threshold_0.383_', 'rankings', 'RDG of the PCA Mel 320 method', 'pca_mel_320_graph.png')
-ranking_distribution_plot('results_of_unused_models/mfcc_results/mfcc_', 'rankings', 'RDG of the raw MFCCs', 'raw_mfcc_graph.png')
+ranking_distribution_plot('new_results/new_gru_mel_distances_40/new_gru_mel_distances_40_', 'rankings', 'RDG of the gru_mel_40', 'gru_mel_40_graph.png')
 # ranking_distribution_plot('results/short_pca_spec_results/chopped_pca_spec_', 'rankings', 'RDG of the PCA spec 320 method', 'pca_spec_320_graph.png')
 
 #SOM A W2V jeste
