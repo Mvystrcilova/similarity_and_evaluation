@@ -98,7 +98,7 @@ def predict_representations(model_file, repr_string, is_in_gpulab):
     model = load_model(model_file)
 
     name_array = model_file.split('/')[-1].split('_')
-    second_dim = int(int(name_array[4].split('.')[0]))
+    second_dim = int(int(name_array[4].split('.')[0])/2)
     new_repr_name = mounted_dir + "new_representations/new_" + name_array[1] + '_' + name_array[2] + '_representations_' + str(second_dim) + '.npy'
     new_representations = numpy.empty([16594, second_dim])
 
