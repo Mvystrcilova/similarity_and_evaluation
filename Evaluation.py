@@ -207,7 +207,7 @@ def evaluate(distance_file, threshold):
 
     for j in range(5):
         filename = mounted_dir + 'new_results/' + distance_file.replace('distance', 'results')[:-3] + distance_file.replace('distance', 'results')[:-3] +"_"+ str(j+1)
-        evaluation = Evaluation(distance_file, 'useful_playlists', 'useful_songs', False, threshold)
+        evaluation = Evaluation(distance_file, 'mnt/0/useful_playlists', 'mnt/0/useful_songs', False, threshold)
         results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                      'recall_at_50', 'recall_at_100', 'nDGC'])
         i = 0
