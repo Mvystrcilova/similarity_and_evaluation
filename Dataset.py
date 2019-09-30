@@ -54,12 +54,12 @@ def get_song(songs, title, artist):
 
     return None
 
-import re
-numbers = re.compile(r'(\d+)')
-def numericalSort(value):
-    parts = numbers.split(value)
-    parts[1::2] = map(int, parts[1::2])
-    return parts
+# import re
+# # numbers = re.compile(r'(\d+)')
+# def numericalSort(value):
+#     parts = numbers.split(value)
+#     parts[1::2] = map(int, parts[1::2])
+#     return parts
 
 def load_neural_spec_representations(model_file, second_dim,spec_directory, representation_name):
     model = load_model(model_file)
@@ -107,12 +107,14 @@ def predict_representations(model_file, repr_string, is_in_gpulab):
         for i in range(16594):
             new_repr = model.predict(old_representations[i].reshape([1,408,320]))
             new_representations[i] = new_repr.reshape(1,second_dim)
+            print(str(i))
     else:
         mfcc_repr_file = mounted_dir + 'representations/mfcc_representations.npy'
         old_representations = numpy.load(mfcc_repr_file).reshape(16594, 646, 128)
         for i in range(16594):
             new_repr = model.predict(old_representations[i].reshape([1, 646, 128]))
             new_representations[i] = new_repr.reshape(1, second_dim)
+            print(str(i))
 
     numpy.save(new_repr_name, new_representations)
 
