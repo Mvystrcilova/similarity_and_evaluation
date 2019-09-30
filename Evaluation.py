@@ -224,3 +224,8 @@ def evaluate(distance_file, threshold):
         print(results.shape)
         results.to_csv(filename, sep=';', header=False, index=False)
 
+evaluate('mnt/0/new_distances/new_gru_mel_distances_14.npy', 0.9999999999984833)
+evaluate('mnt/0/new_distances/new_gru_mel_distances_80.npy', 0.9999999999965073)
+evaluate('mnt/0/new_distances/new_gru_mfcc_distances_16.npy', 0.9948029534716075)
+evaluate('mnt/0/new_distances/new_gru_mfcc_distances_32.npy', 0.9926800385717636)
+evaluate('mnt/0/new_distances/new_gru_mfcc_distances_5.npy', 0.9985064524053973)
