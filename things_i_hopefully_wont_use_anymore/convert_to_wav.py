@@ -51,7 +51,7 @@ def create_song_segment(path):
         song = beginning + middle + end
         # play(song)
         filename = path.split('/')[1][:-3]
-        new_file_name = "mnt/0/wav_files/" + filename + "wav"
+        new_file_name = "wav_files/" + filename + "wav"
         # wav_file = Path(new_file_name)
 
         song.export(new_file_name, format="wav")
