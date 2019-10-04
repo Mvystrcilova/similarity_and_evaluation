@@ -46,7 +46,7 @@ def convert_files_to_mels_and_mfccs(directory, n_mels, n_fft, hop_length, n_mfcc
     for i, song in all_songs.iterrows():
         filename_array = song['path'].split('/')
         # wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
-        song_file = '/mp3_files/' + filename_array[1]
+        song_file = 'mnt/0/mp3_files/' + filename_array[1]
         wav_file = create_song_segment(song_file)
         wav_song = librosa.load(wav_file)
         mel_spectrogram = file_to_mel(wav_file, n_mels, n_fft, hop_length)
@@ -174,4 +174,4 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
 #
 # save_neural_network('mnt/0/gru_mfcc_representations.npy', 5168, 'mnt/0/gru_mfcc_distances')
 
-convert_files_to_mels_and_mfccs('not_empty_songs_relative_path.txt', 320, 4410, 812, 320)
+convert_files_to_mels_and_mfccs('mnt/0/not_empty_songs_relative_path.txt', 320, 4410, 812, 320)
