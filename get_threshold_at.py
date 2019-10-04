@@ -87,7 +87,7 @@ def get_threshold_at(position, distance_matrix):
 #
 # print('w2v_last', get_threshold_at((-1*16593), '/mnt/0/distances/w2v_distances.npy'))
 
-# print(get_threshold_at((16594000), 'new_distances/new_gru_mel_distances_40.npy'))
+# print(get_threshold_at((16594000), 'new_distances/new_gru_mel_results_40.npy'))
 print(get_threshold_at((829700), 'mnt/0/new_distances/new_gru_mel_distances_14.npy'))
 print(get_threshold_at((829700), 'mnt/0/new_distances/new_gru_mel_distances_80.npy'))
 print(get_threshold_at((829700), 'mnt/0/new_distances/new_gru_mfcc_distances_16.npy'))

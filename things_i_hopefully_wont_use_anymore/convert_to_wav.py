@@ -34,6 +34,32 @@ def get_15():
             print(pathname)
         i = i + 1
 
+def create_song_segment(path):
+    try:
+        sound = AudioSegment.from_mp3(path)
+        if len(sound) < 70000:
+            sound = sound.set_channels(1)
+            beginning = sound[10000:20000]
+            middle = sound[30000:40000]
+            end = sound[-20000:-10000]
+
+        else:
+            sound = sound.set_channels(1)
+            beginning = sound[20000:30000]
+            middle = sound[60000:70000]
+            end = sound[-20000:-10000]
+        song = beginning + middle + end
+        # play(song)
+        filename = path.split('/')[1][:-3]
+        new_file_name = "mnt/0/wav_files/" + filename + "wav"
+        # wav_file = Path(new_file_name)
+
+        song.export(new_file_name, format="wav")
+
+        return new_file_name
+
+    except:
+        print(path)
 
 def get_mono_and_crop_to_15():
     directory = os.fsencode('/Users/m_vys/PycharmProjects/cleaned_wav_files')
@@ -59,4 +85,4 @@ def get_mono_and_crop_to_15():
         except Exception as e:
             print(filename, e)
 
-get_15()
+# get_15()

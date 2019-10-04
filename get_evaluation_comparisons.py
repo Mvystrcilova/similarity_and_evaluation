@@ -2,7 +2,7 @@ import numpy, pandas
 import matplotlib.pyplot as plt
 import seaborn as sns
 # from visualize_model_training import get_nn_training_loss
-import pickle
+import pickle, os
 
 def read_means(file):
     df = pandas.read_csv(file, sep=';', header=None, index_col=None, names=['R@10', 'R@50', 'R@100', 'average rank', 'ndGC'])
@@ -53,48 +53,66 @@ def get_means_dataframe():
 
     temp_dataframe = pandas.DataFrame([read_category_data('results/w2v_results', 'w2v')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
     means_df = means_df.append(temp_dataframe)
+    temp_dataframe.to_csv('means_files/w2v', sep=';')
+
 
     temp_dataframe = pandas.DataFrame([read_category_data('results/pca_tf_idf_results', 'pca_tf_idf')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
     means_df = means_df.append(temp_dataframe)
+    temp_dataframe.to_csv('means_files/pca_tf_idf', sep=';')
 
-    temp_dataframe = pandas.DataFrame([read_category_data('results/som_w2v_results', 'som_w2v')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
-    means_df = means_df.append(temp_dataframe)
+    # temp_dataframe = pandas.DataFrame([read_category_data('results/som_w2v_results', 'som_w2v')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    # means_df = means_df.append(temp_dataframe)
 
     temp_dataframe = pandas.DataFrame([read_category_data('results/pca_mel_results', 'pca_mel')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
     means_df = means_df.append(temp_dataframe)
+    temp_dataframe.to_csv('means_files/pca_mel_320', sep=';')
 
     temp_dataframe = pandas.DataFrame([read_category_data('results/pca_mel_results_5717', 'pca_mel')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
     means_df = means_df.append(temp_dataframe)
+    temp_dataframe.to_csv('means_files/pca_mel_5717', sep=';')
 
     temp_dataframe = pandas.DataFrame([read_category_data('results/pca_spec_results_1106', 'pca_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
     means_df = means_df.append(temp_dataframe)
+    temp_dataframe.to_csv('means_files/pca_spec_results_1106', sep=';')
 
-    temp_dataframe = pandas.DataFrame([read_category_data('results/short_pca_spec_results', 'pca_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
-    means_df = means_df.append(temp_dataframe)
-
-    temp_dataframe = pandas.DataFrame([read_category_data('results/gru_spec_results', 'gru_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
-    means_df = means_df.append(temp_dataframe)
-
-    temp_dataframe = pandas.DataFrame([read_category_data('results/short_GRU_spec_results', 'GRU_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
-    means_df = means_df.append(temp_dataframe)
-
-    temp_dataframe = pandas.DataFrame([read_category_data('results/lstm_spec_results', 'lstm_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
-    means_df = means_df.append(temp_dataframe)
-
-    temp_dataframe = pandas.DataFrame([read_category_data('results/short_LSTM_spec_results', 'LSTM_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
-    means_df = means_df.append(temp_dataframe)
+    # temp_dataframe = pandas.DataFrame([read_category_data('results/short_pca_spec_results', 'pca_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    # means_df = means_df.append(temp_dataframe)
+    #
+    # temp_dataframe = pandas.DataFrame([read_category_data('results/gru_spec_results', 'gru_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    # means_df = means_df.append(temp_dataframe)
+    #
+    # temp_dataframe = pandas.DataFrame([read_category_data('results/short_GRU_spec_results', 'GRU_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    # means_df = means_df.append(temp_dataframe)
+    #
+    # temp_dataframe = pandas.DataFrame([read_category_data('results/lstm_spec_results', 'lstm_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    # means_df = means_df.append(temp_dataframe)
+    #
+    # temp_dataframe = pandas.DataFrame([read_category_data('results/short_LSTM_spec_results', 'LSTM_spec')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    # means_df = means_df.append(temp_dataframe)
 
     temp_dataframe = pandas.DataFrame([read_category_data('results/gru_mel_results_5712', 'gru_mel')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
     means_df = means_df.append(temp_dataframe)
+    temp_dataframe.to_csv('means_files/gru_mel_results_5712', sep=';')
 
-    temp_dataframe = pandas.DataFrame([read_category_data('results/lstm_mel_results_5712', 'lstm_mel')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
-    means_df = means_df.append(temp_dataframe)
 
-    temp_dataframe = pandas.DataFrame([read_category_data('results/gru_mfcc_results', 'gru_mfcc')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
-    means_df = means_df.append(temp_dataframe)
+    # temp_dataframe = pandas.DataFrame([read_category_data('results/lstm_mel_results_5712', 'lstm_mel')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    # means_df = means_df.append(temp_dataframe)
+
+    # temp_dataframe = pandas.DataFrame([read_category_data('results/gru_mfcc_results', 'gru_mfcc')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    # means_df = means_df.append(temp_dataframe)
 
     temp_dataframe = pandas.DataFrame([read_category_data('results/lstm_mfcc_results', 'lstm_mfcc')], columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
     means_df = means_df.append(temp_dataframe)
+    temp_dataframe.to_csv('means_files/lstm_mfcc_results', sep=';', )
+
+    for name in os.listdir("new_results"):
+        if (not 'graphs' in name) and (not 'DS' in name):
+            method_name = name.split('/')[-1].replace('results','distances')
+            dir_name = 'new_results/' + name
+            temp_dataframe = pandas.DataFrame([read_category_data(dir_name, method_name)],columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+            dataframe_dir = 'means_files/' + name
+            temp_dataframe.to_csv(dataframe_dir, sep=';', )
+
 
     return means_df
 
@@ -124,6 +142,7 @@ def assign_means(general_means, short_means, long_means, chopped_general_means, 
     chopped_general_means.append(data_to_assign[3])
     chopped_short_means.append(data_to_assign[4])
     chopped_long_means.append(data_to_assign[5])
+
 def plot_comparisons():
     names = ['Tf-idf', 'W2V', 'PCA_Tf-idf', 'SOM_W2V', 'PCA_mel_320', 'PCA_mel_5715', 'PCA_spec_1106', 'PCA_spec_320',
              'GRU_spec_20400', 'GRU_spec_5712', 'LSTM_spec_20400', 'LSTM_spec_5712', 'GRU_mel', 'LSTM_mel', 'GRU_MFCC',
@@ -252,7 +271,7 @@ def rank_dataframe(file):
     print(new_df)
     fig = plt.figure(figsize=(12, 12))
     r = sns.heatmap(new_df, cmap='RdYlGn_r', linecolor="white", linewidths=0.1,)
-    r.set_yticklabels(['Tf-idf', 'W2V', 'PCA_Tf-idf', 'SOM_W2V', 'PCA_mel_320', 'PCA_mel_5715', 'PCA_spec_1106', 'PCA_spec_320', 'GRU_spec_20400', 'GRU_spec_5712', 'LSTM_spec_20400', 'LSTM_spec_5712', 'GRU_mel', 'LSTM_mel', 'GRU_MFCC', 'LSTM_MFCC'], rotation=30)
+    r.set_yticklabels(df['names'], rotation=30)
     r.set_xticklabels(list(new_df), rotation=30)
     r.xaxis.tick_top() # x axis on top
     r.xaxis.set_label_position('top')
@@ -260,7 +279,21 @@ def rank_dataframe(file):
     fig.savefig('no_threshold_method_ranking.png', dpi=700)
     plt.show()
 # plot_comparisons()
-
+def rank_dataframe_not_from_file(dataframe):
+    df = dataframe
+    df = df.apply(lambda x: [-1 * y if y > 100 else y for y in x])
+    new_df = df.rank(axis=0, ascending=False)
+    print(new_df)
+    fig = plt.figure(figsize=(12, 12))
+    r = sns.heatmap(new_df, cmap='RdYlGn_r', linecolor="white", linewidths=0.1, )
+    r.set_yticklabels(
+        list(df.index), rotation=30)
+    r.set_xticklabels(list(new_df), rotation=30)
+    r.xaxis.tick_top()  # x axis on top
+    r.xaxis.set_label_position('top')
+    r.set_title("Ranking of the tested methods in various categories without threshold")
+    fig.savefig('no_threshold_method_ranking.png', dpi=700)
+    plt.show()
 # df = get_means_dataframe()
 # df.to_csv('no_threshold_means_data',sep=';')
 
@@ -428,5 +461,19 @@ def threshold_vs_performance():
 
 
     plt.show()
+def create_dataframe(directory):
+    means_df = pandas.DataFrame(columns=['R@10', 'R@50', 'R@100', 'avg_rank', 'nCDG', 'R@10_S', 'R@50_S', 'R@100_S', 'avg_rank_S', 'nCDG_S', 'R@10_M', 'R@50_M', 'R@100_M', 'avg_rank_M', 'nCDG_M', 'R@10_L', 'R@50_L', 'R@100_L', 'avg_rank_L', 'nCDG_L'])
+    names = []
+    for name in os.listdir(directory):
+        names.append(name)
+        relative_path = directory + '/' + name
+        cols = [x for x in range(1,21)]
+        temp_frame = pandas.read_csv(relative_path, sep=';', usecols=cols)
+        means_df = means_df.append(temp_frame)
+    means_df['names'] = names
+    means_df = means_df.set_index('names')
+    return means_df
 
-loss_vs_performance()
+# get_means_dataframe()
+df = create_dataframe('means_files')
+rank_dataframe_not_from_file(df)

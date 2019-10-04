@@ -1,19 +1,23 @@
 import numpy, pandas, librosa, os, sklearn.preprocessing, joblib, glob, pickle
 from keras.models import model_from_json, load_model
 import re
-numbers = re.compile(r'(\d+)')
-def numericalSort(value):
-    parts = numbers.split(value)
-    parts[1::2] = map(int, parts[1::2])
-    return parts
+from pydub import AudioSegment
+from things_i_hopefully_wont_use_anymore.convert_to_wav import create_song_segment
+# def numericalSort(value):
+#     parts = numbers.split(value)
+#     parts[1::2] = map(int, parts[1::2])
+#     return parts
+
 
 def file_to_spectrogram(filename, n_fft, hop_length):
     y,sr = librosa.load(filename)
     spectrogram = numpy.abs(librosa.core.stft(y, n_fft=n_fft, hop_length=hop_length))
     return spectrogram
 
+
 def convert_files_to_specs(directory, n_fft, hop_length):
-    all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
+    all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False, names=['artist', 'title', 'lyrics',
+                                                                                         'link', 'path'])
     scaler = sklearn.preprocessing.MinMaxScaler()
     # specs = numpy.empty(shape=[16594,2206,408])
     for i, song in all_songs.iterrows():
@@ -22,12 +26,9 @@ def convert_files_to_specs(directory, n_fft, hop_length):
             wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
             spectrogram = file_to_spectrogram(wav_file, n_fft, hop_length)
             spectrogram = scaler.fit_transform(spectrogram)
-            numpy.save('/Users/m_vys/PycharmProjects/similarity_and_evaluation/spectrograms/' + str(i) + '_' + str(song['artist'] + ' - ' + str(song['title'])), spectrogram)
+            numpy.save('/Users/m_vys/PycharmProjects/similarity_and_evaluation/spectrograms/' + str(i) + '_' +
+                       str(song['artist'] + ' - ' + str(song['title'])), spectrogram)
             print(i)
-
-
-
-# convert_files_to_specs('not_empty_songs', 4410, 812)
 
 
 def file_to_mel(filename, nmels, n_fft, hop_length):
@@ -36,19 +37,32 @@ def file_to_mel(filename, nmels, n_fft, hop_length):
     return mel_spectrogram
 
 
-def convert_files_to_mels(directory, n_mels, n_fft, hop_length):
-    all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
+def convert_files_to_mels_and_mfccs(directory, n_mels, n_fft, hop_length, n_mfcc):
+    all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False, names=['artist', 'title', 'lyrics',
+                                                                                         'link', 'path'])
     scaler = sklearn.preprocessing.MinMaxScaler()
-    mels = numpy.empty(shape=[16594, 320, 408])
+    mels = numpy.empty(shape=[16594, 320, 816])
+    mfccs = numpy.empty(shape=[16594, 128, 1292])
     for i, song in all_songs.iterrows():
-        filename = song['path'].split('/')
-        wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
+        filename_array = song['path'].split('/')
+        # wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
+        song_file = 'mnt/0/mp3_files/' + filename_array[5]
+        wav_file = create_song_segment(song_file)
+        wav_song = librosa.load(wav_file)
         mel_spectrogram = file_to_mel(wav_file, n_mels, n_fft, hop_length)
+        print(mel_spectrogram.shape)
+        mfcc_representation = librosa.feature.mfcc(wav_song[0], wav_song[1], n_mfcc=n_mfcc)
+        print(mfcc_representation.shape)
         mel_spectrogram = scaler.fit_transform(mel_spectrogram)
+        mfcc_representation = scaler.fit_transform(mfcc_representation)
         mels[i] = mel_spectrogram
+        mfccs[i] = mfcc_representation
         print(i)
+        os.remove(wav_file)
 
-    numpy.save('song_mel_spectrograms', mels)
+    numpy.save('mel_spectrograms_30sec', mels)
+    numpy.save('mfccs_30sec', mfccs)
+
 
 def convert_files_to_mfcc(directory, n_mfcc):
     all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False,
@@ -81,6 +95,7 @@ def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
 
     numpy.save(repr_name, pca_mel_representations)
 
+
 def get_MFCC_representations(mfcc_model, mfcc_weights, mfcc_representations, repr_name):
     new_representations = numpy.empty([16594, 5168])
     mfcc_representations = numpy.load(mfcc_representations).reshape([16594, 646, 128])
@@ -99,29 +114,32 @@ def get_MFCC_representations(mfcc_model, mfcc_weights, mfcc_representations, rep
     numpy.save(repr_name, new_representations)
 
 
-def get_PCA_Spec_representations(pca_model, directory, repr_name):
-    representations = numpy.empty([16594, 320])
-    pca_model = joblib.load(pca_model)
-    i = 0
-    for file in sorted(glob.glob(directory + '/*.npy'), key=numericalSort):
-        spec = numpy.load(file).reshape([1,900048])
-        pca_spec = pca_model.transform(numpy.abs(spec))
-        print(i, pca_spec.shape)
-        representations[i] = pca_spec
-        i = i+1
-    numpy.save(repr_name, representations)
-def get_nn_Spec_representations(nn_model, directory, repr_name):
-    representations = numpy.empty([16594, 5712])
-    model = load_model(nn_model)
-    i = 0
-    for file in sorted(glob.glob(directory + '/*.npy'), key=numericalSort):
-        spec = numpy.load(file).reshape([1, 408, 2206])
-        nn_spec = model.predict(numpy.abs(spec))[0]
-        print(i, nn_spec.shape)
-        representations[i] = nn_spec.reshape([1, 5712])
-        i = i + 1
+# def get_PCA_Spec_representations(pca_model, directory, repr_name):
+#     representations = numpy.empty([16594, 320])
+#     pca_model = joblib.load(pca_model)
+#     i = 0
+#     for file in sorted(glob.glob(directory + '/*.npy'), key=numericalSort):
+#         spec = numpy.load(file).reshape([1,900048])
+#         pca_spec = pca_model.transform(numpy.abs(spec))
+#         print(i, pca_spec.shape)
+#         representations[i] = pca_spec
+#         i = i+1
+#     numpy.save(repr_name, representations)
 
-    numpy.save(repr_name, representations)
+# def get_nn_Spec_representations(nn_model, directory, repr_name):
+#     representations = numpy.empty([16594, 5712])
+#     model = load_model(nn_model)
+#     i = 0
+#     for file in sorted(glob.glob(directory + '/*.npy'), key=numericalSort):
+#         spec = numpy.load(file).reshape([1, 408, 2206])
+#         nn_spec = model.predict(numpy.abs(spec))[0]
+#         print(i, nn_spec.shape)
+#         representations[i] = nn_spec.reshape([1, 5712])
+#         i = i + 1
+#
+#     numpy.save(repr_name, representations)
+
+
 def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
     model = joblib.load(model)
     scaler = sklearn.preprocessing.MinMaxScaler()
@@ -142,7 +160,8 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
 #     vectorizer = pickle.load(open(tf_idf_model, 'rb'))
 
 # get_PCA_Spec_representations('/mnt/0/big_pca_model', 'mnt/0/spectrograms', 'mnt/0/pca_spec_representations_1106')
-# get_PCA_Mel_representations('mnt/0/mel_spec_pca_model_90_ratio', 'mnt/0/song_mel_spectrograms.npy', 'mnt/0//mel_spec_representations_5717')
+# get_PCA_Mel_representations('mnt/0/mel_spec_pca_model_90_ratio', 'mnt/0/song_mel_spectrograms.npy',
+# 'mnt/0//mel_spec_representations_5717')
 #convert_files_to_mels('not_empty_songs', 329, 4410, 812)
 # convert_files_to_mfcc('not_empty_songs', 320)
 
@@ -155,6 +174,4 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
 #
 # save_neural_network('mnt/0/gru_mfcc_representations.npy', 5168, 'mnt/0/gru_mfcc_distances')
 
-# get_PCA_Spec_representations('/Volumes/LaCie/similarity_and_evaluation/unused_models/spec_pca_model_joblib', '/Volumes/LaCie/similarity_and_evaluation/similarity_and_evaluation/spectrograms/', 'short_pca_spec_representations')
-get_nn_Spec_representations('new_models/short_GRU_Spec_model.h5', '/Volumes/LaCie/similarity_and_evaluation/similarity_and_evaluation/spectrograms', 'short_GRU_spec_representations')
-get_nn_Spec_representations('new_models/short_LSTM_Spec_model.h5', '/Volumes/LaCie/similarity_and_evaluation/similarity_and_evaluation/spectrograms', 'short_LSTM_spec_representations')
+convert_files_to_mels_and_mfccs('mnt/0/mp3_files')

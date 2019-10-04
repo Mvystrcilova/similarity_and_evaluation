@@ -1,4 +1,4 @@
-import numpy, pandas
+import numpy, pandas, os
 
 def get_results(filename):
     filename_1 = filename + '1'
@@ -69,6 +69,7 @@ def get_results(filename):
     # print(means_1_21_more, means_2_21_more, means_3_21_more, means_4_21_more, means_5_21_more)
 
     overall_means = pandas.DataFrame(data=[means_1, means_2, means_3, means_4, means_5])
+    overall_means.to_csv(filename + 'overall_means', sep=';', header=None, index=False)
     print(overall_means.mean(axis=0))
 
 def read_cross_file(filename):
@@ -177,3 +178,9 @@ def get_distribution(df, min_length, max_length):
 #
 # print('w2v results')
 # get_results('results/w2v_results/chopped_w2v_')
+
+for name in os.listdir("new_results"):
+        if (not 'graphs' in name) and (not ('DS') in name):
+            sub_dirs = 'new_results/' + name +'/' + name.replace('results', 'distances') + '_'
+            print(sub_dirs.split('/')[-1][:-1])
+            get_results(sub_dirs)
