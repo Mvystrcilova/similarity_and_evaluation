@@ -174,4 +174,4 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
 #
 # save_neural_network('mnt/0/gru_mfcc_representations.npy', 5168, 'mnt/0/gru_mfcc_distances')
 
-convert_files_to_mels_and_mfccs('mnt/0/mp3_files')
+convert_files_to_mels_and_mfccs('mnt/0/mp3_files', 320, 4410, 812, 320)
