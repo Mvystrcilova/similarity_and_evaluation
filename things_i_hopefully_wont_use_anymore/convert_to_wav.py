@@ -36,6 +36,8 @@ def get_15():
 
 def create_song_segment(path):
     try:
+        print('path')
+        print(path)
         sound = AudioSegment.from_mp3(path)
         if len(sound) < 70000:
             sound = sound.set_channels(1)
