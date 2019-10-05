@@ -1,6 +1,6 @@
 import os
 from pydub import AudioSegment
-from pydub.playback import play
+# from pydub.playback import play
 from pathlib import Path
 
 def get_15():
@@ -23,7 +23,7 @@ def get_15():
                 middle = sound[60000:65000]
                 end = sound[-15000:-10000]
             song = beginning + middle + end
-            play(song)
+            # play(song)
             filename = filename[:-3]
             new_file_name = "/Users/m_vys/PycharmProjects/cleaned_wav_files/" + filename + "wav"
             wav_file = Path(new_file_name)
