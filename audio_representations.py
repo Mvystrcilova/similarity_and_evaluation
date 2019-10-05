@@ -47,6 +47,7 @@ def convert_files_to_mels_and_mfccs(directory, n_mels, n_fft, hop_length, n_mfcc
         filename_array = song['path'].split('/')
         # wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
         song_file = 'mnt/0/mp3_files/' + filename_array[1]
+
         print(filename_array[1])
         wav_file = create_song_segment(song_file)
         print(wav_file)

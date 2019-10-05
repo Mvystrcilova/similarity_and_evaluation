@@ -62,8 +62,9 @@ def create_song_segment(path):
 
         return new_file_name
 
-    except:
+    except Exception as e:
         print(path)
+        print(e)
 
 def get_mono_and_crop_to_15():
     directory = os.fsencode('/Users/m_vys/PycharmProjects/cleaned_wav_files')
