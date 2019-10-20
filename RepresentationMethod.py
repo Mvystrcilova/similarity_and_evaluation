@@ -369,9 +369,9 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         self.divide_features = divide_features
         self.time_stamps = 815
         self.features = 320
-        self.model_name = 'new_models/new_lstm_mel_model_' + str(self.features / divide_features) + '.h5'
-        self.autoencoder_name = 'new_models/lstm_mel_autoencoder' + str(self.features / divide_features) + '.h5'
-        self.histories = 'new_histories/lstm_mel_history' + str(self.features / divide_features)
+        self.model_name = 'mnt/0/new_models/new_lstm_mel_model_' + str(self.features / divide_features) + '.h5'
+        self.autoencoder_name = 'mnt/0/new_models/lstm_mel_autoencoder' + str(self.features / divide_features) + '.h5'
+        self.histories = 'mnt/0/new_histories/lstm_mel_history' + str(self.features / divide_features)
 
     def extract_audio(self, song):
         y, sr = librosa.load(song.file_path)
@@ -436,9 +436,9 @@ class GRU_Mel_Spectrogram(AudioMethod):
         self.divide_features = divide_features
         self.time_stamps = 815
         self.features = 320
-        self.model_name = 'new_models/new_gru_mel_model_' + str(self.features/divide_features) + '.h5'
-        self.autoencoder_name = 'new_models/gru_mel_autoencoder' + str(self.features/divide_features) + '.h5'
-        self.histories = 'new_histories/gru_mel_history' + str(self.features/divide_features)
+        self.model_name = 'mnt/0/new_models/new_gru_mel_model_' + str(self.features/divide_features) + '.h5'
+        self.autoencoder_name = 'mnt/0/new_models/gru_mel_autoencoder' + str(self.features/divide_features) + '.h5'
+        self.histories = 'mnt/0/new_histories/gru_mel_history' + str(self.features/divide_features)
 
 
 
@@ -502,9 +502,9 @@ class GRU_MFCC(AudioMethod):
         self.time_stamps = 1292
         self.features = 128
         self.divide_features = divide_features
-        self.model_name = 'new_models/new_gru_mfcc_model_' + str(self.features/divide_features) + '.h5'
-        self.autoencoder_name = 'new_models/gru_mfcc_autoencoder' + str(self.features/divide_features) + '.h5'
-        self.histories = 'new_histories/gru_mfcc_history' + str(self.features/divide_features)
+        self.model_name = 'mnt/0/new_models/new_gru_mfcc_model_' + str(self.features/divide_features) + '.h5'
+        self.autoencoder_name = 'mnt/0/new_models/gru_mfcc_autoencoder' + str(self.features/divide_features) + '.h5'
+        self.histories = 'mnt/0/new_histories/gru_mfcc_history' + str(self.features/divide_features)
 
 
 
@@ -580,9 +580,9 @@ class LSTM_MFCC(AudioMethod):
         self.time_stamps = 1292
         self.features = 128
         self.divide_features = divide_features
-        self.model_name = 'new_models/new_lstm_mfcc_model_' + str(self.features / divide_features) + '.h5'
-        self.autoencoder_name = 'new_models/lstm_mfcc_autoencoder' + str(self.features / divide_features) + '.h5'
-        self.histories = 'new_histories/lstm_mfcc_history' + str(self.features / divide_features)
+        self.model_name = 'mnt/0/new_models/new_lstm_mfcc_model_' + str(self.features / divide_features) + '.h5'
+        self.autoencoder_name = 'mnt/0/new_models/lstm_mfcc_autoencoder' + str(self.features / divide_features) + '.h5'
+        self.histories = 'mnt/0/new_histories/lstm_mfcc_history' + str(self.features / divide_features)
 
 
     def extract_audio(self, song):
