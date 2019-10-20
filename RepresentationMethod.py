@@ -790,19 +790,18 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # som_tf_idf.represent_songs('/mnt/0/som_tf_idf.p16594', 'mnt/0/pca_tf_idf_representations.npy')
 
 # Volta 01
-gru_mel = GRU_Mel_Spectrogram(2)
-gru_mel.train([])
+# gru_mel = GRU_Mel_Spectrogram(2)
+# gru_mel.train([])
 
 #Volta 03
 # gru_mel = GRU_Mel_Spectrogram(4)
 # gru_mel.train([])
 
 
-# try:
-#     gru_mel = GRU_Mel_Spectrogram(11)
-#     gru_mel.train([])
-# except Exception as e:
-#     print(e)
+# Volta 02
+gru_mel = GRU_Mel_Spectrogram(11)
+gru_mel.train([])
+
 #
 # try:
 #     lstm_mel = LSTM_Mel_Spectrogram(2)
