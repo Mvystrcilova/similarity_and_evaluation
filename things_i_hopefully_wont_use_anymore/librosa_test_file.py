@@ -3,6 +3,7 @@ import numpy
 import librosa.display
 import pandas
 import pydub
+from pydub import AudioSegment
 import matplotlib.pyplot as plt
 from matplotlib import interactive
 from scipy import spatial
@@ -23,10 +24,27 @@ from numpy import array
 # a maximum norm of 1.
 # adam = optimizers.adam(lr=0.0001, clipnorm=1.)
 
-filename = '/Users/m_vys/Music/Adele - Someone Like You.mp3'
+filename = "/Users/m_vys/PycharmProjects/similarity_and_evaluation/mp3_files/'A Lot Of Things Different' By - ~Kenny Chesney~.mp3"
 # filename_3 = 'Black Sabbath - Die Young (lyrics)-CJgHn7MeAwc.wav'
 # filename_2 = 'Adele - Rolling in the Deep-rYEDA3JcQqw.wav'
-y, sr = librosa.load(filename)
+sound = AudioSegment.from_mp3(filename)
+if len(sound) < 70000:
+    sound = sound.set_channels(1)
+    beginning = sound[10000:20000]
+    middle = sound[30000:40000]
+    end = sound[-20000:-10000]
+
+else:
+    sound = sound.set_channels(1)
+    beginning = sound[20000:30000]
+    middle = sound[60000:70000]
+    end = sound[-20000:-10000]
+song = beginning + middle + end
+filename = filename.split('/')[6][:-3]
+print(filename)
+new_file_name = "/Users/m_vys/PycharmProjects/similarity_and_evaluation/wav_files/" + filename + "wav"
+song.export(new_file_name, format="wav")
+y, sr = librosa.load(new_file_name)
 print(y.shape)
 # y_2, sr_2 = librosa.load(filename_2, offset=15, duration=5)
 # y_3, sr_3 = librosa.load(filename_3, offset=15, duration=60)

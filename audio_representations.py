@@ -1,6 +1,11 @@
 import numpy, pandas, librosa, os, sklearn.preprocessing, joblib, glob, pickle
-from keras.models import model_from_json, load_model
+# from keras.models import model_from_json, load_model
 import re
+import urllib.request
+from bs4 import BeautifulSoup
+import youtube_dl
+import shutil
+
 from pydub import AudioSegment
 from things_i_hopefully_wont_use_anymore.convert_to_wav import create_song_segment
 # def numericalSort(value):
@@ -36,35 +41,108 @@ def file_to_mel(filename, nmels, n_fft, hop_length):
     mel_spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=320, n_fft=4410, hop_length=812)
     return mel_spectrogram
 
+def download_from_youtube(row):
+
+    textToSearch = row['artist'] + ' ' + row['title']
+    query = urllib.parse.quote(textToSearch)
+    url = "https://www.youtube.com/results?search_query=" + query
+    response = urllib.request.urlopen(url)
+    html = response.read()
+    soup = BeautifulSoup(html, 'html.parser')
+    # for vid in soup.findAll(attrs={'class':'yt-uix-tile-link'}):
+    #     print('https://www.youtube.com' + vid['href'])
+    vid = soup.findAll(attrs={'class':'yt-uix-tile-link'})[0]
+    l = 'https://www.youtube.com' + vid['href']
+
+    name = str(row['path'].split('/')[1][:-4])
+    # regex = re.compile('[^A-Za-z0-9. -]')
+    # name = regex.sub("", name)
+    print(name)
+
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+
+        'outtmpl': '/Volumes/LaCie/missing_mp3_files/' + name + '.%(ext)s'
+    }
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        ydl.download([l])
+        info_dict = ydl.extract_info(l, download=False)
+        print(info_dict.get('filename', None))
+        print(row['path'])
+    # df.at[i,'link_on_disc']
 
 def convert_files_to_mels_and_mfccs(directory, n_mels, n_fft, hop_length, n_mfcc):
     all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False, names=['artist', 'title', 'lyrics',
-                                                                                         'link', 'path'], engine='python')
+                                                                          'link', 'path'], engine='python')
+    song_paths = all_songs['path']
+    # song_paths = song_paths.sort_values()
+    # song_paths.to_csv('song_paths', header=None, index=False, sep=';')
     scaler = sklearn.preprocessing.MinMaxScaler()
-    mels = numpy.empty(shape=[16594, 320, 816])
+    mels = numpy.empty(shape=[16594, 320, 815])
     mfccs = numpy.empty(shape=[16594, 128, 1292])
+    j = 0
+    missing_songs = open('missing_songs.txt', "a+" )
+    number_of_hopelessly_missing_songs = 0
     for i, song in all_songs.iterrows():
-        filename_array = song['path'].split('/')
-        # wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
-        song_file = 'mnt/0/mp3_files/' + filename_array[1]
 
-        print(filename_array[1])
-        wav_file = create_song_segment(song_file)
-        print(wav_file)
-        wav_song = librosa.load(wav_file)
-        mel_spectrogram = file_to_mel(wav_file, n_mels, n_fft, hop_length)
-        print(mel_spectrogram.shape)
-        mfcc_representation = librosa.feature.mfcc(wav_song[0], wav_song[1], n_mfcc=n_mfcc)
-        print(mfcc_representation.shape)
-        mel_spectrogram = scaler.fit_transform(mel_spectrogram)
-        mfcc_representation = scaler.fit_transform(mfcc_representation)
-        mels[i] = mel_spectrogram
-        mfccs[i] = mfcc_representation
-        print(i)
-        os.remove(wav_file)
+        # if i >= 6047:
+        #     print(i)
+            filename_array = song['path'].split('/')
+            # wav_file = '/Users/m_vys/PycharmProjects/cleaned_wav_files/' + filename[5][:-3] + 'wav'
+            song_file = '/Volumes/LaCie/used_mp3_files/' + filename_array[1]
+            moved_song_file = '/Volumes/LaCie/used_mp3_files/' + filename_array[1]
+            if os.path.isfile(song_file) or os.path.isfile(moved_song_file):
+                print(i)
+                if not os.path.isfile(moved_song_file):
+                    shutil.move(song_file, '/Volumes/LaCie/used_mp3_files/' + filename_array[1])
 
+                try:
+                    print(filename_array[1])
+                    wav_file = create_song_segment(song_file,i, missing_songs)
+                    wav_song = librosa.load(wav_file)
+                    mel_spectrogram = file_to_mel(wav_file, n_mels, n_fft, hop_length)
+                    mfcc_representation = librosa.feature.mfcc(wav_song[0], wav_song[1], n_mfcc=n_mfcc)
+                    mel_spectrogram = scaler.fit_transform(mel_spectrogram)
+                    mfcc_representation = scaler.fit_transform(mfcc_representation)
+                    mels[i] = mel_spectrogram
+                    mfccs[i] = mfcc_representation
+                    os.remove(wav_file)
+                    print(i)
+                except Exception as e:
+                    mels[i] = numpy.zeros([320, 815])
+                    mfccs[i] = numpy.zeros([128, 1292])
+                    message = 'unable to turn to specs ' + str(j) + 'th songfile ' + song_file + ' on index ' + str(i) + 'substituted with zero array' + '\n'
+                    missing_songs.write(message)
+                    j += 1
+                    print(message)
+
+            else:
+                try:
+                    download_from_youtube(song)
+                except Exception as e:
+                    print(e)
+            #         print('download of song failed')
+            #         print(song)
+            #         number_of_hopelessly_missing_songs += 1
+                mels[i] = numpy.zeros([320, 815])
+                mfccs[i] = numpy.zeros([128, 1292])
+                message = 'missing ' + str(j) +'th songfile ' + song_file + ' on index ' + str(i) + '\n'
+                missing_songs.write(message)
+                j += 1
+                print(message)
+
+
+    # print(str(number_of_hopelessly_missing_songs))
     numpy.save('mel_spectrograms_30sec', mels)
     numpy.save('mfccs_30sec', mfccs)
+    missing_songs.close()
+
+
 
 
 def convert_files_to_mfcc(directory, n_mfcc):
@@ -157,7 +235,14 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
 
     numpy.save(repr_name, pca_mel_representations)
 
-
+# def find_missing_songs(directory):
+#     all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False, names=['artist', 'title', 'lyrics',
+#                                                                                          'link', 'path'],
+#                                 engine='python')
+#     mels = numpy.load('mel_spectrograms_30sec')
+#     mfccs = numpy.load('mfccs_30sec')
+#     for i, song in all_songs.iterrows():
+#         if mels[i] == numpy.zeros()
 #
 # def get_tf_idf_representations(tf_idf_model, songs, tf_idf_numpy_filename):
 #     vectorizer = pickle.load(open(tf_idf_model, 'rb'))
@@ -177,4 +262,4 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
 #
 # save_neural_network('mnt/0/gru_mfcc_representations.npy', 5168, 'mnt/0/gru_mfcc_distances')
 
-convert_files_to_mels_and_mfccs('mnt/0/not_empty_songs_relative_path.txt', 320, 4410, 812, 320)
+convert_files_to_mels_and_mfccs('/Users/m_vys/PycharmProjects/similarity_and_evaluation/not_empty_songs_relative_path.txt', 320, 4410, 812, 320)

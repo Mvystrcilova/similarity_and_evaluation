@@ -367,7 +367,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 
     def __init__(self, divide_features):
         self.divide_features = divide_features
-        self.time_stamps = 408
+        self.time_stamps = 815
         self.features = 320
         self.model_name = 'new_models/new_lstm_mel_model_' + str(self.features / divide_features) + '.h5'
         self.autoencoder_name = 'new_models/lstm_mel_autoencoder' + str(self.features / divide_features) + '.h5'
@@ -403,7 +403,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('representations/song_mel_spectrograms.npy').reshape([16594, 408, 320])
+        input_songs = numpy.load('/mnt/0/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
 
         auto_encoder.compile(adam, loss='mse')
         hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
@@ -434,7 +434,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
 class GRU_Mel_Spectrogram(AudioMethod):
     def __init__(self, divide_features):
         self.divide_features = divide_features
-        self.time_stamps = 408
+        self.time_stamps = 815
         self.features = 320
         self.model_name = 'new_models/new_gru_mel_model_' + str(self.features/divide_features) + '.h5'
         self.autoencoder_name = 'new_models/gru_mel_autoencoder' + str(self.features/divide_features) + '.h5'
@@ -472,7 +472,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('representations/song_mel_spectrograms.npy').reshape([16594, 408, 320])
+        input_songs = numpy.load('/mnt/0/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
 
         auto_encoder.compile(adam, loss='mse')
         hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
@@ -499,7 +499,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
 
 class GRU_MFCC(AudioMethod):
     def __init__(self, divide_features):
-        self.time_stamps = 646
+        self.time_stamps = 1292
         self.features = 128
         self.divide_features = divide_features
         self.model_name = 'new_models/new_gru_mfcc_model_' + str(self.features/divide_features) + '.h5'
@@ -539,11 +539,11 @@ class GRU_MFCC(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('representations/mfcc_representations.npy')
-        input_songs = input_songs.reshape([16594, 82688])
+        input_songs = numpy.load('/mnt/0/representations/mfccs_30sec.npy')
+        input_songs = input_songs.reshape([16594, 165376])
         scaler = MinMaxScaler()
         input_songs = scaler.fit_transform(input_songs)
-        input_songs = input_songs.reshape([16594, 646, 128])
+        input_songs = input_songs.reshape([16594, 1292, 128])
 
         auto_encoder.compile(adam, loss='mse')
         hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
@@ -577,7 +577,7 @@ class GRU_MFCC(AudioMethod):
 class LSTM_MFCC(AudioMethod):
 
     def __init__(self, divide_features):
-        self.time_stamps = 646
+        self.time_stamps = 1292
         self.features = 128
         self.divide_features = divide_features
         self.model_name = 'new_models/new_lstm_mfcc_model_' + str(self.features / divide_features) + '.h5'
@@ -615,11 +615,11 @@ class LSTM_MFCC(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('representations/mfcc_representations.npy')
-        input_songs = input_songs.reshape([16594, 82688])
+        input_songs = numpy.load('/mnt/0/representations/mfccs_30sec.npy')
+        input_songs = input_songs.reshape([16594, 165376])
         scaler = MinMaxScaler()
         input_songs = scaler.fit_transform(input_songs)
-        input_songs = input_songs.reshape([16594, 646, 128])
+        input_songs = input_songs.reshape([16594, 1292, 128])
 
         auto_encoder.compile(adam, loss='mse')
         hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
@@ -825,38 +825,38 @@ try:
 except Exception as e:
     print(e)
 
-try:
-    gru_mfcc = GRU_MFCC(2)
-    gru_mfcc.train([])
-except Exception as e:
-    print(e)
-
-try:
-    gru_mfcc = GRU_MFCC(4)
-    gru_mfcc.train([])
-except Exception as e:
-    print(e)
-
-try:
-    gru_mfcc = GRU_MFCC(11)
-    gru_mfcc.train([])
-except Exception as e:
-    print(e)
-
-try:
-    lstm_mfcc = LSTM_MFCC(2)
-    lstm_mfcc.train([])
-except Exception as e:
-    print(e)
-
-try:
-    lstm_mfcc = LSTM_MFCC(4)
-    lstm_mfcc.train([])
-except Exception as e:
-    print(e)
-
-try:
-    lstm_mfcc = LSTM_MFCC(11)
-    lstm_mfcc.train([])
-except Exception as e:
-    print(e)
+# try:
+#     gru_mfcc = GRU_MFCC(2)
+#     gru_mfcc.train([])
+# except Exception as e:
+#     print(e)
+#
+# try:
+#     gru_mfcc = GRU_MFCC(4)
+#     gru_mfcc.train([])
+# except Exception as e:
+#     print(e)
+#
+# try:
+#     gru_mfcc = GRU_MFCC(11)
+#     gru_mfcc.train([])
+# except Exception as e:
+#     print(e)
+#
+# try:
+#     lstm_mfcc = LSTM_MFCC(2)
+#     lstm_mfcc.train([])
+# except Exception as e:
+#     print(e)
+#
+# try:
+#     lstm_mfcc = LSTM_MFCC(4)
+#     lstm_mfcc.train([])
+# except Exception as e:
+#     print(e)
+#
+# try:
+#     lstm_mfcc = LSTM_MFCC(11)
+#     lstm_mfcc.train([])
+# except Exception as e:
+#     print(e)

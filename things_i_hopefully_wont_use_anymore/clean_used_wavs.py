@@ -1,12 +1,11 @@
 from __future__ import unicode_literals
 
-import pandas, os
+import os
 
 from audio_representations import convert_files_to_mfcc
 import pandas
 import string
-import urllib.request
-from bs4 import BeautifulSoup
+# import urllib.request from bs4 import BeautifulSoup
 import time
 
 # from replace_empty_wavs import download_song_at_i
@@ -98,4 +97,13 @@ def clean_wav_files(directory, all_songs):
 # all_songs = pandas.read_csv('not_empty_songs',sep=';', header=None, index_col=False, names=['artist', 'title', 'lyrics', 'link', 'path'])
 # clean_wav_files('/Users/m_vys/PycharmProjects/used_wav_files/', all_songs)
 
-convert_files_to_mfcc('not_empty_songs', 320)
+# convert_files_to_mfcc('not_empty_songs', 320)
+
+def clean_mp3_list_on_mac():
+    mp3_list = pandas.read_csv('mp3_on_mac.txt', sep=';', header = None, index_col=False)
+    mp3_i_need = pandas.read_csv('song_paths', sep=';', header=None, index_col=False)
+
+    missing_mp3s = mp3_i_need.merge(mp3_list, how='left', indicator=True)
+    print(missing_mp3s.shape)
+
+clean_mp3_list_on_mac()
