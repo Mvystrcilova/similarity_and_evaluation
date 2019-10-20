@@ -794,13 +794,13 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # gru_mel.train([])
 
 #Volta 03
-gru_mel = GRU_Mel_Spectrogram(4)
-gru_mel.train([])
+# gru_mel = GRU_Mel_Spectrogram(4)
+# gru_mel.train([])
 
 
 # Volta 02
-# gru_mel = GRU_Mel_Spectrogram(11)
-# gru_mel.train([])
+gru_mel = GRU_Mel_Spectrogram(11)
+gru_mel.train([])
 
 #
 # try:
