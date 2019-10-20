@@ -112,7 +112,7 @@ def convert_files_to_mels_and_mfccs(directory, n_mels, n_fft, hop_length, n_mfcc
                     mels[i] = mel_spectrogram
                     mfccs[i] = mfcc_representation
                     os.remove(wav_file)
-                    print(i)
+                    # print(i)
                 except Exception as e:
                     mels[i] = numpy.zeros([320, 815])
                     mfccs[i] = numpy.zeros([128, 1292])
