@@ -406,7 +406,7 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         input_songs = numpy.load('/mnt/0/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
 
         auto_encoder.compile(adam, loss='mse')
-        hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
+        hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=100)
         try:
             encoder.save(self.model_name)
         except:
@@ -475,7 +475,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         input_songs = numpy.load('/mnt/0/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
 
         auto_encoder.compile(adam, loss='mse')
-        hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
+        hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=100)
         encoder.save(self.model_name)
         try:
             auto_encoder.save(self.autoencoder_name)
@@ -546,7 +546,7 @@ class GRU_MFCC(AudioMethod):
         input_songs = input_songs.reshape([16594, 1292, 128])
 
         auto_encoder.compile(adam, loss='mse')
-        hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
+        hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=100)
         try:
             encoder.save(self.model_name)
             auto_encoder.save(self.autoencoder_name)
@@ -622,7 +622,7 @@ class LSTM_MFCC(AudioMethod):
         input_songs = input_songs.reshape([16594, 1292, 128])
 
         auto_encoder.compile(adam, loss='mse')
-        hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=150)
+        hist = auto_encoder.fit(input_songs, input_songs, batch_size=256, epochs=100)
         try:
             encoder.save(self.model_name)
             auto_encoder.save(self.autoencoder_name)
@@ -789,41 +789,38 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # som_tf_idf = SOM_TF_idf(0.8, 0.5)
 # som_tf_idf.represent_songs('/mnt/0/som_tf_idf.p16594', 'mnt/0/pca_tf_idf_representations.npy')
 
-try:
-    gru_mel = GRU_Mel_Spectrogram(2)
-    gru_mel.train([])
-except Exception as e:
-    print(e)
+gru_mel = GRU_Mel_Spectrogram(2)
+gru_mel.train([])
 
-try:
-    gru_mel = GRU_Mel_Spectrogram(4)
-    gru_mel.train([])
-except Exception as e:
-    print(e)
+# try:
+#     gru_mel = GRU_Mel_Spectrogram(4)
+#     gru_mel.train([])
+# except Exception as e:
+#     print(e)
 
-try:
-    gru_mel = GRU_Mel_Spectrogram(11)
-    gru_mel.train([])
-except Exception as e:
-    print(e)
-
-try:
-    lstm_mel = LSTM_Mel_Spectrogram(2)
-    lstm_mel.train([])
-except Exception as e:
-    print(e)
-
-try:
-    lstm_mel = LSTM_Mel_Spectrogram(4)
-    lstm_mel.train([])
-except Exception as e:
-    print(e)
-
-try:
-    gru_mel = LSTM_Mel_Spectrogram(11)
-    gru_mel.train([])
-except Exception as e:
-    print(e)
+# try:
+#     gru_mel = GRU_Mel_Spectrogram(11)
+#     gru_mel.train([])
+# except Exception as e:
+#     print(e)
+#
+# try:
+#     lstm_mel = LSTM_Mel_Spectrogram(2)
+#     lstm_mel.train([])
+# except Exception as e:
+#     print(e)
+#
+# try:
+#     lstm_mel = LSTM_Mel_Spectrogram(4)
+#     lstm_mel.train([])
+# except Exception as e:
+#     print(e)
+#
+# try:
+#     gru_mel = LSTM_Mel_Spectrogram(11)
+#     gru_mel.train([])
+# except Exception as e:
+#     print(e)
 
 # try:
 #     gru_mfcc = GRU_MFCC(2)
