@@ -32,7 +32,7 @@ def save_mel_distances(mel_spec_file):
 
 def save_neural_network(representation_file):
     name_array = representation_file.split('/')[-1].split('_')
-    shape = int(int(name_array[4].split('.')[0]))
+    shape = int(int(name_array[4].split('.')[0])/2)
     vectors = numpy.load(representation_file).reshape([16594, shape])
     distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
 
@@ -139,3 +139,11 @@ def save_som_distances_from_array(representations, model_name):
 # save_neural_network('mnt/0/new_representations/new_lstm_mfcc_representations_32.npy')
 # save_neural_network('mnt/0/new_representations/new_lstm_mfcc_representations_5.npy')
 # save_neural_network('mnt/0/new_representations/new_lstm_mfcc_representations_16.npy')
+
+# save_neural_network('retrained_representations/lstm_mel_representations_bs16_32.npy')
+# save_neural_network('retrained_representations/lstm_mel_representations_bs32_32.npy')
+save_neural_network('new_representations/gru_mfcc_representations_30_10.npy')
+save_neural_network('new_representations/gru_mfcc_representations_30_32.npy')
+save_neural_network('new_representations/gru_mfcc_representations_30_64.npy')
+
+

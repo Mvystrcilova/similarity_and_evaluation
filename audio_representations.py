@@ -178,7 +178,9 @@ def get_PCA_Mel_representations(model, mel_spec_matrix, repr_name):
 
 
 def get_MFCC_representations(mfcc_model, mfcc_representations, repr_name):
-    new_representations = numpy.empty([16594, 32])
+    second_dim = int(int(mfcc_model.split('_')[6][:2])/2)
+
+    new_representations = numpy.empty([16594, second_dim])
     mfcc_representations = numpy.load(mfcc_representations).reshape([16594, 1292, 128])
 
 
@@ -187,7 +189,7 @@ def get_MFCC_representations(mfcc_model, mfcc_representations, repr_name):
     print("Loaded model from disk")
     for i in range(16594):
         neural_mfcc = MFCC_model.predict(mfcc_representations[i].reshape(1, 1292, 128))
-        new_representations[i] = neural_mfcc.reshape(1,32)
+        new_representations[i] = neural_mfcc.reshape(1,second_dim)
         print(i)
 
     numpy.save(repr_name, new_representations)
@@ -276,7 +278,7 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
 # save_neural_network('mnt/0/gru_mfcc_representations.npy', 5168, 'mnt/0/gru_mfcc_distances')
 
 # convert_files_to_mels_and_mfccs('/Users/m_vys/PycharmProjects/similarity_and_evaluation/not_empty_songs_relative_path.txt', 320, 4410, 812, 320)
-# get_MFCC_representations('new_models/new_gru_mfcc_model_30_32.0.h5', 'mfccs_30sec.npy', 'new_representations/gru_mfcc_representations_30_32')
-# get_MFCC_representations('new_models/new_gru_mfcc_model_30_64.0.h5', 'mfccs_30sec.npy', 'new_representations/gru_mfcc_representations_30_64')
+get_MFCC_representations('new_models/new_lstm_mfcc_model_30_32.0.h5', 'mfccs_30sec.npy', 'new_representations/lstm_mfcc_representations_30_32')
+get_MFCC_representations('new_models/new_lstm_mfcc_model_30_64.0.h5', 'mfccs_30sec.npy', 'new_representations/lstm_mfcc_representations_30_64')
 # get_mel_representations('retrained_models/new_lstm_mel_model_5_16.h5', '/Users/m_vys/PycharmProjects/similarity_and_evaluation/representations/song_mel_spectrograms.npy', 'retrained_representations_16')
 # get_mel_representations('retrained_models/new_lstm_mel_model_5_32.h5', '/Users/m_vys/PycharmProjects/similarity_and_evaluation/representations/song_mel_spectrograms.npy', 'retrained_representations_32')
