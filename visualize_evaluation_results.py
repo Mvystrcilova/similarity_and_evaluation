@@ -134,19 +134,24 @@ def get_ranks_distribution_for_lineplot(ranks):
 # ranking_distribution_plot('results/som_w2v_results/chopped_som_w2v_', 'rankings', 'RDG of the SOM W2V method', 'som_w2v_graph.png')
 # ranking_distribution_plot('results/pca_mel_results/chopped_pca_mel_threshold_0.383_', 'rankings', 'RDG of the PCA Mel 320 method', 'pca_mel_320_graph.png')
 
-ranking_distribution_plot('new_results/new_gru_mel_results_40/new_gru_mel_distances_40_', 'rankings', 'RDG of the gru_mel_40', 'gru_mel_40_graph.png')
-# ranking_distribution_plot('results/short_pca_spec_results/chopped_pca_spec_', 'rankings', 'RDG of the PCA spec 320 method', 'pca_spec_320_graph.png')
-ranking_distribution_plot('new_results/new_gru_mel_results_14/new_gru_mel_distances_14_', 'rankings', 'RDG of the gru_mel_14', 'gru_mel_14_graph.png')
-ranking_distribution_plot('new_results/new_gru_mel_results_80/new_gru_mel_distances_80_', 'rankings', 'RDG of the gru_mel_80', 'gru_mel_80_graph.png')
-ranking_distribution_plot('new_results/new_gru_mfcc_results_16/new_gru_mfcc_distances_16_', 'rankings', 'RDG of the gru_mfcc_16', 'gru_mfcc_16_graph.png')
-ranking_distribution_plot('new_results/new_lstm_mel_results_14/new_lstm_mel_distances_14_', 'rankings', 'RDG of the lstm_mel_14', 'lstm_mel_14_graph.png')
-ranking_distribution_plot('new_results/new_lstm_mel_results_40/new_lstm_mel_distances_40_', 'rankings', 'RDG of the lstm_mel_40', 'lstm_mel_40_graph.png')
-ranking_distribution_plot('new_results/new_lstm_mel_results_80/new_lstm_mel_distances_80_', 'rankings', 'RDG of the lstm_mel_80', 'lstm_mel_80_graph.png')
+# ranking_distribution_plot('new_results/new_gru_mel_results_40/new_gru_mel_distances_40_', 'rankings', 'RDG of the gru_mel_40', 'gru_mel_40_graph.png')
+# # ranking_distribution_plot('results/short_pca_spec_results/chopped_pca_spec_', 'rankings', 'RDG of the PCA spec 320 method', 'pca_spec_320_graph.png')
+# ranking_distribution_plot('new_results/new_gru_mel_results_14/new_gru_mel_distances_14_', 'rankings', 'RDG of the gru_mel_14', 'gru_mel_14_graph.png')
+# ranking_distribution_plot('new_results/new_gru_mel_results_80/new_gru_mel_distances_80_', 'rankings', 'RDG of the gru_mel_80', 'gru_mel_80_graph.png')
+# ranking_distribution_plot('new_results/new_gru_mfcc_results_16/new_gru_mfcc_distances_16_', 'rankings', 'RDG of the gru_mfcc_16', 'gru_mfcc_16_graph.png')
+# ranking_distribution_plot('new_results/new_lstm_mel_results_14/new_lstm_mel_distances_14_', 'rankings', 'RDG of the lstm_mel_14', 'lstm_mel_14_graph.png')
+# ranking_distribution_plot('new_results/new_lstm_mel_results_40/new_lstm_mel_distances_40_', 'rankings', 'RDG of the lstm_mel_40', 'lstm_mel_40_graph.png')
+# ranking_distribution_plot('new_results/new_lstm_mel_results_80/new_lstm_mel_distances_80_', 'rankings', 'RDG of the lstm_mel_80', 'lstm_mel_80_graph.png')
 
 # ranking_distribution_plot('new_results/new_lstm_mfcc_results_16/new_lstm_mfcc_distances_16_', 'rankings', 'RDG of the lstm_mfcc_16', 'lstm_mfcc_16_graph.png')
 # ranking_distribution_plot('new_results/new_lstm_mfcc_results_32/new_lstm_mfcc_distances_32_', 'rankings', 'RDG of the lstm_mfcc_32', 'lstm_mfcc_32_graph.png')
 # ranking_distribution_plot('new_results/new_lstm_mfcc_results_5/new_lstm_mfcc_distances_5_', 'rankings', 'RDG of the lstm_mfcc_5', 'lstm_mfcc_5_graph.png')
 
+# ranking_distribution_plot('new_results/gru_mfcc_results_30_10/gru_mfcc_distances_30_10_', 'rankings', 'RDG of the gru_mfcc 5 30 sec', 'lstm_mfcc_30_5_graph.png')
+# ranking_distribution_plot('new_results/gru_mfcc_results_30_32/gru_mfcc_distances_30_32_', 'rankings', 'RDG of the gru_mfcc 16 30 sec', 'lstm_mfcc_30_16_graph.png')
+# ranking_distribution_plot('new_results/gru_mfcc_results_30_64/gru_mfcc_distances_30_64_', 'rankings', 'RDG of the gru_mfcc 32 30 sec', 'lstm_mfcc_30_32_graph.png')
+# ranking_distribution_plot('retrained_results/lstm_mel_results_bs16_32/lstm_mel_distances_bs16_32_', 'rankings', 'RDG of the gru mel with batchsize 16', 'lsmt_mel_bs16_32_graph.png')
+# ranking_distribution_plot('retrained_results/lstm_mel_results_bs32_32/lstm_mel_distances_bs32_32_', 'rankings', 'RDG of the gru mel with batchsize 32', 'lsmt_mfcc_bs32_32_graph.png' )
 
 #SOM A W2V jeste
 

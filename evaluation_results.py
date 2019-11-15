@@ -179,8 +179,8 @@ def get_distribution(df, min_length, max_length):
 # print('w2v results')
 # get_results('results/w2v_results/chopped_w2v_')
 
-for name in os.listdir("new_results"):
-        if (not 'graphs' in name) and (not ('DS') in name):
-            sub_dirs = 'new_results/' + name +'/' + name.replace('results', 'distances') + '_'
-            print(sub_dirs.split('/')[-1][:-1])
-            get_results(sub_dirs)
+# for name in os.listdir("new_results"):
+#         if (not 'graphs' in name) and (not ('DS') in name):
+#             sub_dirs = 'new_results/' + name +'/' + name.replace('results', 'distances') + '_'
+#             print(sub_dirs.split('/')[-1][:-1])
+#             get_results(sub_dirs)

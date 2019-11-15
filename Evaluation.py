@@ -126,7 +126,8 @@ class Evaluation():
 
 def evaluate(distance_file, threshold):
     # mounted_dir = '/mnt/0/'
-    os.makedirs(distance_file.replace('distances', 'results')[:-4], exist_ok=True)
+    os.makedirs(distance_file.replace('distances', 'results')[:-4],
+                exist_ok=True)
     for j in range(5):
         filename = distance_file.replace('distances', 'results')[:-4] + "/" + distance_file.split('/')[-1][:-4] +"_"+ str(j+1)
         evaluation = Evaluation(distance_file, 'mnt/0/useful_playlists', 'mnt/0/useful_songs', False, threshold)
@@ -158,9 +159,11 @@ def evaluate(distance_file, threshold):
 # evaluate('mnt/0/new_distances/new_lstm_mfcc_distances_32.npy',0.9966145573465457)
 # evaluate('mnt/0/new_distances/new_lstm_mfcc_distances_5.npy', 0.9998160194542247)
 
-evaluate('mnt/0/new_distances/gru_mfcc_distances_30_10.npy', 0.9979790719725744)
-evaluate('mnt/0/new_distances/gru_mfcc_distances_30_32.npy', 0.9951220311670839)
-evaluate('mnt/0/new_distances/gru_mfcc_distances_30_64.npy', 0.992621772026671)
-evaluate('mnt/0/retrained_distances/lstm_mel_distances_bs16_32.npy', 0.999999999997554)
-evaluate('mnt/0/retrained_distances/lstm_mel_distances_bs32_32.npy', 0.999999999997234)
+# evaluate('mnt/0/new_distances/gru_mfcc_distances_30_10.npy', 0.9979790719725744)
+# evaluate('mnt/0/new_distances/gru_mfcc_distances_30_32.npy', 0.9951220311670839)
+# evaluate('mnt/0/new_distances/gru_mfcc_distances_30_64.npy', 0.992621772026671)
+# evaluate('mnt/0/retrained_distances/lstm_mel_distances_bs16_32.npy', 0.999999999997554)
+# evaluate('mnt/0/retrained_distances/lstm_mel_distances_bs32_32.npy', 0.999999999997234)
 
+evaluate('mnt/0/new_distances/lstm_mfcc_distances_30_32.npy', 0.9985312636518952)
+evaluate('mnt/0/new_distances/lstm_mfcc_distances_30_64.npy', 0.9973641183864284)
