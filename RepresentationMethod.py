@@ -106,7 +106,7 @@ class SOM_TF_idf(TextMethod):
     def __init__(self, sigma, learning_rate):
         self.sigma = sigma
         self.learning_rate = learning_rate
-        self.model_name = '/mnt/0/som_tf_idf.p'
+        self.model_name = '/som_tf_idf.p'
 
 
     def train(self, songs):
@@ -369,9 +369,9 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         self.divide_features = divide_features
         self.time_stamps = 815
         self.features = 320
-        self.model_name = 'mnt/0/new_models/new_lstm_mel_model_' + str(self.features / divide_features) + '.h5'
-        self.autoencoder_name = 'mnt/0/new_models/lstm_mel_autoencoder' + str(self.features / divide_features) + '.h5'
-        self.histories = 'mnt/0/new_histories/lstm_mel_history' + str(self.features / divide_features)
+        self.model_name = 'new_models/new_lstm_mel_model_30_' + str(self.features / divide_features) + '.h5'
+        self.autoencoder_name = 'new_models/lstm_mel_autoencoder_30_' + str(self.features / divide_features) + '.h5'
+        self.histories = 'new_histories/lstm_mel_history_30_' + str(self.features / divide_features)
 
     def extract_audio(self, song):
         y, sr = librosa.load(song.file_path)
@@ -403,10 +403,10 @@ class LSTM_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
+        input_songs = numpy.load('/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
 
         auto_encoder.compile(adam, loss='mse')
-        hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=80)
+        hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=60)
         try:
             encoder.save(self.model_name)
         except:
@@ -436,9 +436,9 @@ class GRU_Mel_Spectrogram(AudioMethod):
         self.divide_features = divide_features
         self.time_stamps = 815
         self.features = 320
-        self.model_name = 'mnt/0/new_models/new_gru_mel_model_' + str(self.features/divide_features) + '.h5'
-        self.autoencoder_name = 'mnt/0/new_models/gru_mel_autoencoder' + str(self.features/divide_features) + '.h5'
-        self.histories = 'mnt/0/new_histories/gru_mel_history' + str(self.features/divide_features)
+        self.model_name = 'mnt/0/new_models/new_gru_mel_model_30_' + str(self.features/divide_features) + '.h5'
+        self.autoencoder_name = 'mnt/0/new_models/gru_mel_autoencoder_30_' + str(self.features/divide_features) + '.h5'
+        self.histories = 'mnt/0/new_histories/gru_mel_history_30_' + str(self.features/divide_features)
 
 
 
@@ -472,10 +472,10 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
+        input_songs = numpy.load('mnt/0/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
 
         auto_encoder.compile(adam, loss='mse')
-        hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=80)
+        hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=60)
         encoder.save(self.model_name)
         try:
             auto_encoder.save(self.autoencoder_name)
@@ -502,9 +502,9 @@ class GRU_MFCC(AudioMethod):
         self.time_stamps = 1292
         self.features = 128
         self.divide_features = divide_features
-        self.model_name = 'mnt/0/new_models/new_gru_mfcc_model_' + str(self.features/divide_features) + '.h5'
-        self.autoencoder_name = 'mnt/0/new_models/gru_mfcc_autoencoder' + str(self.features/divide_features) + '.h5'
-        self.histories = 'mnt/0/new_histories/gru_mfcc_history' + str(self.features/divide_features)
+        self.model_name = 'new_models/new_gru_mfcc_model_30_' + str(self.features/divide_features) + '.h5'
+        self.autoencoder_name = 'new_models/gru_mfcc_autoencoder_30_' + str(self.features/divide_features) + '.h5'
+        self.histories = 'new_histories/gru_mfcc_history_30_' + str(self.features/divide_features)
 
 
 
@@ -539,22 +539,22 @@ class GRU_MFCC(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/representations/mfccs_30sec.npy')
+        input_songs = numpy.load('/Volumes/LaCie/similarity_and_evaluation/mfccs_30sec.npy')
         input_songs = input_songs.reshape([16594, 165376])
         scaler = MinMaxScaler()
         input_songs = scaler.fit_transform(input_songs)
         input_songs = input_songs.reshape([16594, 1292, 128])
 
         auto_encoder.compile(adam, loss='mse')
-        hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=80)
+        hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=60)
         try:
             encoder.save(self.model_name)
             auto_encoder.save(self.autoencoder_name)
         # model_json = encoder.to_json()
-        # with open("/mnt/0/GRU_MFCC_model.json", "w") as json_file:
+        # with open("/GRU_MFCC_model.json", "w") as json_file:
         #     json_file.write(model_json)
         # # serialize weights to HDF5
-        # encoder.save_weights("/mnt/0/GRU_MFCC_model.h5")
+        # encoder.save_weights("/GRU_MFCC_model.h5")
         # print("Saved the GRU MFCC model to disk")
         except:
             print(self.model_name)
@@ -580,9 +580,9 @@ class LSTM_MFCC(AudioMethod):
         self.time_stamps = 1292
         self.features = 128
         self.divide_features = divide_features
-        self.model_name = 'mnt/0/new_models/new_lstm_mfcc_model_' + str(self.features / divide_features) + '.h5'
-        self.autoencoder_name = 'mnt/0/new_models/lstm_mfcc_autoencoder' + str(self.features / divide_features) + '.h5'
-        self.histories = 'mnt/0/new_histories/lstm_mfcc_history' + str(self.features / divide_features)
+        self.model_name = 'new_models/new_lstm_mfcc_model_30_' + str(self.features / divide_features) + '.h5'
+        self.autoencoder_name = 'new_models/lstm_mfcc_autoencoder_30' + str(self.features / divide_features) + '.h5'
+        self.histories = 'new_histories/lstm_mfcc_history_30' + str(self.features / divide_features)
 
 
     def extract_audio(self, song):
@@ -615,22 +615,22 @@ class LSTM_MFCC(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('/mnt/0/representations/mfccs_30sec.npy')
+        input_songs = numpy.load('/Volumes/LaCie/similarity_and_evaluation/mfccs_30sec.npy')
         input_songs = input_songs.reshape([16594, 165376])
         scaler = MinMaxScaler()
         input_songs = scaler.fit_transform(input_songs)
         input_songs = input_songs.reshape([16594, 1292, 128])
 
         auto_encoder.compile(adam, loss='mse')
-        hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=80)
+        hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=60)
         try:
             encoder.save(self.model_name)
             auto_encoder.save(self.autoencoder_name)
         # model_json = encoder.to_json()
-        # with open("/mnt/0/GRU_MFCC_model.json", "w") as json_file:
+        # with open("/GRU_MFCC_model.json", "w") as json_file:
         #     json_file.write(model_json)
         # # serialize weights to HDF5
-        # encoder.save_weights("/mnt/0/GRU_MFCC_model.h5")
+        # encoder.save_weights("/GRU_MFCC_model.h5")
         # print("Saved the GRU MFCC model to disk")
         except:
             print(self.model_name)
@@ -651,7 +651,7 @@ class LSTM_MFCC(AudioMethod):
 
 class GRU_Spectrogram(AudioMethod):
     def __init__(self, spec_directory):
-        self.model_name = '/mnt/0/models/GRU_Spec_model.h5'
+        self.model_name = '/models/GRU_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
         self.spec_directory = spec_directory
@@ -684,21 +684,21 @@ class GRU_Spectrogram(AudioMethod):
         auto_encoder.compile(adam, loss='mse')
         encoder.compile(adam, loss='mse')
         trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
-        hist = auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=80)
+        hist = auto_encoder.fit_generator(trainGen, steps_per_epoch=56, epochs=60)
 
 
         # tbCallBack = keras.callbacks.TensorBoard(log_dir='~/evaluation_project/similarity_and_evaluation/Graph', histogram_freq=0,
         #                             write_graph=True, write_images=True)
 
-        auto_encoder.save('/mnt/0/models/gru_spec_autoencoder.h5')
+        auto_encoder.save('/models/gru_spec_autoencoder.h5')
         encoder.save(self.model_name)
-        with open('/mnt/0/GRU_SPEC_history', 'wb') as file_pi:
+        with open('/GRU_SPEC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
         # model_json = encoder.to_json()
-        # with open("/mnt/0/short_GRU_Spec_model.json", "w") as json_file:
+        # with open("/short_GRU_Spec_model.json", "w") as json_file:
         #     json_file.write(model_json)
         # # serialize weights to HDF5
-        # encoder.save_weights("/mnt/0/short_GRU_Spec_model.h5")
+        # encoder.save_weights("/short_GRU_Spec_model.h5")
         # print("Saved GRU Spec model to disk")
 
     def get_model(self):
@@ -713,7 +713,7 @@ class GRU_Spectrogram(AudioMethod):
 class LSTM_Spectrogram(AudioMethod):
 
     def __init__(self, spec_directory):
-        self.model_name = '/mnt/0/models/LSTM_Spec_model.h5'
+        self.model_name = '/models/LSTM_Spec_model.h5'
         self.time_stamps = 408
         self.features = 2206
         self.spec_directory = spec_directory
@@ -738,11 +738,11 @@ class LSTM_Spectrogram(AudioMethod):
         model.summary()
 
         trainGen = generate_spectrograms(spec_directory=self.spec_directory, batch_size=295, mode="train")
-        hist = model.fit_generator(trainGen, steps_per_epoch=56, epochs=80)
+        hist = model.fit_generator(trainGen, steps_per_epoch=56, epochs=60)
         encoder = Model(inputs=model.input, outputs=model.get_layer(index=1).output)
         encoder.save(self.model_name)
-        model.save('/mnt/0/models/LSTM_Spec_autoencoder.h5')
-        with open('/mnt/0/LSTM_SPEC_history', 'wb') as file_pi:
+        model.save('/models/LSTM_Spec_autoencoder.h5')
+        with open('/LSTM_SPEC_history', 'wb') as file_pi:
             pickle.dump(hist.history, file_pi)
         # model.fit(normalized_input, normalized_input, epochs=1)
 
@@ -789,70 +789,34 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # som_tf_idf = SOM_TF_idf(0.8, 0.5)
 # som_tf_idf.represent_songs('/mnt/0/som_tf_idf.p16594', 'mnt/0/pca_tf_idf_representations.npy')
 
-# Volta 01
+# Volta 02
 gru_mel = GRU_Mel_Spectrogram(2)
 gru_mel.train([])
 
-# Volta 03
+# # Volta 03
 # gru_mel = GRU_Mel_Spectrogram(4)
 # gru_mel.train([])
-
-
-# # Volta 02
+#
+#
+# # # Volta 02
 # gru_mel = GRU_Mel_Spectrogram(11)
 # gru_mel.train([])
-
 #
+# #
 # try:
 #     lstm_mel = LSTM_Mel_Spectrogram(2)
 #     lstm_mel.train([])
 # except Exception as e:
 #     print(e)
-#
+# #
 # try:
 #     lstm_mel = LSTM_Mel_Spectrogram(4)
 #     lstm_mel.train([])
 # except Exception as e:
 #     print(e)
-#
+# #
 # try:
 #     gru_mel = LSTM_Mel_Spectrogram(11)
 #     gru_mel.train([])
-# except Exception as e:
-#     print(e)
-
-# try:
-#     gru_mfcc = GRU_MFCC(2)
-#     gru_mfcc.train([])
-# except Exception as e:
-#     print(e)
-#
-# try:
-#     gru_mfcc = GRU_MFCC(4)
-#     gru_mfcc.train([])
-# except Exception as e:
-#     print(e)
-#
-# try:
-#     gru_mfcc = GRU_MFCC(11)
-#     gru_mfcc.train([])
-# except Exception as e:
-#     print(e)
-#
-# try:
-#     lstm_mfcc = LSTM_MFCC(2)
-#     lstm_mfcc.train([])
-# except Exception as e:
-#     print(e)
-#
-# try:
-#     lstm_mfcc = LSTM_MFCC(4)
-#     lstm_mfcc.train([])
-# except Exception as e:
-#     print(e)
-#
-# try:
-#     lstm_mfcc = LSTM_MFCC(11)
-#     lstm_mfcc.train([])
 # except Exception as e:
 #     print(e)
