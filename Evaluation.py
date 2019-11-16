@@ -165,5 +165,5 @@ def evaluate(distance_file, threshold):
 # evaluate('mnt/0/retrained_distances/lstm_mel_distances_bs16_32.npy', 0.999999999997554)
 # evaluate('mnt/0/retrained_distances/lstm_mel_distances_bs32_32.npy', 0.999999999997234)
 
-evaluate('mnt/0/new_distances/lstm_mfcc_distances_30_32.npy', 0.9985312636518952)
-evaluate('mnt/0/new_distances/lstm_mfcc_distances_30_64.npy', 0.9973641183864284)
+# evaluate('mnt/0/new_distances/lstm_mfcc_distances_30_32.npy', 0.9985312636518952)
+# evaluate('mnt/0/new_distances/lstm_mfcc_distances_30_64.npy', 0.9973641183864284)
