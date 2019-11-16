@@ -793,14 +793,14 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # gru_mel = GRU_Mel_Spectrogram(2)
 # gru_mel.train([])
 
-# # Volta 03
-gru_mel = GRU_Mel_Spectrogram(4)
-gru_mel.train([])
-#
-#
-# # # Volta 02
-# gru_mel = GRU_Mel_Spectrogram(11)
+# # Volta 01
+# gru_mel = GRU_Mel_Spectrogram(4)
 # gru_mel.train([])
+#
+#
+# # Volta 02
+gru_mel = GRU_Mel_Spectrogram(11)
+gru_mel.train([])
 #
 # #
 # try:
@@ -816,7 +816,7 @@ gru_mel.train([])
 #     print(e)
 # #
 # try:
-#     gru_mel = LSTM_Mel_Spectrogram(11)
-#     gru_mel.train([])
+#     lstm_mel = LSTM_Mel_Spectrogram(11)
+#     lstm_mel.train([])
 # except Exception as e:
 #     print(e)
