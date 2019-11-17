@@ -803,16 +803,15 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # gru_mel.train([])
 #
 # #
-#VOlta 3
-lstm_mel = LSTM_Mel_Spectrogram(2)
-lstm_mel.train([])
+#VOlta 1
+# lstm_mel = LSTM_Mel_Spectrogram(2)
+# lstm_mel.train([])
 
 # #
-# try:
-#     lstm_mel = LSTM_Mel_Spectrogram(4)
-#     lstm_mel.train([])
-# except Exception as e:
-#     print(e)
+# Volta 3
+lstm_mel = LSTM_Mel_Spectrogram(4)
+lstm_mel.train([])
+
 # #
 # try:
 #     lstm_mel = LSTM_Mel_Spectrogram(11)
