@@ -794,8 +794,8 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # gru_mel.train([]) ---- hotovo
 
 # # Volta 01
-# gru_mel = GRU_Mel_Spectrogram(4)
-# gru_mel.train([])
+gru_mel = GRU_Mel_Spectrogram(4)
+gru_mel.train([])
 #
 #
 # # Volta 02
@@ -813,5 +813,5 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 # lstm_mel.train([])
 
 # #
-lstm_mel = LSTM_Mel_Spectrogram(11)
-lstm_mel.train([])
+# lstm_mel = LSTM_Mel_Spectrogram(11)
+# lstm_mel.train([])
