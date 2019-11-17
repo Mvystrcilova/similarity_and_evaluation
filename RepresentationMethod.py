@@ -809,12 +809,9 @@ def generate_spectrograms(spec_directory, batch_size, mode='train'):
 
 # #
 # Volta 3
-lstm_mel = LSTM_Mel_Spectrogram(4)
-lstm_mel.train([])
+# lstm_mel = LSTM_Mel_Spectrogram(4)
+# lstm_mel.train([])
 
 # #
-# try:
-#     lstm_mel = LSTM_Mel_Spectrogram(11)
-#     lstm_mel.train([])
-# except Exception as e:
-#     print(e)
+lstm_mel = LSTM_Mel_Spectrogram(11)
+lstm_mel.train([])

@@ -101,8 +101,8 @@ def get_threshold_at(position, distance_matrix):
 # print(get_threshold_at((829700), 'mnt/0/new_distances/new_lstm_mfcc_distances_5.npy'))
 
 # print(get_threshold_at((829700), 'mnt/0/new_distances/gru_mfcc_distances_30_10.npy'))
-# print(get_threshold_at((829700), 'new_distances/lstm_mfcc_distances_30_32.npy'))
-# print(get_threshold_at((829700), 'new_distances/lstm_mfcc_distances_30_64.npy'))
+print(get_threshold_at((829700), 'new_distances/gru_mel_distances_30_28.npy'))
+print(get_threshold_at((829700), 'new_distances/gru_mel_distances_30_160.npy'))
 
 # print(get_threshold_at((829700), 'mnt/0/retrained_distances/lstm_mel_distances_bs16_32.npy'))
 # print(get_threshold_at((829700), 'mnt/0/retrained_distances/lstm_mel_distances_bs32_32.npy'))

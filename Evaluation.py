@@ -130,7 +130,7 @@ def evaluate(distance_file, threshold):
                 exist_ok=True)
     for j in range(5):
         filename = distance_file.replace('distances', 'results')[:-4] + "/" + distance_file.split('/')[-1][:-4] +"_"+ str(j+1)
-        evaluation = Evaluation(distance_file, 'mnt/0/useful_playlists', 'mnt/0/useful_songs', False, threshold)
+        evaluation = Evaluation(distance_file, 'useful_playlists', 'useful_songs', False, threshold)
         results = pandas.DataFrame(columns=['playlist_lenght', 'test_list_lenght', 'number_of_matches', 'match_ranking', 'recall_at_10',
                      'recall_at_50', 'recall_at_100', 'nDGC'])
         i = 0
@@ -165,5 +165,8 @@ def evaluate(distance_file, threshold):
 # evaluate('mnt/0/retrained_distances/lstm_mel_distances_bs16_32.npy', 0.999999999997554)
 # evaluate('mnt/0/retrained_distances/lstm_mel_distances_bs32_32.npy', 0.999999999997234)
 
-# evaluate('mnt/0/new_distances/lstm_mfcc_distances_30_32.npy', 0.9985312636518952)
+# evaluate('new_distances/lstm_mfcc_distances_30_32.npy', 0.9985312636518952)
 # evaluate('mnt/0/new_distances/lstm_mfcc_distances_30_64.npy', 0.9973641183864284)
+
+evaluate('new_distances/gru_mel_distances_30_28.npy', 0.9999999999995358)
+evaluate('new_distances/gru_mel_distances_30_160.npy', 0.9999999999963747)
