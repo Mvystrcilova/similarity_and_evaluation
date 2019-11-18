@@ -148,11 +148,12 @@ def get_ranks_distribution_for_lineplot(ranks):
 # ranking_distribution_plot('new_results/new_lstm_mfcc_results_5/new_lstm_mfcc_distances_5_', 'rankings', 'RDG of the lstm_mfcc_5', 'lstm_mfcc_5_graph.png')
 
 # ranking_distribution_plot('new_results/gru_mfcc_results_30_10/gru_mfcc_distances_30_10_', 'rankings', 'RDG of the gru_mfcc 5 30 sec', 'lstm_mfcc_30_5_graph.png')
-ranking_distribution_plot('new_results/lstm_mfcc_results_30_32/lstm_mfcc_distances_30_32_', 'rankings', 'RDG of the lstm_mfcc 16 30 sec', 'lstm_mfcc_30_16_graph.png')
-ranking_distribution_plot('new_results/lstm_mfcc_results_30_64/lstm_mfcc_distances_30_64_', 'rankings', 'RDG of the lstm_mfcc 32 30 sec', 'lstm_mfcc_30_32_graph.png')
+# ranking_distribution_plot('new_results/lstm_mfcc_results_30_32/lstm_mfcc_distances_30_32_', 'rankings', 'RDG of the lstm_mfcc 16 30 sec', 'lstm_mfcc_30_16_graph.png')
+# ranking_distribution_plot('new_results/lstm_mfcc_results_30_64/lstm_mfcc_distances_30_64_', 'rankings', 'RDG of the lstm_mfcc 32 30 sec', 'lstm_mfcc_30_32_graph.png')
 # ranking_distribution_plot('retrained_results/lstm_mel_results_bs16_32/lstm_mel_distances_bs16_32_', 'rankings', 'RDG of the gru mel with batchsize 16', 'lsmt_mel_bs16_32_graph.png')
 # ranking_distribution_plot('retrained_results/lstm_mel_results_bs32_32/lstm_mel_distances_bs32_32_', 'rankings', 'RDG of the gru mel with batchsize 32', 'lsmt_mfcc_bs32_32_graph.png' )
 
-#SOM A W2V jeste
+# ranking_distribution_plot('new_results/gru_mel_results_30_28/gru_mel_distances_30_28_', 'rankings', 'RDG of the gru_mel size 14 30 seconds', 'gru_mel_30_14_graph.png')
+# ranking_distribution_plot('new_results/gru_mel_results_30_160/gru_mel_distances_30_160_', 'rankings', 'RDG of the gru_mel size 80 30 seconds', 'gru_mel_30_80_graph.png')
 
 

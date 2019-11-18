@@ -436,9 +436,9 @@ class GRU_Mel_Spectrogram(AudioMethod):
         self.divide_features = divide_features
         self.time_stamps = 815
         self.features = 320
-        self.model_name = 'mnt/0/new_models/new_gru_mel_model_30_' + str(self.features/divide_features) + '.h5'
-        self.autoencoder_name = 'mnt/0/new_models/gru_mel_autoencoder_30_' + str(self.features/divide_features) + '.h5'
-        self.histories = 'mnt/0/new_histories/gru_mel_history_30_' + str(self.features/divide_features)
+        self.model_name = 'new_models/new_gru_mel_model_30_' + str(self.features/divide_features) + '.h5'
+        self.autoencoder_name = 'new_models/gru_mel_autoencoder_30_' + str(self.features/divide_features) + '.h5'
+        self.histories = 'new_histories/gru_mel_history_30_' + str(self.features/divide_features)
 
 
 
@@ -472,7 +472,7 @@ class GRU_Mel_Spectrogram(AudioMethod):
         auto_encoder.summary()
         encoder.summary()
 
-        input_songs = numpy.load('mnt/0/representations/mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
+        input_songs = numpy.load('mel_spectrograms_30sec.npy').reshape([16594, 815, 320])
 
         auto_encoder.compile(adam, loss='mse')
         hist = auto_encoder.fit(input_songs, input_songs, batch_size=128, epochs=60)
