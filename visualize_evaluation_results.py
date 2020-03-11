@@ -155,5 +155,9 @@ def get_ranks_distribution_for_lineplot(ranks):
 
 # ranking_distribution_plot('new_results/gru_mel_results_30_28/gru_mel_distances_30_28_', 'rankings', 'RDG of the gru_mel size 14 30 seconds', 'gru_mel_30_14_graph.png')
 # ranking_distribution_plot('new_results/gru_mel_results_30_160/gru_mel_distances_30_160_', 'rankings', 'RDG of the gru_mel size 80 30 seconds', 'gru_mel_30_80_graph.png')
-
+# ranking_distribution_plot('new_results/gru_mel_results_30_80/gru_mel_distances_30_80_', 'rankings', 'RDG of the gru_mel size 40 30 seconds', 'gru_mel_30_40_graph.png')
+# ranking_distribution_plot('new_results/roberta_results/roberta_distances_', 'rankings', 'RDG of the roberta model', 'roberta_graph.png')
+# ranking_distribution_plot('new_results/bert_results/bert_distances_', 'rankings', 'RDG of the bert model', 'bert_graph.png')
+# ranking_distribution_plot('new_results/tag_based_TF-IDF/tag_based_TF-IDF_', 'rankings', 'RDG of the tag mode', 'tag_TF-IDF_graph.png')
+ranking_distribution_plot('new_results/w2v_lyrics_results_max_updated/w2v_lyrics_distances_max_', 'rankings', 'RDG of the w2v lyrics model', 'w2v_lyrics_graph_updated.png')
 

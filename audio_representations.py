@@ -1,5 +1,5 @@
 import numpy, pandas, librosa, os, sklearn.preprocessing, joblib, glob, pickle
-from keras.models import model_from_json, load_model
+# from keras.models import model_from_json, load_model
 import re
 import urllib.request
 from bs4 import BeautifulSoup
@@ -75,6 +75,55 @@ def download_from_youtube(row):
         print(info_dict.get('filename', None))
         print(row['path'])
     # df.at[i,'link_on_disc']
+
+
+def add_tags():
+    useful_songs = pandas.read_csv('useful_songs', sep=';', names=['title', 'artist'])
+    for i, row in useful_songs.iterrows():
+        # if (i > 3000) and (i<4100):
+            try:
+                textToSearch = row['artist'] + ' - ' + row['title']
+                query = urllib.parse.quote(textToSearch)
+                url = "https://www.youtube.com/results?search_query=" + query
+                response = urllib.request.urlopen(url)
+                html = response.read()
+                soup = BeautifulSoup(html, 'html.parser')
+                # for vid in soup.findAll(attrs={'class':'yt-uix-tile-link'}):
+                #     print('https://www.youtube.com' + vid['href'])
+                vid = soup.findAll(attrs={'class': 'yt-uix-tile-link'})[0]
+                l = 'https://www.youtube.com' + vid['href']
+
+                # name = str(row['path'].split('/')[1][:-4])
+                # regex = re.compile('[^A-Za-z0-9. -]')
+                # name = regex.sub("", name)
+                # print(name)
+
+                ydl_opts = {
+                    'format': 'bestaudio/best',
+                    'postprocessors': [{
+                        'key': 'FFmpegExtractAudio',
+                        'preferredcodec': 'mp3',
+                        'preferredquality': '192',
+                    }],
+                }
+
+                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+                    # ydl.download([l])
+                    info_dict = ydl.extract_info(l, download=False)
+                    # print(info_dict)
+                    useful_songs.at[i, 'tags'] = ','.join(info_dict['tags'])
+                    print(i, useful_songs.at[i, 'tags'])
+                    # print(info_dict.get('filename', None))
+                    # print(row['path'])
+            except Exception as e:
+                print(e)
+
+            # if (i % 100 == 0) and (i > 3000):
+            #     csv_name ='songs_with_tags_' + str(i)
+            #     useful_songs.to_csv(csv_name, sep=';')
+
+    useful_songs.to_csv('songs_with_tags', sep=';')
+
 
 def convert_files_to_mels_and_mfccs(directory, n_mels, n_fft, hop_length, n_mfcc):
     all_songs = pandas.read_csv(directory, header=None, sep=';', index_col=False, names=['artist', 'title', 'lyrics',
@@ -285,3 +334,38 @@ def get_PCA_Tf_idf_representations(model, tf_idf_matrix, repr_name):
 
 # get_mel_representations('new_models/new_gru_mel_model_30_28.h5', 'mel_spectrograms_30sec.npy', 'new_representations/gru_mel_representations_30_28')
 # get_mel_representations('new_models/new_gru_mel_model_30_160.0.h5', 'mel_spectrograms_30sec.npy', 'new_representations/gru_mel_representations_30_160')
+# get_mel_representations('new_models/new_gru_mel_model_30_80.0.h5', 'mel_spectrograms_30sec.npy', 'new_representations/gru_mel_representations_30_80')
+# add_tags()
+
+def select_non_nan(row):
+    if str(row['tags_x']) != 'nan':
+        return row['tags_x']
+    else:
+        return row['tags_y']
+
+def join_song_tags():
+    i = 0
+    for file in os.listdir('tags'):
+        if i == 0:
+            song_tag_frame = pandas.read_csv('tags/' + file, sep=';') #names=['artist', 'title', 'tags'])
+            i += 1
+        else:
+            new_frame = pandas.read_csv('tags/' + file, sep=';')
+            for j, row in new_frame.iterrows():
+                if str(row['tags']) != 'nan':
+                    song_tag_frame.at[j,'tags']= row['tags']
+            missing = song_tag_frame[song_tag_frame['tags'].isnull()]
+            print(missing.shape)
+
+
+    song_tag_frame.to_csv('songs_with_all_tags', sep=';')
+
+
+    print()
+
+# join_song_tags()
+
+frame = pandas.read_csv('songs_with_tags', sep=';')
+print(frame.shape)
+missing = frame[frame['tags'].isnull()]
+print(missing.shape)

@@ -28,7 +28,7 @@ def numericalSort(value):
 
 
 adam = optimizers.adam(lr=0.0001, clipnorm=1.)
-w2v_model = 'model to be inserted'
+w2v_model = '/Users/m_vys/PycharmProjects/similarity_and_evaluation/w2v_lyrics_model'
 
 
 class RepresentationMethod(abc.ABC):

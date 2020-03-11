@@ -278,6 +278,7 @@ def rank_dataframe(file):
     r.set_title("Ranking of the tested methods in various categories without threshold")
     fig.savefig('no_threshold_method_ranking.png', dpi=700)
     plt.show()
+
 # plot_comparisons()
 def rank_dataframe_not_from_file(dataframe):
     df = dataframe

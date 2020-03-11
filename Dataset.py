@@ -132,10 +132,10 @@ def predict_representations(model_file, repr_string, is_in_gpulab):
 # predict_representations('new_models/new_lstm_mel_model_80.0.h5', "mel", True)
 # predict_representations('new_models/new_lstm_mel_model_160.0.h5', "mel", True)
 
-predict_representations('new_models/new_gru_mfcc_model_11.0.h5', 'mfcc', True)
-predict_representations('new_models/new_gru_mfcc_model_32.0.h5', 'mfcc', True)
-predict_representations('new_models/new_gru_mfcc_model_64.0.h5', 'mfcc', True)
-predict_representations('new_models/new_lstm_mfcc_model_11.0.h5', 'mfcc', True)
-predict_representations('new_models/new_lstm_mfcc_model_32.0.h5', 'mfcc', True)
-predict_representations('new_models/new_lstm_mfcc_model_64.0.h5', 'mfcc', True)
+# predict_representations('new_models/new_gru_mfcc_model_11.0.h5', 'mfcc', True)
+# predict_representations('new_models/new_gru_mfcc_model_32.0.h5', 'mfcc', True)
+# predict_representations('new_models/new_gru_mfcc_model_64.0.h5', 'mfcc', True)
+# predict_representations('new_models/new_lstm_mfcc_model_11.0.h5', 'mfcc', True)
+# predict_representations('new_models/new_lstm_mfcc_model_32.0.h5', 'mfcc', True)
+# predict_representations('new_models/new_lstm_mfcc_model_64.0.h5', 'mfcc', True)
 

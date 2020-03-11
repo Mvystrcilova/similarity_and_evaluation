@@ -30,10 +30,15 @@ def save_mel_distances(mel_spec_file):
     distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
     numpy.save('/mnt/0/mel_spectrogram_distances', distances)
 
+def save_bert_distances(bert_encoding_file, save_file):
+    vectors = numpy.load(bert_encoding_file).reshape([16594, 768])
+    distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
+    numpy.save(save_file, distances)
+
 def save_neural_network(representation_file):
-    name_array = representation_file.split('/')[-1].split('_')
-    shape = int(int(name_array[4].split('.')[0])/2)
-    vectors = numpy.load(representation_file).reshape([16594, shape])
+    # name_array = representation_file.split('/')[-1].split('_')
+    # shape = int(int(name_array[4].split('.')[0])/2)
+    vectors = numpy.load(representation_file).reshape([16594, 300])
     distances = sklearn.metrics.pairwise.cosine_similarity(vectors)
 
     distance_file = representation_file.replace('representations', 'distances')
@@ -151,5 +156,8 @@ def save_som_distances_from_array(representations, model_name):
 
 # save_neural_network('new_representations/gru_mel_representations_30_28.npy')
 # save_neural_network('new_representations/gru_mel_representations_30_.npy')
+# save_neural_network('new_representations/gru_mel_representations_30_80.npy')
 
-
+# save_bert_distances('/Users/m_vys/PycharmProjects/similarity_and_evaluation/bert_model/bert-base-nli-mean-tokens_lyrics_encoding.npy', 'new_distances/bert_distances')
+# save_bert_distances('bert_model/roberta-base-nli-stsb-mean-tokens_lyrics_encoding.npy', 'new_distances/roberta_distances')
+# save_neural_network('/Users/m_vys/PycharmProjects/similarity_and_evaluation/new_representations/w2v_lyrics_representations.npy')

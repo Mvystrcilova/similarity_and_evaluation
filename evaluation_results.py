@@ -60,7 +60,7 @@ def get_results(filename):
     means_5_21_more = get_means_for_playlists(21, float("inf"), cross_5)
     means_21_more = pandas.DataFrame(data=[means_1_21_more, means_2_21_more, means_3_21_more, means_4_21_more, means_5_21_more])
     means_21_more.to_csv(filename + 'means_21_more', sep=';', header=None, index=False)
-
+    print(filename)
     # print(means_1, means_2, means_3, means_4, means_5)
     # print(means_1_4_6, means_2_4_6, means_3_4_6, means_4_4_6, means_5_4_6)
     # print(means_1_7_10, means_2_7_10, means_3_7_10, means_4_7_10, means_5_7_10)
@@ -71,6 +71,21 @@ def get_results(filename):
     overall_means = pandas.DataFrame(data=[means_1, means_2, means_3, means_4, means_5])
     overall_means.to_csv(filename + 'overall_means', sep=';', header=None, index=False)
     print(overall_means.mean(axis=0))
+
+
+def get_num_of_correct(df_file):
+    df = pandas.read_csv(df_file, sep=';', header=None, index_col=False)
+    ranks = df.iloc[:, 3]
+    ranks = ranks.tolist()
+    ranks = [r.replace('[', '') for r in ranks]
+    ranks = [r.replace(']', '') for r in ranks]
+    ranks = [r.replace(' ', '') for r in ranks]
+    num = 0
+    for r in ranks:
+        x = [number for number in r.split(',') if int(number) < 10]
+        num += len(x)
+    print(df_file, num)
+    return num
 
 def read_cross_file(filename):
     df = pandas.read_csv(filename, sep=';', header=None)
@@ -88,7 +103,7 @@ def read_cross_file(filename):
     return df, ds
 
 def get_means_for_playlists(min_length, max_lenght, df):
-    df = df.loc[(df[0]>=min_length) & (df[0] < max_lenght)]
+    df = df.loc[(df[0] >= min_length) & (df[0] < max_lenght)]
     means = []
     means.append(numpy.mean(df[4]))
     means.append(numpy.mean(df[5]))
@@ -184,3 +199,25 @@ def get_distribution(df, min_length, max_length):
 #             sub_dirs = 'new_results/' + name +'/' + name.replace('results', 'distances') + '_'
 #             print(sub_dirs.split('/')[-1][:-1])
 #             get_results(sub_dirs)
+
+# get_results('new_results/bert_results/bert_distances_')
+
+# print('tag_bow')
+# get_results('new_results/tag_based_BOW/tag_based_BOW_')
+# print('tag_tfidf')
+# get_results('new_results/tag_based_TF-IDF_max_updated/tag_based_TF-IDF_max_')
+
+# get_results('/Users/m_vys/PycharmProjects/similarity_and_evaluation/new_results/new_gru_mfcc_results_5/new_gru_mfcc_distances_5_')
+# get_results('new_results/bert_results_max/bert_distances_max_')
+# get_results('new_results/w2v_lyrics_results_max_updated/w2v_lyrics_distances_max_')
+# get_num_of_correct('/Users/m_vys/PycharmProjects/similarity_and_evaluation/new_results/tag_based_TF-IDF_max_updated/tag_based_TF-IDF_max_2')
+# get_num_of_correct('new_results/w2v_lyrics_results_max_updated/w2v_lyrics_distances_max_1')
+# get_num_of_correct('results/pca_tf_idf_results_max_updated/pca_tf_idf_distances_max_2')
+# get_results('new_results/tag_based_TF-IDF_max_updated/tag_based_TF-IDF_max_')
+# get_results('new_results/w2v_lyrics_results_max_updated/w2v_lyrics_distances_max_')
+# get_results('results/pca_tf_idf_results_max_updated/pca_tf_idf_distances_max_')
+# get_results('new_results/bert_results_max_updated/bert_distances_max_')
+# get_results('results/pca_melspectrogram_results_max_updated/pca_melspectrogram_distances_max_')
+# get_results('results/gru_mel_results_5712_max_updated/gru_mel_distances_5712_max_')
+# get_results('new_results/gru_mfcc_results_30_64_max_updated/gru_mfcc_distances_30_64_max_')
+get_results('/Users/m_vys/PycharmProjects/similarity_and_evaluation/results/w2v_results_max_updated/w2v_distances_max_')
